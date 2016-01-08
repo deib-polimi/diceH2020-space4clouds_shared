@@ -16,57 +16,41 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 
 public class DataChecker {
 
-	private static final String SCHEMA = "src/test/resources/static/schema.json";
-
-	
-	private static File schema;
+	private static final String SCHEMA = "/static/schema.json";
+	private static URL schemaUrl;
 	private static DataChecker checker;
+	private static Locator locator;
 
-	private DataChecker() throws Exception {
-		System.out.println(System.getProperty("java.class.path"));
-		
-		schema = new File(SCHEMA);
-		if (!schema.exists()) {
-			throw new Exception();
-		}
-		
+	private DataChecker(Locator locator) throws Exception {
+		if (locator == null)
+			DataChecker.locator = new StandaloneLocator();
+		else
+			DataChecker.locator = locator;
+		schemaUrl = DataChecker.locator.resolve(getClass().getResource(SCHEMA));
+
 	}
 
 	public static DataChecker getInstance() throws Exception {
-		return ((checker == null) ? new DataChecker() : checker);
+		return ((checker == null) ? new DataChecker(null) : checker);
 	}
 
-	public boolean isValid(String path){
+	public static DataChecker getInstance(Locator locator) throws Exception {
+		return ((checker == null) ? new DataChecker(locator) : checker);
+	}
+
+	public boolean isValid(URL path) {
 		try {
-			
-			File jsonFile = new File(path);
-			
-			String schema = readFile(SCHEMA, Charset.defaultCharset());
-			String json = readFile(path, Charset.defaultCharset());
-			return ValidationUtils.isJsonValid(schema,json);
+			URL jsonPath = locator.resolve(path);
+			return ValidationUtils.isJsonValid(schemaUrl, jsonPath);
 		} catch (ProcessingException | IOException e) {
 			return false;
-			//e.printStackTrace();
 		}
 	}
-	static String readFile(String path, Charset encoding) 
-			  throws IOException 
-			{
-			  byte[] encoded = Files.readAllBytes(Paths.get(path));
-			  return new String(encoded, encoding);
-			}
-	
-	
 }

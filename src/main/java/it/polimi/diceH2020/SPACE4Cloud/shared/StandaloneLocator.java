@@ -16,28 +16,13 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
 import java.net.URL;
-import java.nio.file.Paths;
 
-public class Test {
+public class StandaloneLocator implements Locator {
 
-	@org.junit.Test
-	public void test() throws Exception {
-		URL url = Test.class.getResource("/static/schema.json");
-		
-		File schema = Paths.get(url.toURI()).toFile();
-
-		assertTrue(schema.exists());
-		DataChecker checker = DataChecker.getInstance(new StandaloneLocator());
-
-		
-		
-		URL inputURL = Test.class.getResource("/static/input.json");
-
-		assertTrue(checker.isValid(inputURL));
+	@Override
+	public URL resolve(URL url) {
+		return url;
 	}
 
 }
