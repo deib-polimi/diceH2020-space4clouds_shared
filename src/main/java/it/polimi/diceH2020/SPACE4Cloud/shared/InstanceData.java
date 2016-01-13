@@ -43,7 +43,6 @@ public class InstanceData {
 	private double[] SHtypavg;
 	private double[] SHtypmax;
 	private double[] think;
-//	private TypeVM tm;
 	private List<String> typeVm;
 
 	
