@@ -164,7 +164,7 @@ public class InstanceData {
 		return eta;
 	}
 
-	public double getN(int pos) {
+	public double getEta(int pos) {
 		return eta[pos];
 	}
 	
