@@ -24,14 +24,14 @@ public class InstanceData {
 	private int[][] cM;
 	private int[][] cR;
 	private double[] D;
-	private int gamma;
+	private int Gamma;
 	private int[] HLow;
 	private int[] HUp;
 	private List<Integer> id_job;
 	private double[] job_penalty;
 	private double[] Mavg;
 	private double[] Mmax;
-	private double[] N;
+	private double[] eta;
 	private int[] NM;
 	private int[] NR;
 	private String provider;
@@ -50,19 +50,19 @@ public class InstanceData {
 	}
 
 	public InstanceData(int gamma, List<String> typeVm, String provider, List<Integer> id_job, double[] think, int[][] cM, int[][] cR,
-			double[] n, int[] hUp, int[] hLow, int[] nM, int[] nR, double[] mmax, double[] rmax, double[] mavg,
-			double[] ravg, double[] d, double[] sH1max, double[] sHtypmax, double[] sHtypavg, double[] job_penalty,
-			double[] r) {
+						double[] eta, int[] hUp, int[] hLow, int[] nM, int[] nR, double[] mmax, double[] rmax, double[] mavg,
+						double[] ravg, double[] d, double[] sH1max, double[] sHtypmax, double[] sHtypavg, double[] job_penalty,
+						double[] r) {
 		super();
 
-		this.gamma = gamma;
+		this.Gamma = gamma;
 		this.typeVm = typeVm;
 		this.provider = provider;
 		this.id_job = id_job;
 		this.think = think;
 		this.cM = cM;
 		this.cR = cR;
-		N = n;
+		this.eta = eta;
 		HUp = hUp;
 		HLow = hLow;
 		NM = nM;
@@ -107,7 +107,7 @@ public class InstanceData {
 	}
 	
 	public int getGamma() {
-		return gamma;
+		return Gamma;
 	}
 
 	public int[] getHLow() {
@@ -160,12 +160,12 @@ public class InstanceData {
 		return Mmax[pos];
 	}
 	
-	public double[] getN() {
-		return N;
+	public double[] getEta() {
+		return eta;
 	}
 
 	public double getN(int pos) {
-		return N[pos];
+		return eta[pos];
 	}
 	
 	public int[] getNM() {
@@ -270,7 +270,7 @@ public class InstanceData {
 	}
 
 	public void setGamma(int gamma) {
-		this.gamma = gamma;
+		this.Gamma = gamma;
 	}
 
 	public void setHLow(int[] hLow) {
@@ -307,8 +307,8 @@ public class InstanceData {
 		Mmax = mmax;
 	}
 
-	public void setN(double[] n) {
-		N = n;
+	public void setEta(double[] eta) {
+		this.eta = eta;
 	}
 
 	public void setNM(int[] nM) {
@@ -354,9 +354,9 @@ public class InstanceData {
 
 	@Override
 	public String toString() {
-		return "App [gamma=" + gamma + ", typeVm=" + typeVm.toString() + ", provider=" + provider + ", id_job="
+		return "App [Gamma=" + Gamma + ", typeVm=" + typeVm.toString() + ", provider=" + provider + ", id_job="
 				+ id_job.toString() + ", think=" + Arrays.toString(think) + ", cM=" + Arrays.toString(cM)
-				+ ", cR=" + Arrays.toString(cR) + ", N=" + Arrays.toString(N) + ", HUp=" + Arrays.toString(HUp)
+				+ ", cR=" + Arrays.toString(cR) + ", eta=" + Arrays.toString(eta) + ", HUp=" + Arrays.toString(HUp)
 				+ ", HLow=" + Arrays.toString(HLow) + ", NM=" + Arrays.toString(NM) + ", NR=" + Arrays.toString(NR)
 				+ ", Mmax=" + Arrays.toString(Mmax) + ", Rmax=" + Arrays.toString(Rmax) + ", Mavg="
 				+ Arrays.toString(Mavg) + ", Ravg=" + Arrays.toString(Ravg) + ", D=" + Arrays.toString(D) + ", SH1max="
