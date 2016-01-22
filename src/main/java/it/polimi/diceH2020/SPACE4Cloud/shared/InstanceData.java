@@ -35,7 +35,7 @@ public class InstanceData {
 	private int[] NM;
 	private int[] NR;
 	private String provider;
-	private double[] R;
+	private int[] R;
 	private double[] Ravg;
 	private double[] Rmax;
 
@@ -52,7 +52,7 @@ public class InstanceData {
 	public InstanceData(int gamma, List<String> typeVm, String provider, List<Integer> id_job, double[] think, int[][] cM, int[][] cR,
 						double[] eta, int[] hUp, int[] hLow, int[] nM, int[] nR, double[] mmax, double[] rmax, double[] mavg,
 						double[] ravg, double[] d, double[] sH1max, double[] sHtypmax, double[] sHtypavg, double[] job_penalty,
-						double[] r) {
+						int[] r) {
 		super();
 
 		this.Gamma = gamma;
@@ -193,11 +193,11 @@ public class InstanceData {
 		this.provider = provider;
 	}
 
-	public double[] getR() {
+	public int[] getR() {
 		return R;
 	}
 
-	public double getR(int pos) {
+	public int getR(int pos) {
 		return R[pos];
 	}
 	
@@ -320,7 +320,7 @@ public class InstanceData {
 	}
 
 
-	public void setR(double[] r) {
+	public void setR(int[] r) {
 		R = r;
 	}
 
