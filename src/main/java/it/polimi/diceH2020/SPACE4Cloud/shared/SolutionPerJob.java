@@ -16,53 +16,39 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared;
 
+import lombok.Data;
+
+@Data
 public class SolutionPerJob {
 
 	private double alfa;
 	private double beta;
-	private boolean feasible;
 	private boolean changed;
+	private double cost;
+	private double deltaBar;
+	private boolean feasible;
 	private int idxVmTypeSelected;
-	private int numberContainers;
+	private int numberContainers;	
 	private int numberUsers;
 	private int numberVM;
+	private int numCores;
 	
-	private double numSpotVM;
-	private double numReservedVM;
 	private double numOnDemandVM;
+	private double numReservedVM;
+	private double numSpotVM;
 	
-	private double cost;
-	
-	public double getNumSpotVM() {
-		return numSpotVM;
-	}
-
-	public void setNumSpotVM(double numSpotVM) {
-		this.numSpotVM = numSpotVM;
-	}
-
-	public double getNumReservedVM() {
-		return numReservedVM;
-	}
-
-	public void setNumReservedVM(double numReservedVM) {
-		this.numReservedVM = numReservedVM;
-	}
-
-	public double getNumOnDemandVM() {
-		return numOnDemandVM;
-	}
-
-	public void setNumOnDemandVM(double numOnDemandVM) {
-		this.numOnDemandVM = numOnDemandVM;
-	}
+	private int pos;
+	private double rhoBar;
+	private double sigmaBar;
 
 	private double simulatedTime;
+
 	private String typeVMselected;
-	private int numCores;
 
-	private int pos;
-
+	private double eta; 
+	private double R; 
+	private double D;
+	
 	public double getAlfa() {
 		return alfa;
 	}
@@ -71,10 +57,12 @@ public class SolutionPerJob {
 		return beta;
 	}
 
+	public double getCost() {
+		return cost;
+	}
 	public int getIdxVmTypeSelected() {
 		return idxVmTypeSelected;
 	}
-
 	public int getNumberContainers() {
 		return numberContainers;
 	}
@@ -87,12 +75,36 @@ public class SolutionPerJob {
 		return numberVM;
 	}
 
+	public int getNumCores() {
+		return numCores;
+	}
+
+	public double getNumOnDemandVM() {
+		return numOnDemandVM;
+	}
+
+	public double getNumReservedVM() {
+		return numReservedVM;
+	}
+
+	public double getNumSpotVM() {
+		return numSpotVM;
+	}
+
+	public int getPos() {
+		return pos;
+	}
+
 	public double getSimulatedTime() {
 		return simulatedTime;
 	}
 
 	public String getTypeVMselected() {
 		return typeVMselected;
+	}
+
+	public boolean isChanged() {
+		return changed;
 	}
 
 	public boolean isFeasible() {
@@ -105,6 +117,14 @@ public class SolutionPerJob {
 
 	public void setBeta(double beta) {
 		this.beta = beta;
+	}
+
+	public void setChanged(boolean changed) {
+		this.changed = changed;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
 	}
 
 	public void setFeasible(boolean feasible) {
@@ -127,44 +147,32 @@ public class SolutionPerJob {
 		this.numberVM = numberVM;
 	}
 
-	public void setSimulatedTime(double simulatedTime) {
-		this.simulatedTime = simulatedTime;
+	public void setNumCores(int numCores) {
+		this.numCores = numCores;
 	}
 
-	public void setTypeVMselected(String typeVMselected) {
-		this.typeVMselected = typeVMselected;
+	public void setNumOnDemandVM(double numOnDemandVM) {
+		this.numOnDemandVM = numOnDemandVM;
 	}
 
-	public int getPos() {
-		return pos;
+	public void setNumReservedVM(double numReservedVM) {
+		this.numReservedVM = numReservedVM;
+	}
+
+	public void setNumSpotVM(double numSpotVM) {
+		this.numSpotVM = numSpotVM;
 	}
 
 	public void setPos(int pos) {
 		this.pos = pos;
 	}
 
-	public int getNumCores() {
-		return numCores;
+	public void setSimulatedTime(double simulatedTime) {
+		this.simulatedTime = simulatedTime;
 	}
 
-	public void setNumCores(int numCores) {
-		this.numCores = numCores;
-	}
-
-	public boolean isChanged() {
-		return changed;
-	}
-
-	public void setChanged(boolean changed) {
-		this.changed = changed;
-	}
-
-	public double getCost() {
-		return cost;
-	}
-
-	public void setCost(double cost) {
-		this.cost = cost;
+	public void setTypeVMselected(String typeVMselected) {
+		this.typeVMselected = typeVMselected;
 	}
 
 }

@@ -20,31 +20,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author ciavotta
  *
  */
+@Data
 public class Solution {
 
 	private List<SolutionPerJob> lstSolutions = new ArrayList<>();
-	
-	private double cost;	
 
-	public double getCost() {
-		return cost;
+	@Getter @Setter(AccessLevel.NONE)  private double cost;
+
+	private IEvaluator evaluator;
+
+	private boolean evaluated;
+
+	public double evaluate() {
+		if (!evaluated && evaluator == null) {
+			this.cost = lstSolutions
+					.parallelStream()
+					.map(s -> evaluator.calculateCostPerJob(s))
+					.reduce(0.0,(acc, cost)->acc+cost);
+			evaluated = true;
+			return cost;
+		}
+		return Double.MIN_VALUE;
+
 	}
 
-	public void setCost(double cost) {
-		this.cost = cost;
-	}
-
-	public List<SolutionPerJob> getLstSolutions() {
-		return lstSolutions;
-	}
-
-	public void setLstSolutions(List<SolutionPerJob> lstSolutions) {
-		this.lstSolutions = lstSolutions;
-	}
 
 	public boolean isFeasible() {
 		return lstSolutions.stream().allMatch(s -> s.isFeasible());
