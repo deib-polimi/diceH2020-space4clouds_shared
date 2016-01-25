@@ -33,19 +33,19 @@ public class SolutionPerJob {
 	private int numberVM;
 	private int numCores;
 
-	private double numOnDemandVM;
-	private double numReservedVM;
-	private double numSpotVM;
+	private int numOnDemandVM;
+	private int numReservedVM;
+	private int numSpotVM;
 
 	private int pos;
 	private double rhoBar;
 	private double sigmaBar;
 
-	private double simulatedTime;
+	private double duration;
 
 	private String typeVMselected;
 
-	private double eta;
+	private Double eta = null;
 	private int R;
 	private double D;
 
@@ -81,24 +81,8 @@ public class SolutionPerJob {
 		return numCores;
 	}
 
-	public double getNumOnDemandVM() {
-		return numOnDemandVM;
-	}
-
-	public double getNumReservedVM() {
-		return numReservedVM;
-	}
-
-	public double getNumSpotVM() {
-		return numSpotVM;
-	}
-
 	public int getPos() {
 		return pos;
-	}
-
-	public double getSimulatedTime() {
-		return simulatedTime;
 	}
 
 	public String getTypeVMselected() {
@@ -147,9 +131,11 @@ public class SolutionPerJob {
 
 	public void setNumberVM(int numberVM) {
 		this.numberVM = numberVM;
-		this.numSpotVM = (int) Math.floor(eta * this.numberVM);
-		this.numReservedVM = (int) Math.min(R, (this.numberVM - numSpotVM));
-		this.numOnDemandVM = Math.max(0, this.numberVM - numSpotVM - numReservedVM);
+		if (eta != null) {
+			this.numSpotVM = (int) Math.floor(eta * this.numberVM);
+			this.numReservedVM = (int) Math.min(R, (this.numberVM - numSpotVM));
+			this.numOnDemandVM = Math.max(0, this.numberVM - numSpotVM - numReservedVM);
+		}
 	}
 
 	public void setNumCores(int numCores) {
@@ -158,10 +144,6 @@ public class SolutionPerJob {
 
 	public void setPos(int pos) {
 		this.pos = pos;
-	}
-
-	public void setSimulatedTime(double simulatedTime) {
-		this.simulatedTime = simulatedTime;
 	}
 
 	public void setTypeVMselected(String typeVMselected) {

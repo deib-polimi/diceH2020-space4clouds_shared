@@ -1,0 +1,282 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "properties": {
+    "lstSolutions": {
+      "id": "lstSolutions",
+      "type": "array",
+      "items": [
+        {
+          "id": "0",
+          "type": "object",
+          "properties": {
+            "alfa": {
+              "id": "alfa",
+              "type": "integer"
+            },
+            "beta": {
+              "id": "beta",
+              "type": "integer"
+            },
+            "changed": {
+              "id": "changed",
+              "type": "boolean"
+            },
+            "cost": {
+              "id": "cost",
+              "type": "integer"
+            },
+            "deltaBar": {
+              "id": "deltaBar",
+              "type": "number"
+            },
+            "feasible": {
+              "id": "feasible",
+              "type": "boolean"
+            },
+            "idxVmTypeSelected": {
+              "id": "idxVmTypeSelected",
+              "type": "integer"
+            },
+            "numberContainers": {
+              "id": "numberContainers",
+              "type": "integer"
+            },
+            "numberUsers": {
+              "id": "numberUsers",
+              "type": "integer"
+            },
+            "numberVM": {
+              "id": "numberVM",
+              "type": "integer"
+            },
+            "numCores": {
+              "id": "numCores",
+              "type": "integer"
+            },
+            "numOnDemandVM": {
+              "id": "numOnDemandVM",
+              "type": "integer"
+            },
+            "numReservedVM": {
+              "id": "numReservedVM",
+              "type": "integer"
+            },
+            "numSpotVM": {
+              "id": "numSpotVM",
+              "type": "integer"
+            },
+            "pos": {
+              "id": "pos",
+              "type": "integer"
+            },
+            "rhoBar": {
+              "id": "rhoBar",
+              "type": "number"
+            },
+            "sigmaBar": {
+              "id": "sigmaBar",
+              "type": "number"
+            },
+            "simulatedTime": {
+              "id": "simulatedTime",
+              "type": "integer"
+            },
+            "typeVMselected": {
+              "id": "typeVMselected",
+              "type": "string"
+            },
+            "eta": {
+              "id": "eta",
+              "type": "number"
+            },
+            "r": {
+              "id": "r",
+              "type": "integer"
+            },
+            "d": {
+              "id": "d",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "alfa",
+            "beta",
+            "changed",
+            "cost",
+            "deltaBar",
+            "feasible",
+            "idxVmTypeSelected",
+            "numberContainers",
+            "numberUsers",
+            "numberVM",
+            "numCores",
+            "numOnDemandVM",
+            "numReservedVM",
+            "numSpotVM",
+            "pos",
+            "rhoBar",
+            "sigmaBar",
+            "simulatedTime",
+            "typeVMselected",
+            "eta",
+            "r",
+            "d"
+          ]
+        },
+        {
+          "id": "1",
+          "type": "object",
+          "properties": {
+            "alfa": {
+              "id": "alfa",
+              "type": "number"
+            },
+            "beta": {
+              "id": "beta",
+              "type": "number"
+            },
+            "changed": {
+              "id": "changed",
+              "type": "boolean"
+            },
+            "cost": {
+              "id": "cost",
+              "type": "integer"
+            },
+            "deltaBar": {
+              "id": "deltaBar",
+              "type": "number"
+            },
+            "feasible": {
+              "id": "feasible",
+              "type": "boolean"
+            },
+            "idxVmTypeSelected": {
+              "id": "idxVmTypeSelected",
+              "type": "integer"
+            },
+            "numberContainers": {
+              "id": "numberContainers",
+              "type": "integer"
+            },
+            "numberUsers": {
+              "id": "numberUsers",
+              "type": "integer"
+            },
+            "numberVM": {
+              "id": "numberVM",
+              "type": "integer"
+            },
+            "numCores": {
+              "id": "numCores",
+              "type": "integer"
+            },
+            "numOnDemandVM": {
+              "id": "numOnDemandVM",
+              "type": "integer"
+            },
+            "numReservedVM": {
+              "id": "numReservedVM",
+              "type": "integer"
+            },
+            "numSpotVM": {
+              "id": "numSpotVM",
+              "type": "integer"
+            },
+            "pos": {
+              "id": "pos",
+              "type": "integer"
+            },
+            "rhoBar": {
+              "id": "rhoBar",
+              "type": "number"
+            },
+            "sigmaBar": {
+              "id": "sigmaBar",
+              "type": "number"
+            },
+            "simulatedTime": {
+              "id": "simulatedTime",
+              "type": "integer"
+            },
+            "typeVMselected": {
+              "id": "typeVMselected",
+              "type": "string"
+            },
+            "eta": {
+              "id": "eta",
+              "type": "number"
+            },
+            "r": {
+              "id": "r",
+              "type": "integer"
+            },
+            "d": {
+              "id": "d",
+              "type": "integer"
+            }
+          }
+        }
+      ],
+      "required": [
+        "0",
+        "1"
+      ]
+    },
+    "cost": {
+      "id": "cost",
+      "type": "integer"
+    },
+    "evaluator": {
+      "id": "evaluator",
+      "type": "null"
+    },
+    "evaluated": {
+      "id": "evaluated",
+      "type": "boolean"
+    },
+    "idxVmTypeSelected": {
+      "id": "idxVmTypeSelected",
+      "type": "array",
+      "items": [
+        {
+          "id": "0",
+          "type": "integer"
+        },
+        {
+          "id": "1",
+          "type": "integer"
+        }
+      ]
+    },
+    "typeVMSelected": {
+      "id": "typeVMSelected",
+      "type": "array",
+      "items": [
+        {
+          "id": "0",
+          "type": "string"
+        },
+        {
+          "id": "1",
+          "type": "string"
+        }
+      ]
+    },
+    "feasible": {
+      "id": "feasible",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "lstSolutions",
+    "cost",
+    "evaluator",
+    "evaluated",
+    "idxVmTypeSelected",
+    "typeVMSelected",
+    "feasible"
+  ]
+}
