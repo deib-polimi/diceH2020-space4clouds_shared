@@ -41,7 +41,7 @@ public class Solution {
 	private boolean evaluated;
 
 	public double evaluate() {
-		if (!evaluated && evaluator == null) {
+		if (!evaluated && evaluator != null) {
 			this.cost = lstSolutions
 					.parallelStream()
 					.map(s -> evaluator.calculateCostPerJob(s))

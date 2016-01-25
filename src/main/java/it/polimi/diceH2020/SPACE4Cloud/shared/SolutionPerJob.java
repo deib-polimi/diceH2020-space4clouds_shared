@@ -28,15 +28,15 @@ public class SolutionPerJob {
 	private double deltaBar;
 	private boolean feasible;
 	private int idxVmTypeSelected;
-	private int numberContainers;	
+	private int numberContainers;
 	private int numberUsers;
 	private int numberVM;
 	private int numCores;
-	
+
 	private double numOnDemandVM;
 	private double numReservedVM;
 	private double numSpotVM;
-	
+
 	private int pos;
 	private double rhoBar;
 	private double sigmaBar;
@@ -45,10 +45,10 @@ public class SolutionPerJob {
 
 	private String typeVMselected;
 
-	private double eta; 
-	private double R; 
+	private double eta;
+	private int R;
 	private double D;
-	
+
 	public double getAlfa() {
 		return alfa;
 	}
@@ -60,9 +60,11 @@ public class SolutionPerJob {
 	public double getCost() {
 		return cost;
 	}
+
 	public int getIdxVmTypeSelected() {
 		return idxVmTypeSelected;
 	}
+
 	public int getNumberContainers() {
 		return numberContainers;
 	}
@@ -145,22 +147,13 @@ public class SolutionPerJob {
 
 	public void setNumberVM(int numberVM) {
 		this.numberVM = numberVM;
+		this.numSpotVM = (int) Math.floor(eta * this.numberVM);
+		this.numReservedVM = (int) Math.min(R, (this.numberVM - numSpotVM));
+		this.numOnDemandVM = Math.max(0, this.numberVM - numSpotVM - numReservedVM);
 	}
 
 	public void setNumCores(int numCores) {
 		this.numCores = numCores;
-	}
-
-	public void setNumOnDemandVM(double numOnDemandVM) {
-		this.numOnDemandVM = numOnDemandVM;
-	}
-
-	public void setNumReservedVM(double numReservedVM) {
-		this.numReservedVM = numReservedVM;
-	}
-
-	public void setNumSpotVM(double numSpotVM) {
-		this.numSpotVM = numSpotVM;
 	}
 
 	public void setPos(int pos) {
