@@ -44,8 +44,8 @@ public class Solution {
 		if (!evaluated && evaluator != null) {
 			this.cost = lstSolutions
 					.parallelStream()
-					.map(s -> evaluator.calculateCostPerJob(s))
-					.reduce(0.0,(acc, cost)->acc+cost);
+					.mapToDouble(s -> evaluator.calculateCostPerJob(s))
+					.sum();
 			evaluated = true;
 			return cost;
 		}
