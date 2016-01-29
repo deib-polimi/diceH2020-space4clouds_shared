@@ -6,7 +6,6 @@ import lombok.Data;
 public class TypeVM {
 	
 	private String id;
-	private String provider;
 	private double eta;
 	private int R;
 
