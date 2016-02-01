@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Data;
 
@@ -21,6 +23,7 @@ public class InstanceData {
 
 	private Map<Integer, List<TypeVM>> mapTypeVMs;
 
+
 	private Map<TypeVMJobClassKey, Profile> mapProfiles;
 
 	public InstanceData(int gamma, String provider, List<JobClass> classes, Map<Integer, List<TypeVM>> types,
@@ -32,6 +35,14 @@ public class InstanceData {
 		mapProfiles = profiles;
 	}
 
+	public Map<TypeVMJobClassKey, Profile> getMapProfile(){
+		return mapProfiles;
+	}
+	
+	public void setMapProfile(Map<TypeVMJobClassKey, Profile> mapProfile){
+		this.mapProfiles = mapProfile;
+	}
+	
 	public InstanceData() {
 
 	}
@@ -54,6 +65,17 @@ public class InstanceData {
 
 	public List<Double> getD(List<TypeVMJobClassKey> lstTypeJobClass) {
 		return getFromMapper(lstTypeJobClass, opt -> opt.get().getD());
+	}
+	
+	public Double getD(TypeVMJobClassKey key) {
+		List<TypeVMJobClassKey> lst = new ArrayList<>();
+		lst.add(key);
+		return getD(lst).get(0);
+
+	}
+	public Double getD(JobClass jobClass){
+		TypeVMJobClassKey key = new TypeVMJobClassKey(jobClass.getId(), "");
+		return this.getD(key);
 	}
 
 	public List<Integer> getNM(List<TypeVMJobClassKey> lstTypeJobClass) {
@@ -117,12 +139,26 @@ public class InstanceData {
 	}
 
 	public List<Integer> getR(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return getFromMapperTypeVM(lstTypeJobClass, opt->opt.get().getR());
+		return getFromMapperTypeVM(lstTypeJobClass, opt -> opt.get().getR());
 	}
 
-	public List<Double> getEta(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return getFromMapperTypeVM(lstTypeJobClass, opt->opt.get().getEta());
+	public Integer getR(TypeVMJobClassKey key){
+		List<TypeVMJobClassKey> lst = new ArrayList<>();
+		lst.add(key);
+		return getR(lst).get(0);
 	}
+	
+	
+	public List<Double> getEta(List<TypeVMJobClassKey> lstTypeJobClass) {
+		return getFromMapperTypeVM(lstTypeJobClass, opt -> opt.get().getEta());
+	}
+	
+	public Double getEta(TypeVMJobClassKey key){
+		List<TypeVMJobClassKey> lst = new ArrayList<>();
+		lst.add(key);
+		return getEta(lst).get(0);
+	}
+	
 
 	private <R> List<R> getFromMapperTypeVM(List<TypeVMJobClassKey> lstTypeJobClass,
 			Function<Optional<TypeVM>, ? extends R> mapper) {
@@ -133,8 +169,10 @@ public class InstanceData {
 	}
 
 	public List<TypeVM> getLstTypeVM(JobClass jobClass) {
-		return mapTypeVMs.get(jobClass.getId());		
+		return mapTypeVMs.get(jobClass.getId());
 	}
+	
+	
 
 	public Profile getProfile(JobClass jobClass, TypeVM tVM) {
 		return mapProfiles.get(new TypeVMJobClassKey(jobClass.getId(), tVM.getId()));

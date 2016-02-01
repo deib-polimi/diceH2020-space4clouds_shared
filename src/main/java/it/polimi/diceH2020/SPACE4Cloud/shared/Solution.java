@@ -67,12 +67,9 @@ public class Solution {
 		lstSolutions.add(solPerJob);
 	}
 
-	public List<String> getTypeVMSelected() {
+	public List<TypeVM> getTypeVMSelected() {
 		return lstSolutions.stream().map(SolutionPerJob::getTypeVMselected).collect(Collectors.toList());
 	}
 
-	public List<Integer> getIdxVmTypeSelected() {
-		return lstSolutions.stream().map(SolutionPerJob::getIdxVmTypeSelected).collect(Collectors.toList());
-	}
 
 }
