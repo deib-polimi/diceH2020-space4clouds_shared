@@ -14,12 +14,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package it.polimi.diceH2020.SPACE4Cloud.shared;
+package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;

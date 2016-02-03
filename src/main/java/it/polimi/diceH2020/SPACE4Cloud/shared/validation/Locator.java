@@ -14,10 +14,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package it.polimi.diceH2020.SPACE4Cloud.shared;
+package it.polimi.diceH2020.SPACE4Cloud.shared.validation;
 
-public interface IEvaluator {
+import java.net.URL;
 
-	double calculateCostPerJob(SolutionPerJob solPerJob);
+public interface Locator {
+	URL resolve(URL url);
 
 }

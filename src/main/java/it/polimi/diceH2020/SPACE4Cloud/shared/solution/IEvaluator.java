@@ -14,47 +14,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package it.polimi.diceH2020.SPACE4Cloud.shared;
+package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
-public class Settings {
+public interface IEvaluator {
 
-	public Settings(double accuracy, int cycles) {
-		super();
-		this.accuracy = accuracy;
-		this.cycles = cycles;
-	}
-
-	private double accuracy;
-	private int cycles;
-
-	/**
-	 * @return the accuracy
-	 */
-	public double getAccuracy() {
-		return accuracy;
-	}
-
-	/**
-	 * @param accuracy
-	 *            the accuracy to set
-	 */
-	public void setAccuracy(double accuracy) {
-		this.accuracy = accuracy;
-	}
-
-	/**
-	 * @return the cycles
-	 */
-	public int getCycles() {
-		return cycles;
-	}
-
-	/**
-	 * @param cycles
-	 *            the cycles to set
-	 */
-	public void setCycles(int cycles) {
-		this.cycles = cycles;
-	}
+	double calculateCostPerJob(SolutionPerJob solPerJob);
 
 }

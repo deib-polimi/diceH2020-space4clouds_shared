@@ -1,19 +1,18 @@
 package it.polimi.diceH2020.SPACE4Cloud.shared;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.net.ssl.ExtendedSSLSession;
 
 import org.junit.Test;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+
+import it.polimi.diceH2020.SPACE4Cloud.shared.generators.InstanceDataGenerator;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.InstanceData;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVMJobClassKey;
 
 public class Test2 {
 
@@ -26,26 +25,14 @@ public class Test2 {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			SimpleModule module = new SimpleModule();
-			module.addSerializer(TypeVMJobClassKey.class, new KeySerializer());
+			module.addKeyDeserializer(TypeVMJobClassKey.class, TypeVMJobClassKey.getDeserializer() );
 			mapper.registerModule(module);
-			TypeVMJobClassKey key = new TypeVMJobClassKey(10, "prova");			
 			
-			String serialized = mapper.writeValueAsString(key);
+			String serialized = mapper.writeValueAsString(data);
 			System.out.println(serialized);
-			module.addDeserializer(TypeVMJobClassKey.class, new KeyDeserializer());
-			mapper.registerModule(module);
-
-			TypeVMJobClassKey myData = mapper.readValue(serialized, TypeVMJobClassKey.class);
-			assertTrue(myData.getJob() ==10);
 			
-			Map<TypeVMJobClassKey, String> map = new HashMap<>();
-			map.put( key, "ciao");
-			serialized = mapper.writeValueAsString(map);
-			System.out.println(serialized);
-			Map<TypeVMJobClassKey, String> myData2 = mapper.readValue(serialized, Map.class );
-			String p = myData2.get(key);
-			System.out.println(p);
-			assertTrue(p == "ciao" );
+			InstanceData data2 = mapper.readValue(serialized, InstanceData.class);
+			System.out.println(data2.toString());
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

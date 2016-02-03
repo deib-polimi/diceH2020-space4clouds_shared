@@ -1,9 +1,15 @@
-package it.polimi.diceH2020.SPACE4Cloud.shared;
+package it.polimi.diceH2020.SPACE4Cloud.shared.generators;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.InstanceData;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.JobClass;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.Profile;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVMJobClassKey;
 
 public class InstanceDataGenerator {
 
@@ -41,13 +47,21 @@ public class InstanceDataGenerator {
 		Profile p4 = buildP2();
 
 		Map<TypeVMJobClassKey, Profile> map = new HashMap<TypeVMJobClassKey, Profile>();
-		TypeVMJobClassKey key1 = new TypeVMJobClassKey(lstClasses.get(0).getId(), lstTypeVMs.get(0).getId());
+		TypeVMJobClassKey key1 = new TypeVMJobClassKey();
+		key1.setJob(lstClasses.get(0).getId());
+		key1.setTypeVM(lstTypeVMs.get(0).getId());
 		map.put(key1, p1);
-		TypeVMJobClassKey key2 = new TypeVMJobClassKey(lstClasses.get(0).getId(), lstTypeVMs.get(1).getId());
+		TypeVMJobClassKey key2 = new TypeVMJobClassKey();
+		key2.setJob(lstClasses.get(0).getId());
+		key2.setTypeVM(lstTypeVMs.get(1).getId());
 		map.put(key2, p2);
-		TypeVMJobClassKey key3 = new TypeVMJobClassKey(lstClasses.get(1).getId(), lstTypeVMs.get(0).getId());
+		TypeVMJobClassKey key3 = new TypeVMJobClassKey();
+		key3.setJob(lstClasses.get(1).getId());
+		key3.setTypeVM(lstTypeVMs.get(0).getId());
 		map.put(key3, p3);
-		TypeVMJobClassKey key4 = new TypeVMJobClassKey(lstClasses.get(1).getId(), lstTypeVMs.get(1).getId());
+		TypeVMJobClassKey key4 = new TypeVMJobClassKey();
+		key4.setJob(lstClasses.get(1).getId());
+		key4.setTypeVM(lstTypeVMs.get(0).getId());
 		map.put(key4, p4);
 
 		return new InstanceData(240,"Amazon", lstClasses, mapTypes, map);

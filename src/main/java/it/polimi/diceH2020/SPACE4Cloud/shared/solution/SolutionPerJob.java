@@ -14,40 +14,35 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package it.polimi.diceH2020.SPACE4Cloud.shared;
+package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.JobClass;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.Profile;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
 import lombok.Data;
 
 @Data
 public class SolutionPerJob {
 
-	private Profile profile;
-	
-	private double alfa;
+	private double alfa;	
 	private double beta;
 	private boolean changed;
 	private double cost;
 	private double deltaBar;
+	private double duration;
 	private boolean feasible;
-//	private int idxVmTypeSelected;
+	private JobClass job;
 	private int numberContainers;
 	private int numberUsers;
 	private int numberVM;
 	private int numCores;
-
 	private int numOnDemandVM;
 	private int numReservedVM;
 	private int numSpotVM;
-
 	private int pos;
+	private Profile profile;
 	private double rhoBar;
 	private double sigmaBar;
-
-	private JobClass job;
-	
-	
-	private double duration;
-
 	private TypeVM typeVMselected;
 
 

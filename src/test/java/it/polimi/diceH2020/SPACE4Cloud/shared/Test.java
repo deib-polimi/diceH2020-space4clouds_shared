@@ -22,6 +22,9 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
 
+import it.polimi.diceH2020.SPACE4Cloud.shared.validation.DataChecker;
+import it.polimi.diceH2020.SPACE4Cloud.shared.validation.StandaloneLocator;
+
 public class Test {
 
 	@org.junit.Test

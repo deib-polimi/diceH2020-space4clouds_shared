@@ -1,4 +1,4 @@
-package it.polimi.diceH2020.SPACE4Cloud.shared;
+package it.polimi.diceH2020.SPACE4Cloud.shared.inputData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Data;
 
@@ -23,13 +23,14 @@ public class InstanceData {
 
 	private Map<Integer, List<TypeVM>> mapTypeVMs;
 
-
+	@JsonDeserialize(keyUsing = TypeVMJobClassDeserializer.class, keyAs = TypeVMJobClassKey.class, contentAs = Profile.class)
+//	@JsonDeserialize(keyAs = TypeVMJobClassKey.class, contentAs = Profile.class)
 	private Map<TypeVMJobClassKey, Profile> mapProfiles;
 
 	public InstanceData(int gamma, String provider, List<JobClass> classes, Map<Integer, List<TypeVM>> types,
 			Map<TypeVMJobClassKey, Profile> profiles) {
-		this.gamma = gamma;
-		this.provider = provider;
+		this.setGamma(gamma);
+		this.setProvider(provider);
 		lstClass = classes;
 		mapTypeVMs = types;
 		mapProfiles = profiles;
@@ -47,6 +48,7 @@ public class InstanceData {
 
 	}
 
+	@JsonIgnore
 	public int getNumberJobs() {
 		return lstClass.size();
 	}
@@ -74,7 +76,9 @@ public class InstanceData {
 
 	}
 	public Double getD(JobClass jobClass){
-		TypeVMJobClassKey key = new TypeVMJobClassKey(jobClass.getId(), "");
+		TypeVMJobClassKey key = new TypeVMJobClassKey();
+		key.setJob(jobClass.getId());
+		key.setTypeVM("");
 		return this.getD(key);
 	}
 
@@ -175,6 +179,25 @@ public class InstanceData {
 	
 
 	public Profile getProfile(JobClass jobClass, TypeVM tVM) {
-		return mapProfiles.get(new TypeVMJobClassKey(jobClass.getId(), tVM.getId()));
+		TypeVMJobClassKey key = new TypeVMJobClassKey();
+		key.setJob(jobClass.getId());
+		key.setTypeVM(tVM.getId());
+		return mapProfiles.get(key);
+	}
+
+	public int getGamma() {
+		return gamma;
+	}
+
+	public void setGamma(int gamma) {
+		this.gamma = gamma;
+	}
+
+	public String getProvider() {
+		return provider;
+	}
+
+	public void setProvider(String provider) {
+		this.provider = provider;
 	}
 }
