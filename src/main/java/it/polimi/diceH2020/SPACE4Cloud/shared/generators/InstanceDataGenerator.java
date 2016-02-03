@@ -13,26 +13,6 @@ import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVMJobClassKey;
 
 public class InstanceDataGenerator {
 
-	// public InstanceDataOld applDataTest() {
-	// int Gamma = 240; // num cores cluster
-	// int[][] cM = { { 4, 8 }, { 4, 8 } };
-	// int[][] cR = { { 4, 8 }, { 4, 8 } };
-	// int[] nM = { 65, 65 };
-	// int[] nR = { 15, 5 };
-	// double[] mmax = { 9.128, 17.541 }; // maximum time to execute a single
-	// // map
-	// double[] mavg = { 4.103, 8.235 };
-	// double[] rmax = { 0.592, 0.499 };
-	// double[] ravg = { 0.327, 0.297 };
-	// double[] sH1max = { 0, 0 };
-	// double[] sHtypmax = { 7.942, 20.141 };
-	// double[] sHtypavg = { 4.831, 14.721 };
-	//
-	// return new InstanceDataOld(Gamma, typeVm, provider, id_job, think, cM,
-	// cR, eta, hUp, hLow, nM, nR, mmax, rmax,
-	// mavg, ravg, d, sH1max, sHtypmax, sHtypavg, job_penalty, r);
-	// }
-
 	public static InstanceData build() {
 		List<JobClass> lstClasses = lstJobClasses();
 		List<TypeVM> lstTypeVMs = lstTypeVMs();
@@ -41,10 +21,10 @@ public class InstanceDataGenerator {
 				mapTypes.put(job.getId(), lstTypeVMs);
 		}
 
-		Profile p1 = buildP1();
-		Profile p2 = buildP2();
-		Profile p3 = buildP1();
-		Profile p4 = buildP2();
+		Profile p1 = ProfileGenerator.build(1);
+		Profile p2 = ProfileGenerator.build(2);
+		Profile p3 = ProfileGenerator.build(1);
+		Profile p4 = ProfileGenerator.build(2);
 
 		Map<TypeVMJobClassKey, Profile> map = new HashMap<TypeVMJobClassKey, Profile>();
 		TypeVMJobClassKey key1 = new TypeVMJobClassKey();
@@ -61,44 +41,13 @@ public class InstanceDataGenerator {
 		map.put(key3, p3);
 		TypeVMJobClassKey key4 = new TypeVMJobClassKey();
 		key4.setJob(lstClasses.get(1).getId());
-		key4.setTypeVM(lstTypeVMs.get(0).getId());
+		key4.setTypeVM(lstTypeVMs.get(1).getId());
 		map.put(key4, p4);
 
 		return new InstanceData(240,"Amazon", lstClasses, mapTypes, map);
 
 	}
 
-	private static Profile buildP1() {
-		Profile p = new Profile();
-		p.setCM(4);
-		p.setCR(4);
-		p.setMavg(4.103);
-		p.setMmax(9.128);
-		p.setNM(65);
-		p.setNR(15);
-		p.setRavg(0.327);
-		p.setRmax(0.592);
-		p.setSH1max(0);
-		p.setSHtypmax(7.942);
-		p.setSHtypavg(4.831);
-		return p;
-	}
-
-	private static Profile buildP2() {
-		Profile p = new Profile();
-		p.setCM(8);
-		p.setCR(8);
-		p.setMavg(8.235);
-		p.setMmax(17.541);
-		p.setNM(65);
-		p.setNR(5);
-		p.setRavg(0.297);
-		p.setRmax(0.499);
-		p.setSH1max(0);
-		p.setSHtypmax(20.141);
-		p.setSHtypavg(14.721);
-		return p;
-	}
 
 	private static List<JobClass> lstJobClasses() {
 		List<JobClass> lst = new ArrayList<>();
@@ -123,15 +72,9 @@ public class InstanceDataGenerator {
 
 	private static List<TypeVM> lstTypeVMs() {
 		List<TypeVM> lst = new ArrayList<>();
-		TypeVM t1 = new TypeVM();
-		t1.setId("T1");
-		t1.setEta(0.1);
-		t1.setR(30);
+		TypeVM t1 = TypeVMGenerator.build(1);
 		lst.add(t1);
-		TypeVM t2 = new TypeVM();
-		t2.setId("T2");
-		t2.setEta(0.3);
-		t2.setR(25);
+		TypeVM t2 = TypeVMGenerator.build(2);
 		lst.add(t2);
 		return lst;
 

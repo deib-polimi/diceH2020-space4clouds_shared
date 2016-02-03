@@ -24,7 +24,8 @@ public class InstanceData {
 	private Map<Integer, List<TypeVM>> mapTypeVMs;
 
 	@JsonDeserialize(keyUsing = TypeVMJobClassDeserializer.class, keyAs = TypeVMJobClassKey.class, contentAs = Profile.class)
-//	@JsonDeserialize(keyAs = TypeVMJobClassKey.class, contentAs = Profile.class)
+	// @JsonDeserialize(keyAs = TypeVMJobClassKey.class, contentAs =
+	// Profile.class)
 	private Map<TypeVMJobClassKey, Profile> mapProfiles;
 
 	public InstanceData(int gamma, String provider, List<JobClass> classes, Map<Integer, List<TypeVM>> types,
@@ -36,14 +37,14 @@ public class InstanceData {
 		mapProfiles = profiles;
 	}
 
-	public Map<TypeVMJobClassKey, Profile> getMapProfile(){
+	public Map<TypeVMJobClassKey, Profile> getMapProfile() {
 		return mapProfiles;
 	}
-	
-	public void setMapProfile(Map<TypeVMJobClassKey, Profile> mapProfile){
+
+	public void setMapProfile(Map<TypeVMJobClassKey, Profile> mapProfile) {
 		this.mapProfiles = mapProfile;
 	}
-	
+
 	public InstanceData() {
 
 	}
@@ -65,50 +66,50 @@ public class InstanceData {
 		return lstClass.stream().map(JobClass::getJob_penalty).collect(Collectors.toList());
 	}
 
-	public List<Double> getD(List<TypeVMJobClassKey> lstTypeJobClass) {
+	public List<Double> getD(List<JobClass> lstTypeJobClass) {
 		return getFromMapper(lstTypeJobClass, opt -> opt.get().getD());
 	}
-	
-	public Double getD(TypeVMJobClassKey key) {
-		List<TypeVMJobClassKey> lst = new ArrayList<>();
-		lst.add(key);
+
+	public Double getD(JobClass jobClass) {
+		List<JobClass> lst = new ArrayList<>();
+		lst.add(jobClass);
 		return getD(lst).get(0);
-
-	}
-	public Double getD(JobClass jobClass){
-		TypeVMJobClassKey key = new TypeVMJobClassKey();
-		key.setJob(jobClass.getId());
-		key.setTypeVM("");
-		return this.getD(key);
 	}
 
-	public List<Integer> getNM(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getNM()).collect(Collectors.toList());
+	public List<Integer> getNM(List<TypeVMJobClassKey> lstKeys) {
+		return lstKeys.stream().map(k -> mapProfiles.get(k).getNM()).collect(Collectors.toList());
 	}
 
-	public List<Integer> getNR(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getNR()).collect(Collectors.toList());
+	public List<Integer> getNR(List<TypeVMJobClassKey> lstKeys) {
+		return lstKeys.stream().map(k -> mapProfiles.get(k).getNR()).collect(Collectors.toList());
 	}
 
-	public List<Integer> getHUp(List<TypeVMJobClassKey> lstTypeJobClass) {
+	public List<Integer> getHUp(List<JobClass> lstTypeJobClass) {
 		return getFromMapper(lstTypeJobClass, opt -> opt.get().getHup());
 	}
 
-	public List<Integer> getHLow(List<TypeVMJobClassKey> lstTypeJobClass) {
+	public List<Integer> getHLow(List<JobClass> lstTypeJobClass) {
 		return getFromMapper(lstTypeJobClass, opt -> opt.get().getHlow());
 	}
 
-	private Stream<Integer> getStreamJobIDs(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(TypeVMJobClassKey::getJob);
+	public List<JobClass> getListJobs(List<TypeVMJobClassKey> lstTypeJobClass) {
+		List<JobClass> lst = new ArrayList<>();
+		for (JobClass job : lstClass)
+			for (TypeVMJobClassKey key : lstTypeJobClass)
+				if (job.getId() == key.getJob())
+					lst.add(job);
+
+		return lst;
+
 	}
 
 	private Stream<Optional<JobClass>> getStreamJobClasses(Stream<Integer> strmJobID) {
 		return strmJobID.map(j -> lstClass.stream().filter(job -> job.getId() == j).findAny());
 	}
-
-	private <R> List<R> getFromMapper(List<TypeVMJobClassKey> lstTypeJobClass,
+	
+	private <R> List<R> getFromMapper(List<JobClass> lstTypeJobClass,
 			Function<Optional<JobClass>, ? extends R> mapper) {
-		Stream<Integer> strmJobID = getStreamJobIDs(lstTypeJobClass);
+		Stream<Integer> strmJobID = lstTypeJobClass.stream().map(JobClass::getId);
 		Stream<Optional<JobClass>> strmJob = getStreamJobClasses(strmJobID);
 		Stream<Optional<JobClass>> strm = strmJob.filter(Optional::isPresent);
 		return strm.map(mapper).collect(Collectors.toList());
@@ -146,23 +147,21 @@ public class InstanceData {
 		return getFromMapperTypeVM(lstTypeJobClass, opt -> opt.get().getR());
 	}
 
-	public Integer getR(TypeVMJobClassKey key){
+	public Integer getR(TypeVMJobClassKey key) {
 		List<TypeVMJobClassKey> lst = new ArrayList<>();
 		lst.add(key);
 		return getR(lst).get(0);
 	}
-	
-	
+
 	public List<Double> getEta(List<TypeVMJobClassKey> lstTypeJobClass) {
 		return getFromMapperTypeVM(lstTypeJobClass, opt -> opt.get().getEta());
 	}
-	
-	public Double getEta(TypeVMJobClassKey key){
+
+	public Double getEta(TypeVMJobClassKey key) {
 		List<TypeVMJobClassKey> lst = new ArrayList<>();
 		lst.add(key);
 		return getEta(lst).get(0);
 	}
-	
 
 	private <R> List<R> getFromMapperTypeVM(List<TypeVMJobClassKey> lstTypeJobClass,
 			Function<Optional<TypeVM>, ? extends R> mapper) {
@@ -175,8 +174,6 @@ public class InstanceData {
 	public List<TypeVM> getLstTypeVM(JobClass jobClass) {
 		return mapTypeVMs.get(jobClass.getId());
 	}
-	
-	
 
 	public Profile getProfile(JobClass jobClass, TypeVM tVM) {
 		TypeVMJobClassKey key = new TypeVMJobClassKey();
