@@ -19,7 +19,7 @@ package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -42,11 +42,12 @@ public class Solution {
 
 	@Getter
 	@Setter(AccessLevel.NONE)
-	private double cost;
+	private Double cost;
 
+	@JsonIgnore
 	private IEvaluator evaluator;
 
-	private boolean evaluated;
+	private Boolean evaluated = new Boolean(false);
 
 	public double evaluate() {
 		if (!evaluated && evaluator != null) {
@@ -57,9 +58,9 @@ public class Solution {
 		return Double.MIN_VALUE;
 
 	}
-
-	public boolean isFeasible() {
-		return lstSolutions.stream().allMatch(s -> s.isFeasible());
+	@JsonIgnore
+	public Boolean isFeasible() {
+		return lstSolutions.stream().allMatch(s -> s.getFeasible());
 	}
 
 	public SolutionPerJob getSolutionPerJob(int pos) {
@@ -73,34 +74,34 @@ public class Solution {
 
 	@JsonIgnore
 	public List<TypeVM> getTypeVMSelected() {
-		return lstSolutions.stream().map(SolutionPerJob::getTypeVMselected).collect(Collectors.toList());
+		return lstSolutions.stream().map(SolutionPerJob::getTypeVMselected).collect(toList());
 	}
 
 	@JsonIgnore
 	public List<TypeVMJobClassKey> getPairsTypeVMJobClass() {
 		return lstSolutions.stream()
 				.map(sol -> new TypeVMJobClassKey(sol.getJob().getId(), sol.getTypeVMselected().getId()))
-				.collect(Collectors.toList());
+				.collect(toList());
 	}
 
 	@JsonIgnore
 	public List<Integer> getLstNumberCores() {
-		return getByFunctional(sol->sol.getNumCores());
+		return getByFunctional(sol -> sol.getNumCores());
 	}
 
 	@JsonIgnore
 	public List<Profile> getLstProfiles() {
-		return getByFunctional(sol->sol.getProfile());
+		return getByFunctional(sol -> sol.getProfile());
 	}
 
 	@JsonIgnore
 	public List<Integer> getListCM() {
-		return getByFunctional(sol->sol.getProfile().getCM());
+		return getByFunctional(sol -> sol.getProfile().getCM());
 	}
 
 	@JsonIgnore
 	public List<Integer> getListCR() {
-		return getByFunctional(sol->sol.getProfile().getCR());
+		return getByFunctional(sol -> sol.getProfile().getCR());
 	}
 
 	@JsonIgnore
@@ -110,7 +111,7 @@ public class Solution {
 
 	@JsonIgnore
 	public List<Double> getListRhobar() {
-		return lstSolutions.stream().map(SolutionPerJob::getRhoBar).collect(Collectors.toList());
+		return lstSolutions.stream().map(SolutionPerJob::getRhoBar).collect(toList());
 	}
 
 	@JsonIgnore
@@ -120,8 +121,7 @@ public class Solution {
 
 	@JsonIgnore
 	private <R> List<R> getByFunctional(Function<SolutionPerJob, R> mapper) {
-		return lstSolutions.stream().map(mapper).collect(Collectors.toList());
+		return lstSolutions.stream().map(mapper).collect(toList());
 	}
-
 
 }

@@ -16,6 +16,8 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.JobClass;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.Profile;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
@@ -24,28 +26,28 @@ import lombok.Data;
 @Data
 public class SolutionPerJob {
 
-	private double alfa;	
-	private double beta;
-	private boolean changed;
-	private double cost;
-	private double deltaBar;
-	private double duration;
-	private boolean feasible;
+	private Double alfa;	
+	private Double beta;
+	private Boolean changed;
+	private Double cost;
+	private Double deltaBar;
+	private Double duration;
+	private Boolean feasible;
 	private JobClass job;
-	private int numberContainers;
-	private int numberUsers;
-	private int numberVM;
-	private int numCores;
-	private int numOnDemandVM;
-	private int numReservedVM;
-	private int numSpotVM;
-	private int pos;
+	private Integer numberContainers;
+	private Integer numberUsers;
+	private Integer numberVM;
+	private Integer numCores;
+	private Integer numOnDemandVM;
+	private Integer numReservedVM;
+	private Integer numSpotVM;
+	private Integer pos;
 	private Profile profile;
-	private double rhoBar;
-	private double sigmaBar;
+	private Double rhoBar;
+	private Double sigmaBar;
 	private TypeVM typeVMselected;
 
-
+	@JsonIgnore
 	public void setNumberVM(int numberVM) {
 		this.numberVM = numberVM;
 		if (typeVMselected.getEta() >= 0) {
