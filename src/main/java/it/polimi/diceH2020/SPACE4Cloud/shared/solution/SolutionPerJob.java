@@ -16,8 +16,6 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.JobClass;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.Profile;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
@@ -47,14 +45,22 @@ public class SolutionPerJob {
 	private Double sigmaBar;
 	private TypeVM typeVMselected;
 
-	@JsonIgnore
-	public void setNumberVM(int numberVM) {
+	//@JsonIgnore
+	public SolutionPerJob setNumberVM(int numberVM) {
+		if (this.numberVM == null || this.numberVM.intValue() != numberVM) {
+			changed = true;
+		}
 		this.numberVM = numberVM;
-		if (typeVMselected.getEta() >= 0) {
+		if (typeVMselected!=null && typeVMselected.getEta() >= 0) {
 			this.numSpotVM = (int) Math.floor(typeVMselected.getEta() * this.numberVM);
 			this.numReservedVM = (int) Math.min(typeVMselected.getR(), (this.numberVM - numSpotVM));
 			this.numOnDemandVM = Math.max(0, this.numberVM - numSpotVM - numReservedVM);
 		}
+		//update num of containers
+		if (this.numCores != null) {
+			this.numberContainers = numberVM*numCores;
+		}
+		return this;
 	}
 
 

@@ -19,5 +19,7 @@ package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 public interface IEvaluator {
 
 	double calculateCostPerJob(SolutionPerJob solPerJob);
+	
+	boolean evaluateFeasibility(SolutionPerJob solPerJob);
 
 }

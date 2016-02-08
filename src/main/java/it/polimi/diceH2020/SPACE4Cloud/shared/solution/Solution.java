@@ -44,6 +44,8 @@ public class Solution {
 	@Setter(AccessLevel.NONE)
 	private Double cost;
 
+	private Integer gamma;
+
 	@JsonIgnore
 	private IEvaluator evaluator;
 
@@ -52,15 +54,21 @@ public class Solution {
 	public double evaluate() {
 		if (!evaluated && evaluator != null) {
 			this.cost = lstSolutions.parallelStream().mapToDouble(s -> evaluator.calculateCostPerJob(s)).sum();
+			lstSolutions.parallelStream().map(s -> evaluator.evaluateFeasibility(s));
 			evaluated = true;
 			return cost;
 		}
 		return Double.MIN_VALUE;
 
 	}
+
 	@JsonIgnore
 	public Boolean isFeasible() {
-		return lstSolutions.stream().allMatch(s -> s.getFeasible());
+		if (evaluated) {
+			boolean condition = lstSolutions.stream().mapToInt(s->s.getNumberVM()).sum() < this.gamma;
+			return lstSolutions.stream().allMatch(s -> s.getFeasible()) && condition;			
+		}
+		else return Boolean.FALSE;
 	}
 
 	public SolutionPerJob getSolutionPerJob(int pos) {
@@ -79,9 +87,7 @@ public class Solution {
 
 	@JsonIgnore
 	public List<TypeVMJobClassKey> getPairsTypeVMJobClass() {
-		return lstSolutions.stream()
-				.map(sol -> new TypeVMJobClassKey(sol.getJob().getId(), sol.getTypeVMselected().getId()))
-				.collect(toList());
+		return lstSolutions.stream().map(sol -> new TypeVMJobClassKey(sol.getJob().getId(), sol.getTypeVMselected().getId())).collect(toList());
 	}
 
 	@JsonIgnore
