@@ -1,3 +1,6 @@
 /target/
-.idea/
-SPACE4Cloud-shared.iml
+/.idea/
+/SPACE4Cloud-shared.iml
+/.classpath
+/.project
+/.settings/
