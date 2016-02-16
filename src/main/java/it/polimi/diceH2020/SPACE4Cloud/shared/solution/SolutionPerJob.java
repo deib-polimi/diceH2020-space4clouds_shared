@@ -24,6 +24,7 @@ import lombok.Data;
 @Data
 public class SolutionPerJob {
 
+	private String parentID;
 	private Double alfa;	
 	private Double beta;
 	private Boolean changed;

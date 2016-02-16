@@ -40,6 +40,14 @@ public class Solution {
 
 	private List<SolutionPerJob> lstSolutions = new ArrayList<>();
 
+	private String id;
+	
+	public Solution(){}
+	
+	public Solution(String id){
+		this.id = id;
+	}
+	
 	@Getter
 	@Setter(AccessLevel.NONE)
 	private Double cost;
@@ -78,6 +86,7 @@ public class Solution {
 	public void setSolutionPerJob(SolutionPerJob solPerJob) {
 		solPerJob.setPos(lstSolutions.size());
 		lstSolutions.add(solPerJob);
+		solPerJob.setParentID(this.id);
 	}
 
 	@JsonIgnore
