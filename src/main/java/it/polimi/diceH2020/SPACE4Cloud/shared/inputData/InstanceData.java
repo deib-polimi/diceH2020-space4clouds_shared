@@ -16,6 +16,9 @@ import lombok.Data;
 
 @Data
 public class InstanceData {
+	
+	private String id;
+	
 	private int gamma;
 
 	private String provider;
@@ -27,8 +30,9 @@ public class InstanceData {
 	@JsonDeserialize(keyUsing = TypeVMJobClassDeserializer.class, keyAs = TypeVMJobClassKey.class, contentAs = Profile.class)
 	private Map<TypeVMJobClassKey, Profile> mapProfiles;
 
-	public InstanceData(int gamma, String provider, List<JobClass> classes, Map<Integer, List<TypeVM>> types,
+	public InstanceData(String id, int gamma, String provider, List<JobClass> classes, Map<Integer, List<TypeVM>> types,
 			Map<TypeVMJobClassKey, Profile> profiles) {
+		this.id = id;
 		this.setGamma(gamma);
 		this.setProvider(provider);
 		lstClass = classes;
