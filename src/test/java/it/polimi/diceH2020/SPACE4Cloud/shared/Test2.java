@@ -25,6 +25,8 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import it.polimi.diceH2020.SPACE4Cloud.shared.generators.InstanceDataGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generators.SolutionGenerator;
@@ -45,6 +47,7 @@ public class Test2 {
 			SimpleModule module = new SimpleModule();
 			module.addKeyDeserializer(TypeVMJobClassKey.class, TypeVMJobClassKey.getDeserializer() );
 			mapper.registerModule(module);
+			mapper.registerModule(new JavaTimeModule());
 			
 			String serialized = mapper.writeValueAsString(data);
 			System.out.println(serialized);

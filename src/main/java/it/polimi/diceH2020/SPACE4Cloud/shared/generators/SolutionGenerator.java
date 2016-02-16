@@ -16,6 +16,11 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.generators;
 
+import java.time.Duration;
+import java.time.Instant;
+
+import it.polimi.diceH2020.SPACE4Cloud.shared.solution.Phase;
+import it.polimi.diceH2020.SPACE4Cloud.shared.solution.PhaseID;
 import it.polimi.diceH2020.SPACE4Cloud.shared.solution.Solution;
 import it.polimi.diceH2020.SPACE4Cloud.shared.solution.SolutionPerJob;
 
@@ -31,6 +36,17 @@ public class SolutionGenerator {
 
 		sol.getLstSolutions().add(sol2);
 		sol.setEvaluated(true);
+		Instant first = Instant.now();
+		Phase p1 = new Phase();
+		p1.setId(PhaseID.INIT_SOLUTION);
+		Instant second = Instant.now();
+		p1.setDuration(Duration.between(first, second).toMillis());
+		sol.getLstPhases().add(p1);
+		Phase p2 = new Phase();
+		p2.setId(PhaseID.OPTIMIZATION);		
+		Instant third = Instant.now();
+		p2.setDuration(Duration.between(first, third).toMillis());
+		sol.getLstPhases().add(p2);
 		return sol;
 	}
 }

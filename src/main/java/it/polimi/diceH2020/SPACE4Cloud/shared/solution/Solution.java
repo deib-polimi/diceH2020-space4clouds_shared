@@ -39,6 +39,7 @@ import lombok.Setter;
 public class Solution {
 
 	private List<SolutionPerJob> lstSolutions = new ArrayList<>();
+	private List<Phase> lstPhases = new ArrayList<>();
 
 	private String id;
 	
