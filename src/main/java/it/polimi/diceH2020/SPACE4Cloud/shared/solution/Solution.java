@@ -18,6 +18,7 @@ package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
@@ -30,6 +31,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author ciavotta
@@ -138,6 +140,39 @@ public class Solution {
 	@JsonIgnore
 	private <R> List<R> getByFunctional(Function<SolutionPerJob, R> mapper) {
 		return lstSolutions.stream().map(mapper).collect(toList());
+	}
+	
+	@JsonIgnore
+	public void addPhase(Phase ph){
+		this.lstPhases.add(ph);
+	}
+	
+	@JsonIgnore
+	public Long getOptimizationTime(){
+		return lstPhases.stream().mapToLong(Phase::getDuration).sum();
+	}
+	
+	public String toStringReduced(){
+		StringJoiner sj = new StringJoiner("\t", "", "");
+		sj.add(id)
+		.add("solFeas="+this.isFeasible().toString())
+		.add("cost="+this.getCost());
+		sj.add("totalDuration="+this.getOptimizationTime().toString());
+		lstPhases.forEach(ph->{
+			sj.add("phase="+ph.getId().toString())
+			.add("duration="+ph.getDuration());			
+		});
+		lstSolutions.forEach(s->{
+			sj.add("jobClass="+s.getJob().getId())
+			.add("typeVM="+s.getTypeVMselected().getId())
+			.add("numVM="+s.getNumberVM())
+			.add("numReserved="+s.getNumReservedVM())
+			.add("numOnDemand="+s.getNumOnDemandVM())
+			.add("numSpot="+s.getNumSpotVM())
+			.add("jobFeas="+s.getFeasible().toString());
+		});
+		String desiredString = sj.toString();
+		return desiredString;
 	}
 
 }

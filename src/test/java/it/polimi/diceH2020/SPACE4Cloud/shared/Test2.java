@@ -77,6 +77,7 @@ public class Test2 {
 			System.out.println(serialized);
 			Solution data2 = mapper.readValue(serialized, Solution.class);
 			System.out.println(data2.toString());
+			System.out.println(data2.toStringReduced());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
