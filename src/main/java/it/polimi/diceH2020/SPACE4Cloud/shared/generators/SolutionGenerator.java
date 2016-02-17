@@ -28,7 +28,7 @@ public class SolutionGenerator {
 
 	public static Solution build() {
 		Solution sol = new Solution();
-		sol.setGamma(240);
+		sol.setGamma(240);	
 		SolutionPerJob sol1 = SolutionPerJobGenerator.build(1);
 		sol.getLstSolutions().add(sol1);
 

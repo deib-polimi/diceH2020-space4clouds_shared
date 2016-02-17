@@ -61,6 +61,7 @@ public class SolutionPerJob {
 		if (this.numCores != null) {
 			this.numberContainers = numberVM*numCores;
 		}
+		
 		return this;
 	}
 

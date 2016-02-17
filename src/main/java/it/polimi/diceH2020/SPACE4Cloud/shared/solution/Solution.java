@@ -57,7 +57,7 @@ public class Solution {
 
 	@Getter
 	@Setter(AccessLevel.NONE)
-	private Double cost;
+	private Double cost = -1.0;
 
 	private Integer gamma;
 
@@ -70,7 +70,7 @@ public class Solution {
 		if (!evaluated && evaluator != null) {
 
 			BigDecimal c = BigDecimal.valueOf(lstSolutions.parallelStream().mapToDouble(s -> evaluator.calculateCostPerJob(s)).sum()).setScale(2, RoundingMode.HALF_EVEN);
-			lstSolutions.parallelStream().map(s -> evaluator.evaluateFeasibility(s));
+			lstSolutions.parallelStream().forEach(s -> evaluator.evaluateFeasibility(s));
 			evaluated = true;
 			System.out.println("---->" + c.toString());
 			this.cost = Double.parseDouble(c.toString());
@@ -160,7 +160,8 @@ public class Solution {
 
 	public String toStringReduced() {
 		StringJoiner sj = new StringJoiner("\t", "", "");
-		sj.add(id).add("solFeas=" + this.isFeasible().toString()).add("cost=" + BigDecimal.valueOf(this.getCost()).toString());
+		sj.add("solID="+id).add("solFeas=" + this.isFeasible().toString())
+		.add("cost=" + BigDecimal.valueOf(this.getCost()).toString());
 		sj.add("totalDuration=" + this.getOptimizationTime().toString());
 		lstPhases.forEach(ph -> {
 			sj.add("phase=" + ph.getId().toString()).add("duration=" + ph.getDuration());
