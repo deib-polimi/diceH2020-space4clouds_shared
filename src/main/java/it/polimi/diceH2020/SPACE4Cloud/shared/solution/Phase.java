@@ -16,10 +16,6 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
-import java.time.Duration;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,18 +27,9 @@ public class Phase {
 	private PhaseID id;
 	private Long duration;
 
-	@JsonIgnore
-	public void setDuration(Duration duration) {
-		this.duration = duration.toMillis();
-	}
-
 	public void setDuration(Long duration) {
 		this.duration = duration;
 	}
 
-	public Phase(PhaseID id, Duration duration) {
-		this.id = id;
-		this.duration = duration.toMillis();
-	}
 
 }

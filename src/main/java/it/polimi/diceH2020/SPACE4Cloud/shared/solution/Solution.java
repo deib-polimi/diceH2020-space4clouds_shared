@@ -22,6 +22,9 @@ import java.util.StringJoiner;
 import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.Profile;
@@ -44,13 +47,14 @@ public class Solution {
 	private List<Phase> lstPhases = new ArrayList<>();
 
 	private String id;
-	
-	public Solution(){}
-	
-	public Solution(String id){
+
+	public Solution() {
+	}
+
+	public Solution(String id) {
 		this.id = id;
 	}
-	
+
 	@Getter
 	@Setter(AccessLevel.NONE)
 	private Double cost;
@@ -64,9 +68,12 @@ public class Solution {
 
 	public double evaluate() {
 		if (!evaluated && evaluator != null) {
-			this.cost = lstSolutions.parallelStream().mapToDouble(s -> evaluator.calculateCostPerJob(s)).sum();
+
+			BigDecimal c = BigDecimal.valueOf(lstSolutions.parallelStream().mapToDouble(s -> evaluator.calculateCostPerJob(s)).sum()).setScale(2, RoundingMode.HALF_EVEN);
 			lstSolutions.parallelStream().map(s -> evaluator.evaluateFeasibility(s));
 			evaluated = true;
+			System.out.println("---->" + c.toString());
+			this.cost = Double.parseDouble(c.toString());
 			return cost;
 		}
 		return Double.MIN_VALUE;
@@ -76,10 +83,9 @@ public class Solution {
 	@JsonIgnore
 	public Boolean isFeasible() {
 		if (evaluated) {
-			boolean condition = lstSolutions.stream().mapToInt(s->s.getNumberVM()).sum() < this.gamma;
-			return lstSolutions.stream().allMatch(s -> s.getFeasible()) && condition;			
-		}
-		else return Boolean.FALSE;
+			boolean condition = lstSolutions.stream().mapToInt(s -> s.getNumberVM()).sum() < this.gamma;
+			return lstSolutions.stream().allMatch(s -> s.getFeasible()) && condition;
+		} else return Boolean.FALSE;
 	}
 
 	public SolutionPerJob getSolutionPerJob(int pos) {
@@ -141,35 +147,27 @@ public class Solution {
 	private <R> List<R> getByFunctional(Function<SolutionPerJob, R> mapper) {
 		return lstSolutions.stream().map(mapper).collect(toList());
 	}
-	
+
 	@JsonIgnore
-	public void addPhase(Phase ph){
+	public void addPhase(Phase ph) {
 		this.lstPhases.add(ph);
 	}
-	
+
 	@JsonIgnore
-	public Long getOptimizationTime(){
+	public Long getOptimizationTime() {
 		return lstPhases.stream().mapToLong(Phase::getDuration).sum();
 	}
-	
-	public String toStringReduced(){
+
+	public String toStringReduced() {
 		StringJoiner sj = new StringJoiner("\t", "", "");
-		sj.add(id)
-		.add("solFeas="+this.isFeasible().toString())
-		.add("cost="+this.getCost());
-		sj.add("totalDuration="+this.getOptimizationTime().toString());
-		lstPhases.forEach(ph->{
-			sj.add("phase="+ph.getId().toString())
-			.add("duration="+ph.getDuration());			
+		sj.add(id).add("solFeas=" + this.isFeasible().toString()).add("cost=" + BigDecimal.valueOf(this.getCost()).toString());
+		sj.add("totalDuration=" + this.getOptimizationTime().toString());
+		lstPhases.forEach(ph -> {
+			sj.add("phase=" + ph.getId().toString()).add("duration=" + ph.getDuration());
 		});
-		lstSolutions.forEach(s->{
-			sj.add("jobClass="+s.getJob().getId())
-			.add("typeVM="+s.getTypeVMselected().getId())
-			.add("numVM="+s.getNumberVM())
-			.add("numReserved="+s.getNumReservedVM())
-			.add("numOnDemand="+s.getNumOnDemandVM())
-			.add("numSpot="+s.getNumSpotVM())
-			.add("jobFeas="+s.getFeasible().toString());
+		lstSolutions.forEach(s -> {
+			sj.add("jobClass=" + s.getJob().getId()).add("typeVM=" + s.getTypeVMselected().getId()).add("numVM=" + s.getNumberVM()).add("numReserved=" + s.getNumReservedVM()).add("numOnDemand=" + s.getNumOnDemandVM())
+					.add("numSpot=" + s.getNumSpotVM()).add("jobFeas=" + s.getFeasible().toString());
 		});
 		String desiredString = sj.toString();
 		return desiredString;

@@ -47,7 +47,7 @@ public class Test2 {
 			SimpleModule module = new SimpleModule();
 			module.addKeyDeserializer(TypeVMJobClassKey.class, TypeVMJobClassKey.getDeserializer() );
 			mapper.registerModule(module);
-			mapper.registerModule(new JavaTimeModule());
+			//mapper.registerModule(new JavaTimeModule());
 			
 			String serialized = mapper.writeValueAsString(data);
 			System.out.println(serialized);
