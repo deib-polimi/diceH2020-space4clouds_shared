@@ -16,14 +16,14 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.function.Function;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -34,7 +34,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * @author ciavotta
@@ -72,7 +71,6 @@ public class Solution {
 			BigDecimal c = BigDecimal.valueOf(lstSolutions.parallelStream().mapToDouble(s -> evaluator.calculateCostPerJob(s)).sum()).setScale(2, RoundingMode.HALF_EVEN);
 			lstSolutions.parallelStream().forEach(s -> evaluator.evaluateFeasibility(s));
 			evaluated = true;
-			System.out.println("---->" + c.toString());
 			this.cost = Double.parseDouble(c.toString());
 			return cost;
 		}
