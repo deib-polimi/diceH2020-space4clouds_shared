@@ -32,9 +32,9 @@ import lombok.Data;
 
 @Data
 public class InstanceData {
-	
+
 	private String id;
-	
+
 	private int gamma;
 
 	private String provider;
@@ -56,17 +56,7 @@ public class InstanceData {
 		mapProfiles = profiles;
 	}
 
-	public Map<TypeVMJobClassKey, Profile> getMapProfile() {
-		return mapProfiles;
-	}
-
-	public void setMapProfile(Map<TypeVMJobClassKey, Profile> mapProfile) {
-		this.mapProfiles = mapProfile;
-	}
-
-	public InstanceData() {
-
-	}
+	public InstanceData() {}
 
 	@JsonIgnore
 	public int getNumberJobs() {
