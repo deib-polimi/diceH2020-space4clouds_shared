@@ -68,7 +68,7 @@ public class Solution {
 	public double evaluate() {
 		if (!evaluated && evaluator != null) {
 
-			BigDecimal c = BigDecimal.valueOf(lstSolutions.parallelStream().mapToDouble(s -> evaluator.calculateCostPerJob(s)).sum()).setScale(4ß, RoundingMode.HALF_EVEN);
+			BigDecimal c = BigDecimal.valueOf(lstSolutions.parallelStream().mapToDouble(s -> evaluator.calculateCostPerJob(s)).sum()).setScale(4, RoundingMode.HALF_EVEN);
 			lstSolutions.parallelStream().forEach(s -> evaluator.evaluateFeasibility(s));
 			evaluated = true;
 			this.cost = Double.parseDouble(c.toString());
