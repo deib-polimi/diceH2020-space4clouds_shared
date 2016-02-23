@@ -25,10 +25,10 @@ import lombok.Data;
 public class SolutionPerJob {
 
 	private String parentID;
-	private Double alfa;	
-	private Double beta;
+	private Double alfa = 0.0;	
+	private Double beta = 0.0;
 	private Boolean changed;
-	private Double cost;
+	private Double cost = Double.MAX_VALUE;
 	private Double deltaBar;
 	private Double duration;
 	private Boolean feasible;
