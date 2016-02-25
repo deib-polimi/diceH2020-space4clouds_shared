@@ -158,8 +158,7 @@ public class Solution {
 
 	public String toStringReduced() {
 		StringJoiner sj = new StringJoiner("\t", "", "");
-		sj.add("solID="+id).add("solFeas=" + this.isFeasible().toString())
-		.add("cost=" + BigDecimal.valueOf(this.getCost()).toString());
+		sj.add("solID=" + id).add("solFeas=" + this.isFeasible().toString()).add("cost=" + BigDecimal.valueOf(this.getCost()).toString());
 		sj.add("totalDuration=" + this.getOptimizationTime().toString());
 		lstPhases.forEach(ph -> {
 			sj.add("phase=" + ph.getId().toString()).add("duration=" + ph.getDuration());
@@ -172,13 +171,7 @@ public class Solution {
 		return desiredString;
 	}
 
-	public boolean validate(){
-		if (this.id != null && this.id != "" && this.gamma != null && this.gamma >0) {
-			
-			return true;
-		}
-		else return false;
+	public boolean validate() {
+		return (this.id != null && this.id != "" && this.gamma != null && this.gamma > 0 && lstSolutions.stream().map(s -> s.validate()).allMatch(r -> r == true));
 	}
-	
-	
 }
