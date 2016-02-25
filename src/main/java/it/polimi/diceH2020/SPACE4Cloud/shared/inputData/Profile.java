@@ -33,5 +33,7 @@ public class Profile {
 	private int NM;
 	private int NR;
 
-	
+	public boolean validate() {
+		return (cM > 0 && cR > 0 && Mavg > 0 && Mmax > 0 && Ravg > 0 && Rmax > 0 && SH1max >= 0 && SHtypavg >= 0 && SHtypmax >= 0 && NM > 0 && NR > 0);
+	}
 }

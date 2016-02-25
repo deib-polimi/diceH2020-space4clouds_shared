@@ -28,4 +28,7 @@ public class JobClass {
 	private double job_penalty;
 	private double think;
 
+	public boolean validate(){
+		return (D > 0 && Hup >= Hlow && Hup >0 && job_penalty >=0 && think>=0);		
+	}
 }

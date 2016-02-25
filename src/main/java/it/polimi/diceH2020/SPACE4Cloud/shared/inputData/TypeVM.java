@@ -25,4 +25,7 @@ public class TypeVM {
 	private double eta;
 	private int R;
 
+	public boolean validate(){
+		return (id != null && id != "" && eta>=0 && R>=0);
+	}
 }

@@ -25,11 +25,11 @@ import lombok.Data;
 public class SolutionPerJob {
 
 	private String parentID;
-	private Double alfa = 0.0;	
+	private Double alfa = 0.0;
 	private Double beta = 0.0;
 	private Boolean changed;
 	private Double cost = Double.MAX_VALUE;
-	private Double deltaBar;
+	private Double deltaBar = 0.0;
 	private Double duration;
 	private Boolean feasible;
 	private JobClass job;
@@ -42,28 +42,28 @@ public class SolutionPerJob {
 	private Integer numSpotVM;
 	private Integer pos;
 	private Profile profile;
-	private Double rhoBar;
-	private Double sigmaBar;
+	private Double rhoBar = 0.0;
+	private Double sigmaBar = 0.0;
 	private TypeVM typeVMselected;
 
-	//@JsonIgnore
 	public SolutionPerJob setNumberVM(int numberVM) {
 		if (this.numberVM == null || this.numberVM.intValue() != numberVM) {
 			changed = true;
 		}
 		this.numberVM = numberVM;
-		if (typeVMselected!=null && typeVMselected.getEta() >= 0) {
+		if (typeVMselected != null && typeVMselected.getEta() >= 0) {
 			this.numSpotVM = (int) Math.floor(typeVMselected.getEta() * this.numberVM);
 			this.numReservedVM = (int) Math.min(typeVMselected.getR(), (this.numberVM - numSpotVM));
 			this.numOnDemandVM = Math.max(0, this.numberVM - numSpotVM - numReservedVM);
 		}
-		//update num of containers
+		// update num of containers
 		if (this.numCores != null) {
-			this.numberContainers = numberVM*numCores;
+			this.numberContainers = numberVM * numCores;
 		}
-		
 		return this;
 	}
 
-
+	public boolean validate() {
+		return (job.validate() && typeVMselected.validate() && profile.validate());
+	}
 }

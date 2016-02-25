@@ -172,4 +172,13 @@ public class Solution {
 		return desiredString;
 	}
 
+	public boolean validate(){
+		if (this.id != null && this.id != "" && this.gamma != null && this.gamma >0) {
+			
+			return true;
+		}
+		else return false;
+	}
+	
+	
 }
