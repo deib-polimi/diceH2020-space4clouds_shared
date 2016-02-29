@@ -16,13 +16,6 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.settings;
 
-import lombok.Data;
-
-@Data
-public class Settings {
-
-	private Double accuracy = 30d;
-	private Integer simDuration = 180;
-	private SolverType solver = SolverType.QNsolver;
-
+public enum SolverType {
+	SPNsolver, QNsolver;
 }
