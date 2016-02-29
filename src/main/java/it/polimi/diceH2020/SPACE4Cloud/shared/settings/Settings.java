@@ -23,6 +23,6 @@ public class Settings {
 
 	private Double accuracy = 30d;
 	private Integer simDuration = 180;
-	private SolverType solver = SolverType.QNsolver;
+	private SolverType solver = SolverType.QNSolver;
 
 }
