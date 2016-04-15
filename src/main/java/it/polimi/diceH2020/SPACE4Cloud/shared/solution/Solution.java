@@ -16,24 +16,17 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
-import static java.util.stream.Collectors.toList;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVMJobClassKey;
+import lombok.Data;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.Function;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.Profile;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVMJobClassKey;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import static java.util.stream.Collectors.toList;
 
 /**
  * @author ciavotta
@@ -54,8 +47,6 @@ public class Solution {
 		this.id = id;
 	}
 
-	@Getter
-	@Setter(AccessLevel.NONE)
 	private Double cost = -1.0;
 
 	private Integer gamma;
@@ -63,26 +54,13 @@ public class Solution {
 	@JsonIgnore
 	private IEvaluator evaluator;
 
-	private Boolean evaluated = new Boolean(false);
-
-	public double evaluate() {
-		if (!evaluated && evaluator != null) {
-
-			BigDecimal c = BigDecimal.valueOf(lstSolutions.parallelStream().mapToDouble(s -> evaluator.calculateCostPerJob(s)).sum()).setScale(4, RoundingMode.HALF_EVEN);
-			lstSolutions.parallelStream().forEach(s -> evaluator.evaluateFeasibility(s));
-			evaluated = true;
-			this.cost = Double.parseDouble(c.toString());
-			return cost;
-		}
-		return Double.MIN_VALUE;
-
-	}
+	private Boolean evaluated = false;
 
 	@JsonIgnore
-	public Boolean isFeasible() {
+	private Boolean isFeasible() {
 		if (evaluated) {
-			boolean condition = lstSolutions.stream().mapToInt(s -> s.getNumberVM()).sum() < this.gamma;
-			return lstSolutions.stream().allMatch(s -> s.getFeasible()) && condition;
+			boolean condition = lstSolutions.stream().mapToInt(SolutionPerJob::getNumberVM).sum() < this.gamma;
+			return lstSolutions.stream().allMatch(SolutionPerJob::getFeasible) && condition;
 		} else return Boolean.FALSE;
 	}
 
@@ -97,23 +75,13 @@ public class Solution {
 	}
 
 	@JsonIgnore
-	public List<TypeVM> getTypeVMSelected() {
-		return lstSolutions.stream().map(SolutionPerJob::getTypeVMselected).collect(toList());
-	}
-
-	@JsonIgnore
 	public List<TypeVMJobClassKey> getPairsTypeVMJobClass() {
 		return lstSolutions.stream().map(sol -> new TypeVMJobClassKey(sol.getJob().getId(), sol.getTypeVMselected().getId())).collect(toList());
 	}
 
 	@JsonIgnore
 	public List<Integer> getLstNumberCores() {
-		return getByFunctional(sol -> sol.getNumCores());
-	}
-
-	@JsonIgnore
-	public List<Profile> getLstProfiles() {
-		return getByFunctional(sol -> sol.getProfile());
+		return getByFunctional(SolutionPerJob::getNumCores);
 	}
 
 	@JsonIgnore
@@ -160,18 +128,21 @@ public class Solution {
 		StringJoiner sj = new StringJoiner("\t", "", "");
 		sj.add("solID=" + id).add("solFeas=" + this.isFeasible().toString()).add("cost=" + BigDecimal.valueOf(this.getCost()).toString());
 		sj.add("totalDuration=" + this.getOptimizationTime().toString());
-		lstPhases.forEach(ph -> {
-			sj.add("phase=" + ph.getId().toString()).add("duration=" + ph.getDuration());
-		});
-		lstSolutions.forEach(s -> {
-			sj.add("jobClass=" + s.getJob().getId()).add("typeVM=" + s.getTypeVMselected().getId()).add("numVM=" + s.getNumberVM()).add("numReserved=" + s.getNumReservedVM()).add("numOnDemand=" + s.getNumOnDemandVM())
-					.add("numSpot=" + s.getNumSpotVM()).add("jobFeas=" + s.getFeasible().toString());
-		});
-		String desiredString = sj.toString();
-		return desiredString;
+		lstPhases.forEach(ph ->
+				sj.add("phase=" + ph.getId().toString()).add("duration=" + ph.getDuration())
+		);
+		lstSolutions.forEach(s ->
+				sj.add("jobClass=" + s.getJob().getId()).add("typeVM=" + s.getTypeVMselected().getId())
+						.add("numVM=" + s.getNumberVM()).add("numReserved=" + s.getNumReservedVM())
+						.add("numOnDemand=" + s.getNumOnDemandVM())
+						.add("numSpot=" + s.getNumSpotVM()).add("jobFeas=" + s.getFeasible().toString())
+		);
+		return sj.toString();
 	}
 
 	public boolean validate() {
-		return (this.id != null && this.id != "" && this.gamma != null && this.gamma > 0 && lstSolutions.stream().map(s -> s.validate()).allMatch(r -> r == true));
+		return (this.id != null && ! this.id.equals("") && this.gamma != null && this.gamma > 0 &&
+				lstSolutions.stream().map(SolutionPerJob::validate).allMatch(r -> r));
 	}
+
 }
