@@ -25,11 +25,12 @@
 	OF ANY KIND, either express or implied. See the License for the specific 
 	language governing permissions and limitations under the License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>it.polimi.diceH2020</groupId>
 	<artifactId>SPACE4Cloud-shared</artifactId>
-	<version>0.2.2-SNAPSHOT</version>
+	<version>0.2.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>SPACE4Cloud shared </name>
@@ -53,6 +54,7 @@
 		<maven_compiler_target>1.8</maven_compiler_target>
 		<slf4j.version>1.7.12</slf4j.version>
 	</properties>
+
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -119,7 +121,6 @@
 			<version>2.6.1</version>
 		</dependency>
 	</dependencies>
-
 
 	<distributionManagement>
 		<repository>
