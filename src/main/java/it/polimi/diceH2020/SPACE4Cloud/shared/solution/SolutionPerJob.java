@@ -45,6 +45,7 @@ public class SolutionPerJob {
 	private Double rhoBar = 0.0;
 	private Double sigmaBar = 0.0;
 	private TypeVM typeVMselected;
+	private Boolean error = false;
 
 	public SolutionPerJob setNumberVM(int numberVM) {
 		if (this.numberVM == null || this.numberVM.intValue() != numberVM) {
