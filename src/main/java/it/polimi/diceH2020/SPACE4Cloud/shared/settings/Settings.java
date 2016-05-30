@@ -20,10 +20,8 @@ import lombok.Data;
 
 @Data
 public class Settings {
-
-	private Double accuracy = 30d;
-	private Integer simDuration = 180;
-	private SolverType solver = SolverType.QNSolver;
-	private CloudType cloud = CloudType.Public;
-
+	private Double accuracy = null;
+	private Integer simDuration = null;
+	private SolverType solver = null;
+	private CloudType cloud = null;
 }
