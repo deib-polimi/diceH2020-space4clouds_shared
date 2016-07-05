@@ -21,14 +21,16 @@ import lombok.Data;
 @Data
 public class JobClass {
 
-	private int id;
+	private String id;
 	private double D;
 	private int Hup;
 	private int Hlow;
 	private double job_penalty;
 	private double think;
+	private double m;
+	private double v;
 
 	public boolean validate(){
-		return (D > 0 && Hup >= Hlow && Hup >0 && job_penalty >=0 && think>=0);		
+		return (D > 0 && Hup >= Hlow && Hup >0 && job_penalty >=0 && think>=0 && m > 0 && v > 0);		
 	}
 }

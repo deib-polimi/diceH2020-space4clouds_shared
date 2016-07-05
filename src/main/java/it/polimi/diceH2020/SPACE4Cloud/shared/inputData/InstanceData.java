@@ -41,12 +41,12 @@ public class InstanceData {
 
 	private List<JobClass> lstClass;
 
-	private Map<Integer, List<TypeVM>> mapTypeVMs;
+	private Map<String, List<TypeVM>> mapTypeVMs;
 
 	@JsonDeserialize(keyUsing = TypeVMJobClassDeserializer.class, keyAs = TypeVMJobClassKey.class, contentAs = Profile.class)
 	private Map<TypeVMJobClassKey, Profile> mapProfiles;
 
-	public InstanceData(String id, int gamma, String provider, List<JobClass> classes, Map<Integer, List<TypeVM>> types,
+	public InstanceData(String id, int gamma, String provider, List<JobClass> classes, Map<String, List<TypeVM>> types,
 			Map<TypeVMJobClassKey, Profile> profiles) {
 		this.id = id;
 		this.setGamma(gamma);
@@ -67,7 +67,7 @@ public class InstanceData {
 		return mapTypeVMs.get(idClass).size();
 	}
 
-	public List<Integer> getId_job() {
+	public List<String> getId_job() {
 		return lstClass.stream().map(JobClass::getId).collect(toList());
 	}
 
@@ -105,20 +105,20 @@ public class InstanceData {
 		List<JobClass> lst = new ArrayList<>();
 		for (JobClass job : lstClass)
 			for (TypeVMJobClassKey key : lstTypeJobClass)
-				if (job.getId() == key.getJob())
+				if (job.getId().equals(key.getJob()))
 					lst.add(job);
 
 		return lst;
 
 	}
 
-	private Stream<Optional<JobClass>> getStreamJobClasses(Stream<Integer> strmJobID) {
-		return strmJobID.map(j -> lstClass.stream().filter(job -> job.getId() == j).findAny());
+	private Stream<Optional<JobClass>> getStreamJobClasses(Stream<String> strmJobID) {
+		return strmJobID.map(j -> lstClass.stream().filter(job -> job.getId().equals(j)).findAny());
 	}
 
 	private <R> List<R> getFromMapper(List<JobClass> lstTypeJobClass,
 			Function<Optional<JobClass>, ? extends R> mapper) {
-		Stream<Integer> strmJobID = lstTypeJobClass.stream().map(JobClass::getId);
+		Stream<String> strmJobID = lstTypeJobClass.stream().map(JobClass::getId);
 		Stream<Optional<JobClass>> strmJob = getStreamJobClasses(strmJobID);
 		Stream<Optional<JobClass>> strm = strmJob.filter(Optional::isPresent);
 		return strm.map(mapper).collect(toList());

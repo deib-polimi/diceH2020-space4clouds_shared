@@ -25,24 +25,24 @@ import lombok.Data;
 @Data
 public class TypeVMJobClassKey {
 
-	private int job;
+	private String job;
 	private String typeVM;
 
 	public TypeVMJobClassKey() {
 	}
 
 	@JsonCreator
-	public TypeVMJobClassKey(@JsonProperty("job") int job, @JsonProperty("typeVM") String typeVM) {
+	public TypeVMJobClassKey(@JsonProperty("job") String job, @JsonProperty("typeVM") String typeVM) {
 		this.setJob(job);
 		this.setTypeVM(typeVM);
 	}
 
-	public int getJob() {
+	public String getJob() {
 		return job;
 	}
 
-	public void setJob(int job) {
-		this.job = job;
+	public void setJob(String string) {
+		this.job = string;
 	}
 
 	public String getTypeVM() {

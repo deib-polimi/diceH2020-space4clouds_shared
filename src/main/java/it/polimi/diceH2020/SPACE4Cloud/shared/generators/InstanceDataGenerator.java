@@ -32,7 +32,7 @@ public class InstanceDataGenerator {
 	public static InstanceData build() {
 		List<JobClass> lstClasses = lstJobClasses();
 		List<TypeVM> lstTypeVMs = lstTypeVMs();
-		Map<Integer,List<TypeVM>> mapTypes = new HashMap<Integer, List<TypeVM>>();
+		Map<String,List<TypeVM>> mapTypes = new HashMap<String, List<TypeVM>>();
 		for (JobClass job : lstClasses) {
 				mapTypes.put(job.getId(), lstTypeVMs);
 		}
@@ -61,9 +61,7 @@ public class InstanceDataGenerator {
 		map.put(key4, p4);
 
 		return new InstanceData("id_1",240,"Amazon", lstClasses, mapTypes, map);
-
 	}
-
 
 	private static List<JobClass> lstJobClasses() {
 		List<JobClass> lst = new ArrayList<>();
@@ -71,7 +69,7 @@ public class InstanceDataGenerator {
 		class1.setD(180);
 		class1.setHlow(5);
 		class1.setHup(10);
-		class1.setId(1);
+		class1.setId("1");
 		class1.setJob_penalty(25.0);
 		class1.setThink(10);
 		lst.add(class1);
@@ -79,7 +77,7 @@ public class InstanceDataGenerator {
 		class2.setD(150);
 		class2.setHlow(5);
 		class2.setHup(10);
-		class2.setId(2);
+		class2.setId("2");
 		class2.setJob_penalty(14.99);
 		class2.setThink(5);
 		lst.add(class2);

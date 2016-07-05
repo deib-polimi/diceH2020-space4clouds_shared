@@ -23,7 +23,7 @@ public class JobClassGenerator {
 		JobClass job = new JobClass();
 		switch (num) {
 		case 1:
-			job.setId(1);
+			job.setId("1");
 			job.setD(180.0);
 			job.setHlow(5);
 			job.setHup(10);
@@ -31,7 +31,7 @@ public class JobClassGenerator {
 			job.setJob_penalty(25.0);
 			break;
 		case 2:
-			job.setId(2);
+			job.setId("2");
 			job.setD(150.0);
 			job.setHlow(5);
 			job.setHup(10);
