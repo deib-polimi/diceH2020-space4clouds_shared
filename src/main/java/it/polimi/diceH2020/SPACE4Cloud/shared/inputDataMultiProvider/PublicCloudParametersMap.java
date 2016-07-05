@@ -74,7 +74,6 @@ public class PublicCloudParametersMap {
 		for (Map.Entry<String, Map<String, Map<String, PublicCloudParameters>>> jobIDs : mapPublicCloudParameters.entrySet()) {
 		    for (Map.Entry<String, Map<String, PublicCloudParameters>> providers : jobIDs.getValue().entrySet()) {
 		    	providerAndTypes.put(providers.getKey(), providers.getValue().keySet());
-		    	System.out.println(providers.getKey()+" "+providers.getValue().keySet());
 		    }
 		}
 		return providerAndTypes;
@@ -101,7 +100,6 @@ public class PublicCloudParametersMap {
 		
 		for (Map.Entry<String, Map<String, Map<String, PublicCloudParameters>>> jobIDs : mapPublicCloudParameters.entrySet()) {
 	    	idAndTypes.put(jobIDs.getKey(), jobIDs.getValue().get(provider));
-	    	System.out.println(jobIDs.getKey() + " " + jobIDs.getValue().get(provider));
 		}
 		
 		return idAndTypes;

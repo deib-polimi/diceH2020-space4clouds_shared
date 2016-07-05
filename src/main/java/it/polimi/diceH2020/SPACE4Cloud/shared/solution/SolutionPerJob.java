@@ -36,7 +36,7 @@ public class SolutionPerJob {
 	private Integer numberContainers;
 	private Integer numberUsers;
 	private Integer numberVM;
-	private Integer numCores;
+	private Double numCores;
 	private Integer numOnDemandVM;
 	private Integer numReservedVM;
 	private Integer numSpotVM;
@@ -59,7 +59,7 @@ public class SolutionPerJob {
 		}
 		// update num of containers
 		if (this.numCores != null) {
-			this.numberContainers = numberVM * numCores;
+			this.numberContainers = (int) (numberVM * numCores);
 		}
 		return this;
 	}

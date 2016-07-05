@@ -59,11 +59,15 @@ public class InstanceDataMultiProvider {
 	
 	@JsonIgnore
 	private boolean validateJobIDs(){
+		
+		if(mapJobProfiles.getMapJobProfile() == null || mapClassParameters.getMapClassParameters() == null ) return false;
+		
 		if(!mapClassParameters.getJobIDs().equals(mapJobProfiles.getJobIDs())) return false;//mandatory parameters
 		
 		if(mapPublicCloudParameters.getMapPublicCloudParameters() != null){
 			if(!mapJobProfiles.getJobIDs().equals(mapPublicCloudParameters.getJobIDs())) return false;
 		}
+		
 		return true;
 	}
 	

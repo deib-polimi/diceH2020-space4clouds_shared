@@ -26,44 +26,57 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PrivateCloudParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.VMConfigurationsMap;
+import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenarios;
 import lombok.Data;
 
 @Data
 public class InstanceData {
-
 	private String id;
 
 	private int gamma;
 
 	private String provider;
+	
+	private Optional<Scenarios> scenario;
 
 	private List<JobClass> lstClass;
-
-	private Map<String, List<TypeVM>> mapTypeVMs;
-	
-	private PrivateCloudParameters privateCloudParameters;
-	
-	@JsonUnwrapped private VMConfigurationsMap mapVMConfigurations;
 
 	@JsonDeserialize(keyUsing = TypeVMJobClassDeserializer.class, keyAs = TypeVMJobClassKey.class, contentAs = Profile.class)
 	private Map<TypeVMJobClassKey, Profile> mapProfiles;
 
+	@JsonInclude(Include.NON_EMPTY)
+	private Optional<PrivateCloudParameters> privateCloudParameters;
+	
+	@JsonInclude(Include.NON_EMPTY)
+	private Optional<VMConfigurationsMap> mapVMConfigurations; //@JsonUnwrapped 
+	
+	@JsonInclude(Include.NON_EMPTY)
+	private Optional<Map<String, List<TypeVM>>> mapTypeVMs;
+	
+	//only for tests
 	public InstanceData(String id, int gamma, String provider, List<JobClass> classes, Map<String, List<TypeVM>> types,
 			Map<TypeVMJobClassKey, Profile> profiles) {
 		this.id = id;
 		this.setGamma(gamma);
 		this.setProvider(provider);
+		this.scenario = Optional.of(Scenarios.PublicPeakWorkload);
 		lstClass = classes;
-		mapTypeVMs = types;
+		mapTypeVMs = Optional.of(types);
 		mapProfiles = profiles;
 	}
 
-	public InstanceData() {}
+	public InstanceData() {
+		this.scenario = Optional.of(Scenarios.PublicPeakWorkload);
+		this.privateCloudParameters = Optional.empty();
+		this.mapVMConfigurations = Optional.empty();
+		this.mapTypeVMs = Optional.empty();
+	}
 
 	@JsonIgnore
 	public int getNumberJobs() {
@@ -71,7 +84,7 @@ public class InstanceData {
 	}
 
 	public int getNumberTypeVM(Integer idClass) {
-		return mapTypeVMs.get(idClass).size();
+		return mapTypeVMs.get().get(idClass).size();
 	}
 
 	public List<String> getId_job() {
@@ -181,13 +194,13 @@ public class InstanceData {
 	private <R> List<R> getFromMapperTypeVM(List<TypeVMJobClassKey> lstTypeJobClass,
 			Function<Optional<TypeVM>, ? extends R> mapper) {
 		Stream<Optional<TypeVM>> strm = lstTypeJobClass.stream()
-				.map(k -> mapTypeVMs.get(k.getJob()).stream().filter(tVM -> tVM.getId() == k.getTypeVM()).findAny())
+				.map(k -> mapTypeVMs.get().get(k.getJob()).stream().filter(tVM -> tVM.getId() == k.getTypeVM()).findAny())
 				.filter(Optional::isPresent);
 		return strm.map(mapper).collect(toList());
 	}
 
 	public List<TypeVM> getLstTypeVM(JobClass jobClass) {
-		return mapTypeVMs.get(jobClass.getId());
+		return mapTypeVMs.get().get(jobClass.getId());
 	}
 
 	public Profile getProfile(JobClass jobClass, TypeVM tVM) {
@@ -212,4 +225,5 @@ public class InstanceData {
 	public void setProvider(String provider) {
 		this.provider = provider;
 	}
+	
 }

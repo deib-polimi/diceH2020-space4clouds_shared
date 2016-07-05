@@ -42,7 +42,7 @@ public class SolutionPerJobGenerator {
 			sol.setFeasible(false);
 			sol.setNumberContainers(10);
 			sol.setNumberUsers(10);
-			sol.setNumCores(1);
+			sol.setNumCores(1.0);
 			sol.setNumberVM(10);
 			sol.setNumOnDemandVM(0);
 			sol.setNumReservedVM(9);
@@ -65,7 +65,7 @@ public class SolutionPerJobGenerator {
 	        sol.setFeasible(false);
 	        sol.setNumberContainers(12);
 	        sol.setNumberUsers(10);
-	        sol.setNumCores(1);
+	        sol.setNumCores(1.0);
 	        sol.setNumberVM(12);
 	        sol.setNumOnDemandVM(0);
 	        sol.setNumReservedVM(11);

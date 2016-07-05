@@ -59,7 +59,6 @@ public class InstanceDataGenerator {
 		key4.setJob(lstClasses.get(1).getId());
 		key4.setTypeVM(lstTypeVMs.get(1).getId());
 		map.put(key4, p4);
-
 		return new InstanceData("id_1",240,"Amazon", lstClasses, mapTypes, map);
 	}
 

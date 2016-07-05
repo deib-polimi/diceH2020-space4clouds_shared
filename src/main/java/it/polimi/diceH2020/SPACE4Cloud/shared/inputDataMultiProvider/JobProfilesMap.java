@@ -79,7 +79,6 @@ public class JobProfilesMap {
 		for (Map.Entry<String, Map<String, Map<String, JobProfile>>> jobIDs : getMapJobProfile().entrySet()) {
 		    for (Map.Entry<String, Map<String, JobProfile>> providers : jobIDs.getValue().entrySet()) {
 		    	providerAndTypes.put(providers.getKey(), providers.getValue().keySet());
-		    	System.out.println(providers.getKey()+" "+providers.getValue().keySet());
 		    }
 		}
 		return providerAndTypes;
@@ -91,7 +90,6 @@ public class JobProfilesMap {
 		
 		for (Map.Entry<String, Map<String, Map<String, JobProfile>>> jobIDs : getMapJobProfile().entrySet()) {
 	    	idAndTypes.put(jobIDs.getKey(), jobIDs.getValue().get(provider));
-	    	System.out.println(jobIDs.getKey() + " " + jobIDs.getValue().get(provider));
 		}
 		
 		return idAndTypes;

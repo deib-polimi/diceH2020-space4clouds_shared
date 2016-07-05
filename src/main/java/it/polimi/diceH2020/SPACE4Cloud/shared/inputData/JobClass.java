@@ -16,6 +16,8 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputData;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.Data;
 
 @Data
@@ -27,10 +29,20 @@ public class JobClass {
 	private int Hlow;
 	private double job_penalty;
 	private double think;
-	private double m;
-	private double v;
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+	private double m;  //Optional, for retrocompatibility
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+	private double v;	 //Optional, for retrocompatibility
 
 	public boolean validate(){
 		return (D > 0 && Hup >= Hlow && Hup >0 && job_penalty >=0 && think>=0 && m > 0 && v > 0);		
 	}
+	
+//	public double getM(){
+//		return m.get();
+//	}
+//	
+//	public double getV(){
+//		return v.get();
+//	}
 }

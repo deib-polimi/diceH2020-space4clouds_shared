@@ -17,12 +17,16 @@
 package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVMJobClassKey;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PrivateCloudParameters;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
 
@@ -37,14 +41,21 @@ public class Solution {
 
 	private List<SolutionPerJob> lstSolutions = new ArrayList<>();
 	private List<Phase> lstPhases = new ArrayList<>();
-
+	
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private Optional<PrivateCloudParameters> privateCloudParameters; 
+	
 	private String id;
+	
+	private String provider;
 
 	public Solution() {
+		privateCloudParameters = Optional.empty(); 
 	}
 
 	public Solution(String id) {
 		this.id = id;
+		privateCloudParameters = Optional.empty(); 
 	}
 
 	private Double cost = -1.0;
@@ -80,7 +91,7 @@ public class Solution {
 	}
 
 	@JsonIgnore
-	public List<Integer> getLstNumberCores() {
+	public List<Double> getLstNumberCores() {
 		return getByFunctional(SolutionPerJob::getNumCores);
 	}
 

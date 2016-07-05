@@ -16,6 +16,7 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputData;
 
+
 import lombok.Data;
 
 @Data
