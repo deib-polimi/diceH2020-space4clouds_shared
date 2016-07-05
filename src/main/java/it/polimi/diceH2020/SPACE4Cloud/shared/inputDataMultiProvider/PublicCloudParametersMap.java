@@ -95,6 +95,18 @@ public class PublicCloudParametersMap {
 		return set;
 	}
 	
+	@JsonIgnore
+	public Map<String, Map<String, PublicCloudParameters>> get_IdVMTypes_Map(String provider){
+		Map<String, Map<String, PublicCloudParameters>> idAndTypes = new HashMap<String, Map<String, PublicCloudParameters>>();
+		
+		for (Map.Entry<String, Map<String, Map<String, PublicCloudParameters>>> jobIDs : mapPublicCloudParameters.entrySet()) {
+	    	idAndTypes.put(jobIDs.getKey(), jobIDs.getValue().get(provider));
+	    	System.out.println(jobIDs.getKey() + " " + jobIDs.getValue().get(provider));
+		}
+		
+		return idAndTypes;
+	}
+	
 //	@JsonAnyGetter
 //	public Map<String, Map<String, Map<String, PublicCloudParameters>>> getMapPublicCloudParameters(){
 //		return mapPublicCloudParameters;

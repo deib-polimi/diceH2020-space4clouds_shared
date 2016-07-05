@@ -17,6 +17,9 @@
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
@@ -82,6 +85,13 @@ public class InstanceDataMultiProvider {
 			if(!mapJobProfiles.getProvidersTypesMap().equals(mapVMConfigurations.getProvidersTypesMap())) return false;
 		}
 		return true;
+	}
+	
+	@JsonIgnore
+	public List<String> getProvidersList(){
+		List<String> providers = new ArrayList<String>();
+		providers.addAll(mapJobProfiles.getProviders());
+		return providers;
 	}
 	
 	@JsonIgnore

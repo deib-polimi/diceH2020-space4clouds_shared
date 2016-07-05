@@ -86,6 +86,18 @@ public class JobProfilesMap {
 	}
 	
 	@JsonIgnore
+	public Map<String, Map<String, JobProfile>> get_IdVMTypes_Map(String provider){
+		Map<String, Map<String, JobProfile>> idAndTypes = new HashMap<String, Map<String, JobProfile>>();
+		
+		for (Map.Entry<String, Map<String, Map<String, JobProfile>>> jobIDs : getMapJobProfile().entrySet()) {
+	    	idAndTypes.put(jobIDs.getKey(), jobIDs.getValue().get(provider));
+	    	System.out.println(jobIDs.getKey() + " " + jobIDs.getValue().get(provider));
+		}
+		
+		return idAndTypes;
+	}
+	
+	@JsonIgnore
 	public Set<Triple<String,String,String>> getKeysTriples(){
 		Set<Triple<String,String,String>> set = new HashSet<>();
 		
