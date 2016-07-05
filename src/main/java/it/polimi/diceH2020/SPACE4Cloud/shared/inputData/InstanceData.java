@@ -26,8 +26,11 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PrivateCloudParameters;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.VMConfigurationsMap;
 import lombok.Data;
 
 @Data
@@ -42,6 +45,10 @@ public class InstanceData {
 	private List<JobClass> lstClass;
 
 	private Map<String, List<TypeVM>> mapTypeVMs;
+	
+	private PrivateCloudParameters privateCloudParameters;
+	
+	@JsonUnwrapped private VMConfigurationsMap mapVMConfigurations;
 
 	@JsonDeserialize(keyUsing = TypeVMJobClassDeserializer.class, keyAs = TypeVMJobClassKey.class, contentAs = Profile.class)
 	private Map<TypeVMJobClassKey, Profile> mapProfiles;
@@ -109,7 +116,6 @@ public class InstanceData {
 					lst.add(job);
 
 		return lst;
-
 	}
 
 	private Stream<Optional<JobClass>> getStreamJobClasses(Stream<String> strmJobID) {
