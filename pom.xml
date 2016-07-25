@@ -45,6 +45,7 @@
 		<maven_compiler_source>1.8</maven_compiler_source>
 		<maven_compiler_target>1.8</maven_compiler_target>
 		<slf4j.version>1.7.12</slf4j.version>
+		<jackson.version>2.7.4</jackson.version>
 	</properties>
 
 	<licenses>
@@ -73,6 +74,13 @@
 			<version>1.16.6</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+		  <groupId>com.fasterxml.jackson.datatype</groupId>
+		  <artifactId>jackson-datatype-jdk8</artifactId>
+		  <version>2.7.4</version>
+		</dependency> 
+		
 	</dependencies>
 
 	<distributionManagement>

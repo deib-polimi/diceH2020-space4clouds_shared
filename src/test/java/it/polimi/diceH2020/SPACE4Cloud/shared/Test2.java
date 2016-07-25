@@ -18,6 +18,8 @@ package it.polimi.diceH2020.SPACE4Cloud.shared;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+
 import it.polimi.diceH2020.SPACE4Cloud.shared.generators.InstanceDataGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generators.SolutionGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.InstanceData;
@@ -37,7 +39,7 @@ public class Test2 {
 		System.out.println(data.toString());
 
 		try {
-			ObjectMapper mapper = new ObjectMapper();
+			ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module());
 			SimpleModule module = new SimpleModule();
 			module.addKeyDeserializer(TypeVMJobClassKey.class, TypeVMJobClassKey.getDeserializer() );
 			mapper.registerModule(module);
@@ -58,7 +60,7 @@ public class Test2 {
 	public void test2(){
 		Solution sol = SolutionGenerator.build();
 		try {
-			ObjectMapper mapper = new ObjectMapper();
+			ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module());
 
 			String serialized = mapper.writeValueAsString(sol);
 			System.out.println(serialized);
