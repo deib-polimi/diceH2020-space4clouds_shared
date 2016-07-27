@@ -19,6 +19,8 @@ package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.JobClass;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.Profile;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
@@ -68,14 +70,9 @@ public class SolutionPerJob {
 	}
 	
 	public void setCost() {
-		double cost = deltaBar * numOnDemandVM + rhoBar * numReservedVM
-				+ sigmaBar * numSpotVM + getPenalty();
+		double cost = deltaBar * numOnDemandVM + rhoBar * numReservedVM + sigmaBar * numSpotVM + (alfa / numberUsers - beta);
 		BigDecimal c = BigDecimal.valueOf(cost).setScale(4, RoundingMode.HALF_EVEN);
 		this.cost = c.doubleValue();
-	}
-	
-	public double getPenalty() {
-		return (alfa / numberUsers - beta);
 	}
 
 	public boolean validate() {
