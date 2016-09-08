@@ -70,7 +70,7 @@ public class SolutionPerJob {
 	}
 	
 	public void setCost() {
-		double cost = deltaBar * numOnDemandVM + rhoBar * numReservedVM + sigmaBar * numSpotVM + (alfa / numberUsers - beta);
+		double cost = deltaBar * numOnDemandVM + rhoBar * numReservedVM + sigmaBar * numSpotVM + job.getJob_penalty()*(job.getHup()-numberUsers);
 		BigDecimal c = BigDecimal.valueOf(cost).setScale(4, RoundingMode.HALF_EVEN);
 		this.cost = c.doubleValue();
 	}
