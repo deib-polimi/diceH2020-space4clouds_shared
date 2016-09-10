@@ -16,25 +16,38 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
-public class JobProfile {
+public class JobMLProfilesMap {
+	
+	private Map<String, JobMLProfile> mapJobMLProfile;//jobId, MLProfile
+	
+	public JobMLProfilesMap(Map<String,JobMLProfile> mapJobProfiles){
+		this.mapJobMLProfile = mapJobProfiles;
+	}
+	
+	public JobMLProfilesMap() {
+		mapJobMLProfile = new HashMap<>();
+	}
 
-	private int cm;
-	private int cr;
-	private double mavg;
-	private double mmax;
-	private double ravg;
-	private double rmax;
-	private double sh1max;
-	private double shtypavg;
-	private double shtypmax;
-	private int nm;
-	private int nr;
-	private int datasize;
 
+	@JsonIgnore
 	public boolean validate() {
-		return (cm > 0 && cr > 0 && mavg > 0 && mmax > 0 && ravg > 0 && rmax > 0 && sh1max >= 0 && shtypavg >= 0 && shtypmax >= 0 && nm > 0 && nr > 0);
+		for (Map.Entry<String, JobMLProfile> mlProfile : mapJobMLProfile.entrySet()) {
+			if(!mlProfile.getValue().validate()) return false;
+		}
+		return true;
+	}
+	
+	@JsonIgnore
+	public Set<String> getJobIDs(){
+		return mapJobMLProfile.keySet();
 	}
 }

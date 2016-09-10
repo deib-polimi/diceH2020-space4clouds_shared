@@ -97,12 +97,12 @@ public class Solution {
 
 	@JsonIgnore
 	public List<Integer> getListCM() {
-		return getByFunctional(sol -> sol.getProfile().getCM());
+		return getByFunctional(sol -> sol.getProfile().getCm());
 	}
 
 	@JsonIgnore
 	public List<Integer> getListCR() {
-		return getByFunctional(sol -> sol.getProfile().getCR());
+		return getByFunctional(sol -> sol.getProfile().getCr());
 	}
 
 	@JsonIgnore

@@ -22,8 +22,10 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
 import it.polimi.diceH2020.SPACE4Cloud.shared.generators.InstanceDataGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generators.SolutionGenerator;
+import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.InstanceDataMultiProviderGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.InstanceData;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVMJobClassKey;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.InstanceDataMultiProvider;
 import it.polimi.diceH2020.SPACE4Cloud.shared.solution.Solution;
 import org.junit.Test;
 
@@ -71,5 +73,23 @@ public class Test2 {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	@Test
+	public void test3(){
+		System.out.println("-------------");
+		InstanceDataMultiProvider sol = InstanceDataMultiProviderGenerator.build();
+		try {
+			ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module());
+
+			String serialized = mapper.writeValueAsString(sol);
+			System.out.println(serialized);
+			InstanceDataMultiProvider data2 = mapper.readValue(serialized, InstanceDataMultiProvider.class);
+			System.out.println(data2.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 }

@@ -30,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobMLProfilesMap;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PrivateCloudParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.VMConfigurationsMap;
 import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenarios;
@@ -58,6 +59,9 @@ public class InstanceData {
 	
 	@JsonInclude(Include.NON_EMPTY)
 	private Optional<Map<String, List<TypeVM>>> mapTypeVMs;
+	
+	@JsonInclude(Include.NON_EMPTY)
+	private JobMLProfilesMap mapJobMLProfiles;
 	
 	//only for tests
 	public InstanceData(String id, int gamma, String provider, List<JobClass> classes, Map<String, List<TypeVM>> types,
@@ -106,11 +110,11 @@ public class InstanceData {
 	}
 
 	public List<Integer> getNM(List<TypeVMJobClassKey> lstKeys) {
-		return lstKeys.stream().map(k -> mapProfiles.get(k).getNM()).collect(toList());
+		return lstKeys.stream().map(k -> mapProfiles.get(k).getNm()).collect(toList());
 	}
 
 	public List<Integer> getNR(List<TypeVMJobClassKey> lstKeys) {
-		return lstKeys.stream().map(k -> mapProfiles.get(k).getNR()).collect(toList());
+		return lstKeys.stream().map(k -> mapProfiles.get(k).getNr()).collect(toList());
 	}
 
 	public List<Integer> getHUp(List<JobClass> lstTypeJobClass) {
@@ -160,15 +164,15 @@ public class InstanceData {
 	}
 
 	public List<Double> getSH1max(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getSH1max()).collect(toList());
+		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getSh1max()).collect(toList());
 	}
 
 	public List<Double> getSHtypavg(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getSHtypavg()).collect(toList());
+		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getShtypavg()).collect(toList());
 	}
 
 	public List<Double> getSHtypmax(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getSHtypmax()).collect(toList());
+		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getShtypmax()).collect(toList());
 	}
 
 	public List<Integer> getR(List<TypeVMJobClassKey> lstTypeJobClass) {

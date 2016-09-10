@@ -21,19 +21,21 @@ import lombok.Data;
 @Data
 public class Profile {
 
-	private int cM;
-	private int cR;
-	private double Mavg;
-	private double Mmax;
-	private double Ravg;
-	private double Rmax;
-	private double SH1max;
-	private double SHtypavg;
-	private double SHtypmax;
-	private int NM;
-	private int NR;
+	private int cm;
+	private int cr;
+	private double mavg;
+	private double mmax;
+	private double ravg;
+	private double rmax;
+	private double sh1max;
+	private double shtypavg;
+	private double shtypmax;
+	private int nm;
+	private int nr;
+	private int datasize;
 
 	public boolean validate() {
-		return (cM > 0 && cR > 0 && Mavg > 0 && Mmax > 0 && Ravg > 0 && Rmax > 0 && SH1max >= 0 && SHtypavg >= 0 && SHtypmax >= 0 && NM > 0 && NR > 0);
+		return (cm > 0 && cr > 0 && mavg > 0 && mmax > 0 && ravg > 0 && rmax > 0 && sh1max >= 0 && shtypavg >= 0 && shtypmax >= 0 && nm > 0 && nr > 0);
 	}
+	
 }

@@ -24,31 +24,31 @@ public class ProfileGenerator {
 		Profile p = new Profile();
 		switch (num) {
 		case 1:
-			p.setCM(4);
-			p.setCR(4);
+			p.setCm(4);
+			p.setCr(4);
 			p.setMavg(4.103);
 			p.setMmax(9.128);
-			p.setNM(65);
-			p.setNR(15);
+			p.setNm(65);
+			p.setNr(15);
 			p.setRavg(0.327);
 			p.setRmax(0.592);
-			p.setSH1max(0);
-			p.setSHtypmax(7.942);
-			p.setSHtypavg(4.831);
+			p.setSh1max(0);
+			p.setShtypmax(7.942);
+			p.setShtypavg(4.831);
 			break;
 
 		case 2:
-			p.setCM(8);
-			p.setCR(8);
+			p.setCm(8);
+			p.setCr(8);
 			p.setMavg(8.235);
 			p.setMmax(17.541);
-			p.setNM(65);
-			p.setNR(5);
+			p.setNm(65);
+			p.setNr(5);
 			p.setRavg(0.297);
 			p.setRmax(0.499);
-			p.setSH1max(0);
-			p.setSHtypmax(20.141);
-			p.setSHtypavg(14.721);
+			p.setSh1max(0);
+			p.setShtypmax(20.141);
+			p.setShtypavg(14.721);
 			break;
 		default:
 			break;

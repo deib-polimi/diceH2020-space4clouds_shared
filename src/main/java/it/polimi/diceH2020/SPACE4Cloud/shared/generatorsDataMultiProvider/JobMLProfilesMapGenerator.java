@@ -16,43 +16,25 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider;
 
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobProfile;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class JobProfileGenerator {
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobMLProfile;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobMLProfilesMap;
 
-	public static JobProfile build(int num) {
-		JobProfile p = new JobProfile();
-		switch (num) {
-		case 1:
-			p.setCm(4);
-			p.setCr(4);
-			p.setMavg(4.103);
-			p.setMmax(9.128);
-			p.setNm(65);
-			p.setNr(15);
-			p.setRavg(0.327);
-			p.setRmax(0.592);
-			p.setSh1max(0);
-			p.setShtypmax(7.942);
-			p.setShtypavg(4.831);
-			break;
 
-		case 2:
-			p.setCm(8);
-			p.setCr(8);
-			p.setMavg(8.235);
-			p.setMmax(17.541);
-			p.setNm(65);
-			p.setNr(5);
-			p.setRavg(0.297);
-			p.setRmax(0.499);
-			p.setSh1max(0);
-			p.setShtypmax(20.141);
-			p.setShtypavg(14.721);
-			break;
-		default:
-			break;
+public class JobMLProfilesMapGenerator {
+		private static List<String> jobsIDs =  Arrays.asList("23","32","64");
+		
+		public static JobMLProfilesMap build() {
+			List<String> featuresNames = Arrays.asList("x", "h", "cm","cr","mavg","mmax","nm","nr","ravg","rmax","sh1max","shtypmax","shtypavg");
+			Map<String, JobMLProfile> map = new HashMap<>();
+			
+			for(String i : jobsIDs){
+				map.put(i, JobMLProfileGenerator.build(featuresNames));
+			}
+			return new JobMLProfilesMap(map);
 		}
-		return p;
-	};
 }

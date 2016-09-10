@@ -51,6 +51,8 @@ public class SolutionPerJob {
 	private Double sigmaBar = 0.0;
 	private TypeVM typeVMselected;
 	private Boolean error = false;
+	@JsonIgnore
+	private Double xi = 0.0;
 
 	public SolutionPerJob setNumberVM(int numberVM) {
 		if (this.numberVM == null || this.numberVM.intValue() != numberVM) {
@@ -68,9 +70,28 @@ public class SolutionPerJob {
 		}
 		return this;
 	}
-	
+
+	public void setNumberContainers(int numberContainers) {
+		if (this.numberContainers == null || this.numberContainers.intValue() != numberContainers) {
+			changed = true;
+		}
+		this.numberContainers = numberContainers;
+		// update num of vm
+		if (xi != null) {
+			this.numberVM = (int) Math.ceil((double) (this.numberContainers / xi));
+		} else {
+			return;
+		}
+		if (typeVMselected != null && typeVMselected.getEta() >= 0) {
+			this.numSpotVM = (int) Math.floor(typeVMselected.getEta() * this.numberVM);
+			this.numReservedVM = (int) Math.min(typeVMselected.getR(), (this.numberVM - numSpotVM));
+			this.numOnDemandVM = Math.max(0, this.numberVM - numSpotVM - numReservedVM);
+		}
+	}
+
 	public void setCost() {
-		double cost = deltaBar * numOnDemandVM + rhoBar * numReservedVM + sigmaBar * numSpotVM + job.getJob_penalty()*(job.getHup()-numberUsers);
+		double cost = deltaBar * numOnDemandVM + rhoBar * numReservedVM + sigmaBar * numSpotVM
+				+ job.getJob_penalty() * (job.getHup() - numberUsers);
 		BigDecimal c = BigDecimal.valueOf(cost).setScale(4, RoundingMode.HALF_EVEN);
 		this.cost = c.doubleValue();
 	}
@@ -78,4 +99,15 @@ public class SolutionPerJob {
 	public boolean validate() {
 		return (job.validate() && typeVMselected.validate() && profile.validate());
 	}
+
+	@JsonIgnore
+	public double getXi() {
+		return xi;
+	}
+
+	@JsonIgnore
+	public void setXi(double xi) {
+		this.xi = xi;
+	}
+
 }

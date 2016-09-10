@@ -16,52 +16,49 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import lombok.Data;
 
 @Data
-public class ClassParametersMap {
-	private Map<String,ClassParameters> mapClassParameters;
+public class JobMLProfile {
+	private double b;
+	private double mu_t;
+	private double sigma_t;
+	@JsonUnwrapped private Map<String,SVRFeature> mlFeatures;
 	
-	public ClassParametersMap(Map<String,ClassParameters> mapClassParameters){
-		this.mapClassParameters = mapClassParameters;
+	public JobMLProfile(Map<String,SVRFeature> mapClassFeatures, double b, double mu_t, double sigma_t){
+		this.mlFeatures = mapClassFeatures;
+		this.b = b;
+		this.mu_t = mu_t;
+		this.sigma_t = sigma_t;
 	}
 	
-	public ClassParameters getClassParameters(String jobID) {
-		return mapClassParameters.get(jobID);
+	public SVRFeature getClassFeature(String featureName) {
+		return mlFeatures.get(featureName);
 	}
 	
-	public ClassParametersMap() {
-		mapClassParameters = new HashMap<String,ClassParameters>();
-	}
+	public JobMLProfile() {}
 
 	@JsonIgnore
 	public boolean validate() {
-		for (Map.Entry<String, ClassParameters> jobIDs : mapClassParameters.entrySet()) {
-			if(!jobIDs.getValue().validate()) return false;
+		for (Map.Entry<String, SVRFeature> feature : mlFeatures.entrySet()) {
+			if(!feature.getValue().validate()) return false;
 		}
+		//Required parameters for SVR: x,h,t
+		if(!mlFeatures.containsKey("x")){
+			return false;
+		}
+		if(!mlFeatures.containsKey("h")){
+			return false;
+		}
+		if(mu_t < 0 && sigma_t < 0){
+			return false;
+		}
+		
 		return true;
 	}
-	
-	@JsonIgnore
-	public Set<String> getJobIDs(){
-		return mapClassParameters.keySet();
-	}
-	
-//	@JsonAnyGetter
-//	public Map<String, ClassParameters> getMapClassParameters(){
-//		return mapClassParameters;
-//	}
-	
-//	@JsonAnyGetter
-//	public Map<String,ClassParameters> getMapClassParameters(){
-//		return mapClassParameters;
-//	}
-	
 }
-

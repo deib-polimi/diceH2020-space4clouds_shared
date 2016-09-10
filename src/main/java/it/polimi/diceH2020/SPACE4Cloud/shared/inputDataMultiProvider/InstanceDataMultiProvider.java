@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 
@@ -34,20 +36,28 @@ public class InstanceDataMultiProvider {
 	
 	@JsonUnwrapped private ClassParametersMap mapClassParameters;
 	
-	@JsonUnwrapped private PublicCloudParametersMap mapPublicCloudParameters; //Map<String, Map<String,Map<String,List<PublicCloudParameters>>>>
+	@JsonUnwrapped 
+	@JsonInclude(Include.NON_EMPTY)
+	private PublicCloudParametersMap mapPublicCloudParameters; //Map<String, Map<String,Map<String,List<PublicCloudParameters>>>>
 	
+	@JsonInclude(Include.NON_EMPTY)
 	private PrivateCloudParameters privateCloudParameters;
 	
-	@JsonUnwrapped private VMConfigurationsMap mapVMConfigurations;
+	@JsonUnwrapped
+	@JsonInclude(Include.NON_EMPTY)
+	private VMConfigurationsMap mapVMConfigurations;
 	
+	@JsonUnwrapped private JobMLProfilesMap mapJobMLProfiles;
+
 	public InstanceDataMultiProvider(String id, JobProfilesMap mapJobProfiles, ClassParametersMap mapClassParameters, PublicCloudParametersMap mapPublicCloudParameters, PrivateCloudParameters privateCloudParameters,
-			VMConfigurationsMap mapVMConfigurations) {
+			VMConfigurationsMap mapVMConfigurations, JobMLProfilesMap mapJobMLProfiles) {
 		this.id = id;
 		this.mapJobProfiles = mapJobProfiles;
 		this.mapClassParameters = mapClassParameters;
 		this.mapPublicCloudParameters = mapPublicCloudParameters;
 		this.privateCloudParameters = privateCloudParameters;
 		this.mapVMConfigurations = mapVMConfigurations;
+		this.mapJobMLProfiles = mapJobMLProfiles;
 	}
 	
 	public InstanceDataMultiProvider() {}
@@ -68,6 +78,9 @@ public class InstanceDataMultiProvider {
 			if(!mapJobProfiles.getJobIDs().equals(mapPublicCloudParameters.getJobIDs())) return false;
 		}
 		
+		if(mapJobMLProfiles.getMapJobMLProfile() != null){
+			if(!mapJobProfiles.getJobIDs().equals(mapJobMLProfiles.getJobIDs())) return false;
+		}
 		return true;
 	}
 	

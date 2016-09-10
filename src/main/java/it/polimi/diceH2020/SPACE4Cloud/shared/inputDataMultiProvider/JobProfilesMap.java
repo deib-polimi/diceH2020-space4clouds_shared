@@ -47,8 +47,15 @@ public class JobProfilesMap {
 		return getMapJobProfile().get(jobID).get(provider).get(typeVM);
 	}
 	
-	public JobProfilesMap() {}
-
+	public JobProfilesMap() {
+		initializeMap();
+	}
+	
+	@JsonIgnore
+	private void initializeMap(){
+		this.mapJobProfile = new HashMap<>();
+	}
+	
 	@JsonIgnore
 	public boolean validate() {
 		for (Map.Entry<String, Map<String, Map<String, JobProfile>>> jobIDs : mapJobProfile.entrySet()) {

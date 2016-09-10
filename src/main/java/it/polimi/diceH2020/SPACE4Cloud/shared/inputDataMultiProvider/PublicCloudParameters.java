@@ -23,6 +23,16 @@ public class PublicCloudParameters {
 	
 	private double eta;
 	private int R;
+	
+	public PublicCloudParameters(int R){
+		this.R = R;
+		this.eta = 0;
+	}
+	
+	public PublicCloudParameters(){
+		this.R = 0;
+		this.eta = 0;
+	}
 
 	public boolean validate(){
 		return (eta>=0 && R>=0);

@@ -25,6 +25,14 @@ public class PrivateCloudParameters {
 	private int n;	   //number of physical nodes
 	private double e;  //cost of energy to run one physical machine
 	
+	public PrivateCloudParameters(double m,double v,int n){ //Useful for Knapsack, the user can skip "e" parameter
+		this.m = m;
+		this.v = v;
+		this.n = n;
+		this.e = 0;
+	}
+	
+	public PrivateCloudParameters(){}
 	
 	public boolean validate(){
 		return (m>=0 && v>=0 && n>=0 && e>=0);

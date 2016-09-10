@@ -16,25 +16,16 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
+
 import lombok.Data;
 
 @Data
-public class JobProfile {
-
-	private int cm;
-	private int cr;
-	private double mavg;
-	private double mmax;
-	private double ravg;
-	private double rmax;
-	private double sh1max;
-	private double shtypavg;
-	private double shtypmax;
-	private int nm;
-	private int nr;
-	private int datasize;
-
-	public boolean validate() {
-		return (cm > 0 && cr > 0 && mavg > 0 && mmax > 0 && ravg > 0 && rmax > 0 && sh1max >= 0 && shtypavg >= 0 && shtypmax >= 0 && nm > 0 && nr > 0);
+public class SVRFeature {
+	double mu;
+	double sigma;
+	double w;
+	
+	public boolean validate(){
+		return (mu >= 0 && sigma >= 0);		
 	}
 }
