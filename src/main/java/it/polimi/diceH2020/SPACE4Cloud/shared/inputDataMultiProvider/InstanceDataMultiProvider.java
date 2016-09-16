@@ -48,6 +48,8 @@ public class InstanceDataMultiProvider {
 	private VMConfigurationsMap mapVMConfigurations;
 	
 	@JsonUnwrapped private JobMLProfilesMap mapJobMLProfiles;
+	
+	@JsonIgnore private String validationError;
 
 	public InstanceDataMultiProvider(String id, JobProfilesMap mapJobProfiles, ClassParametersMap mapClassParameters, PublicCloudParametersMap mapPublicCloudParameters, PrivateCloudParameters privateCloudParameters,
 			VMConfigurationsMap mapVMConfigurations, JobMLProfilesMap mapJobMLProfiles) {
@@ -58,6 +60,7 @@ public class InstanceDataMultiProvider {
 		this.privateCloudParameters = privateCloudParameters;
 		this.mapVMConfigurations = mapVMConfigurations;
 		this.mapJobMLProfiles = mapJobMLProfiles;
+		this.validationError = new String();
 	}
 	
 	public InstanceDataMultiProvider() {}
@@ -70,16 +73,27 @@ public class InstanceDataMultiProvider {
 	@JsonIgnore
 	private boolean validateJobIDs(){
 		
-		if(mapJobProfiles.getMapJobProfile() == null || mapClassParameters.getMapClassParameters() == null ) return false;
+		if(mapJobProfiles.getMapJobProfile() == null || mapClassParameters.getMapClassParameters() == null ) {
+			validationError = "Missing mapJobProfiles or mapClassParameters";
+			return false;
+		}
 		
-		if(!mapClassParameters.getJobIDs().equals(mapJobProfiles.getJobIDs())) return false;//mandatory parameters
-		
+		if(!mapClassParameters.getJobIDs().equals(mapJobProfiles.getJobIDs())){
+			validationError = "Not coinciding IDs";
+			return false;//mandatory parameters
+		}
 		if(mapPublicCloudParameters.getMapPublicCloudParameters() != null){
-			if(!mapJobProfiles.getJobIDs().equals(mapPublicCloudParameters.getJobIDs())) return false;
+			if(!mapJobProfiles.getJobIDs().equals(mapPublicCloudParameters.getJobIDs())) {
+				validationError = "Not coinciding IDs for MapPublicCloudParameters";
+				return false;
+			}
 		}
 		
 		if(mapJobMLProfiles.getMapJobMLProfile() != null){
-			if(!mapJobProfiles.getJobIDs().equals(mapJobMLProfiles.getJobIDs())) return false;
+			if(!mapJobProfiles.getJobIDs().equals(mapJobMLProfiles.getJobIDs())){
+				validationError = "Not coinciding IDs For MLProfile";
+				return false;
+			}
 		}
 		return true;
 	}
@@ -87,7 +101,10 @@ public class InstanceDataMultiProvider {
 	@JsonIgnore
 	private boolean validateProviders(){
 		if(mapPublicCloudParameters.getMapPublicCloudParameters() != null){
-			if(!mapJobProfiles.getProviders().equals(mapPublicCloudParameters.getProviders())) return false;
+			if(!mapJobProfiles.getProviders().equals(mapPublicCloudParameters.getProviders())){
+				validationError = "Not coinciding providers";
+				return false;
+			}
 		}
 		return true;
 	}
@@ -95,11 +112,17 @@ public class InstanceDataMultiProvider {
 	@JsonIgnore
 	private boolean validateProviderTypeVM(){
 		if(mapPublicCloudParameters.getMapPublicCloudParameters() != null){
-			if(!mapJobProfiles.getProvidersTypesMap().equals(mapPublicCloudParameters.getProvidersTypesMap())) return false;
+			if(!mapJobProfiles.getProvidersTypesMap().equals(mapPublicCloudParameters.getProvidersTypesMap())){
+				validationError = "Not coinciding providers";
+				return false;
+			}
 		}
 		
 		if(mapVMConfigurations.getMapVMConfigurations() != null){
-			if(!mapJobProfiles.getProvidersTypesMap().equals(mapVMConfigurations.getProvidersTypesMap())) return false;
+			if(!mapJobProfiles.getProvidersTypesMap().equals(mapVMConfigurations.getProvidersTypesMap())){
+				validationError = "Not coinciding providers mapJobProfiles or mapClassParameters";
+				return false;
+			}
 		}
 		return true;
 	}

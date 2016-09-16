@@ -96,16 +96,6 @@ public class Solution {
 	}
 
 	@JsonIgnore
-	public List<Integer> getListCM() {
-		return getByFunctional(sol -> sol.getProfile().getCm());
-	}
-
-	@JsonIgnore
-	public List<Integer> getListCR() {
-		return getByFunctional(sol -> sol.getProfile().getCr());
-	}
-
-	@JsonIgnore
 	public List<Double> getListDeltabar() {
 		return getByFunctional(SolutionPerJob::getDeltaBar);
 	}

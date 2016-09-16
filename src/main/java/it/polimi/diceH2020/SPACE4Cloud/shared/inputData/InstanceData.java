@@ -109,12 +109,9 @@ public class InstanceData {
 		return getD(lst).get(0);
 	}
 
-	public List<Integer> getNM(List<TypeVMJobClassKey> lstKeys) {
-		return lstKeys.stream().map(k -> mapProfiles.get(k).getNm()).collect(toList());
-	}
-
-	public List<Integer> getNR(List<TypeVMJobClassKey> lstKeys) {
-		return lstKeys.stream().map(k -> mapProfiles.get(k).getNr()).collect(toList());
+	
+	public List<Double> getProfileValues(List<TypeVMJobClassKey> lstKeys, String profileParameter){
+		return lstKeys.stream().map(k -> mapProfiles.get(k).getProfileMap().get(profileParameter)).collect(toList());
 	}
 
 	public List<Integer> getHUp(List<JobClass> lstTypeJobClass) {
@@ -145,34 +142,6 @@ public class InstanceData {
 		Stream<Optional<JobClass>> strmJob = getStreamJobClasses(strmJobID);
 		Stream<Optional<JobClass>> strm = strmJob.filter(Optional::isPresent);
 		return strm.map(mapper).collect(toList());
-	}
-
-	public List<Double> getMmax(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getMmax()).collect(toList());
-	}
-
-	public List<Double> getMavg(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getMavg()).collect(toList());
-	}
-
-	public List<Double> getRmax(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getRmax()).collect(toList());
-	}
-
-	public List<Double> getRavg(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getRavg()).collect(toList());
-	}
-
-	public List<Double> getSH1max(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getSh1max()).collect(toList());
-	}
-
-	public List<Double> getSHtypavg(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getShtypavg()).collect(toList());
-	}
-
-	public List<Double> getSHtypmax(List<TypeVMJobClassKey> lstTypeJobClass) {
-		return lstTypeJobClass.stream().map(k -> mapProfiles.get(k).getShtypmax()).collect(toList());
 	}
 
 	public List<Integer> getR(List<TypeVMJobClassKey> lstTypeJobClass) {

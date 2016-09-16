@@ -16,26 +16,43 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputData;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
 import lombok.Data;
 
 @Data
 public class Profile {
-
-	private int cm;
-	private int cr;
-	private double mavg;
-	private double mmax;
-	private double ravg;
-	private double rmax;
-	private double sh1max;
-	private double shtypavg;
-	private double shtypmax;
-	private int nm;
-	private int nr;
-	private int datasize;
-
+	
+	@JsonUnwrapped private Map<String,Double> profileMap;
+	
+	public Profile(){
+		profileMap = new HashMap<String,Double>();
+	}
+	public Profile(Map<String,Double> profileMap){
+		this.profileMap = profileMap;
+	}
+	
 	public boolean validate() {
-		return (cm > 0 && cr > 0 && mavg > 0 && mmax > 0 && ravg > 0 && rmax > 0 && sh1max >= 0 && shtypavg >= 0 && shtypmax >= 0 && nm > 0 && nr > 0);
+		if(profileMap == null) return false;
+		if(profileMap.isEmpty()) return false;
+		if(!profileMap.containsKey("h") || !profileMap.containsKey("x")) return false;
+		
+		return true;
+	}
+	
+	@JsonIgnore
+	public void put(String key, double value){
+		profileMap.put(key, value);
+	}
+	
+	@JsonIgnore
+	public double get(String key){
+		return profileMap.get(key);
+		
 	}
 	
 }
