@@ -66,7 +66,11 @@ public class SolutionPerJob {
 		}
 		// update num of containers
 		if (this.numCores != null) {
-			this.numberContainers = (int) (numberVM * numCores);
+			if(xi != null){
+				this.numberContainers = (int) Math.floor((double) (numberVM * xi));
+			}else{
+				this.numberContainers = (int) (numberVM * numCores);
+			}
 		}
 		return this;
 	}
