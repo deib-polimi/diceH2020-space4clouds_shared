@@ -33,8 +33,6 @@ public class SolutionPerJobGenerator {
 			sol.setTypeVMselected(t1);
 			JobClass job1 = JobClassGenerator.build(1);
 			sol.setJob(job1);	
-			sol.setAlfa(1250.0);
-			sol.setBeta(125.0);
 			sol.setChanged(false);
 			sol.setCost(8.5);
 			sol.setDeltaBar(2.1);
@@ -57,8 +55,6 @@ public class SolutionPerJobGenerator {
 	        JobClass job2 = JobClassGenerator.build(2);
 	        sol.setJob(job2);
 			sol.setTypeVMselected(t1);
-			sol.setAlfa(749.5);
-	        sol.setBeta(74.95);
 	        sol.setChanged(false);
 	        sol.setCost(10.3);
 	        sol.setDeltaBar(2.1);

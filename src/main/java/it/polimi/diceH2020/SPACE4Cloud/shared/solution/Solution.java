@@ -60,8 +60,6 @@ public class Solution {
 
 	private Double cost = -1.0;
 
-	private Integer gamma;
-
 	@JsonIgnore
 	private IEvaluator evaluator;
 
@@ -70,8 +68,7 @@ public class Solution {
 	@JsonIgnore
 	private Boolean isFeasible() {
 		if (evaluated) {
-			boolean condition = lstSolutions.stream().mapToInt(SolutionPerJob::getNumberVM).sum() < this.gamma;
-			return lstSolutions.stream().allMatch(SolutionPerJob::getFeasible) && condition;
+			return lstSolutions.stream().allMatch(SolutionPerJob::getFeasible);
 		} else return Boolean.FALSE;
 	}
 
@@ -142,7 +139,7 @@ public class Solution {
 	}
 
 	public boolean validate() {
-		return (this.id != null && ! this.id.equals("") && this.gamma != null && this.gamma > 0 &&
+		return (this.id != null && ! this.id.equals("") &&
 				lstSolutions.stream().map(SolutionPerJob::validate).allMatch(r -> r));
 	}
 

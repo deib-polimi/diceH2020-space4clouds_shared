@@ -30,9 +30,7 @@ import lombok.Data;
 public class SolutionPerJob {
 
 	private String parentID;
-	private Double alfa = 0.0;
-	private Double beta = 0.0;
-	private Boolean changed;
+	private Boolean changed; //TODO
 	private Double cost = Double.MAX_VALUE;
 	private Double deltaBar = 0.0;
 	private Double duration;
@@ -66,8 +64,8 @@ public class SolutionPerJob {
 		}
 		// update num of containers
 		if (this.numCores != null) {
-			if(xi != null){
-				this.numberContainers = (int) Math.floor((double) (numberVM * xi));
+			if(xi > 0.0){
+				this.numberContainers = (int) Math.floor((double)numberVM * xi);
 			}else{
 				this.numberContainers = (int) (numberVM * numCores);
 			}
@@ -82,7 +80,7 @@ public class SolutionPerJob {
 		this.numberContainers = numberContainers;
 		// update num of vm
 		if (xi != null) {
-			this.numberVM = (int) Math.ceil((double) (this.numberContainers / xi));
+			this.numberVM = (int) Math.ceil((double) this.numberContainers / xi);
 		} else {
 			return;
 		}

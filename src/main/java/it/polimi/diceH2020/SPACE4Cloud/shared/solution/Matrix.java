@@ -102,7 +102,6 @@ public class Matrix {
 			for(int i=0;i<jobs.length;i++){
 				JobClass job = jobs[i].getJob();
 				job.setHup(spjHup);
-				jobs[i].setAlfa(job.getJob_penalty() * job.getHup() * job.getHlow());
 				jobs[i].setCost();
 			}
 		}
