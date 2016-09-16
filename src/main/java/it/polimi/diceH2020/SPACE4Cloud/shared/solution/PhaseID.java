@@ -17,5 +17,5 @@
 package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
 public enum PhaseID {
-INIT_SOLUTION, OPTIMIZATION
+INIT_SOLUTION, EVALUATION, OPTIMIZATION, SELECTION_BP, SELECTION_KN 
 }
