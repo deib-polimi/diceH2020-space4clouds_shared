@@ -21,9 +21,9 @@ import java.math.RoundingMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.JobClass;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.Profile;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParameters;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobProfile;
 import lombok.Data;
 
 @Data
@@ -35,7 +35,8 @@ public class SolutionPerJob {
 	private Double deltaBar = 0.0;
 	private Double duration;
 	private Boolean feasible;
-	private JobClass job;
+	private String id;
+	private ClassParameters job;
 	private Integer numberContainers;
 	private Integer numberUsers;
 	private Integer numberVM;
@@ -43,8 +44,7 @@ public class SolutionPerJob {
 	private Integer numOnDemandVM;
 	private Integer numReservedVM;
 	private Integer numSpotVM;
-	private Integer pos;
-	private Profile profile;
+	private JobProfile profile;
 	private Double rhoBar = 0.0;
 	private Double sigmaBar = 0.0;
 	private TypeVM typeVMselected;
@@ -93,7 +93,7 @@ public class SolutionPerJob {
 
 	public void setCost() {
 		double cost = deltaBar * numOnDemandVM + rhoBar * numReservedVM + sigmaBar * numSpotVM
-				+ job.getJob_penalty() * (job.getHup() - numberUsers);
+				+ job.getPenalty() * (job.getHup() - numberUsers);
 		BigDecimal c = BigDecimal.valueOf(cost).setScale(4, RoundingMode.HALF_EVEN);
 		this.cost = c.doubleValue();
 	}

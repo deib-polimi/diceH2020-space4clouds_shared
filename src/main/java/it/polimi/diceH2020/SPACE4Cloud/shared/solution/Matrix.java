@@ -15,8 +15,8 @@ limitations under the License.
 */
 package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.JobClass;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.VMConfigurationsMap;
 
 import java.util.*;
@@ -87,7 +87,7 @@ public class Matrix {
 
 	public Iterable<Double> getAllPenalty(String row){
 		restoreInitialHup();
-		return Arrays.stream(matrix.get(row)).map(spj->{return spj.getJob().getHup() * spj.getJob().getJob_penalty() - spj.getNumberUsers();}).collect(Collectors.toList());
+		return Arrays.stream(matrix.get(row)).map(spj->{return spj.getJob().getHup() * spj.getJob().getPenalty() - spj.getNumberUsers();}).collect(Collectors.toList());
 	}
 
 	private void restoreInitialHup(){
@@ -100,7 +100,7 @@ public class Matrix {
 				}
 			}
 			for(int i=0;i<jobs.length;i++){
-				JobClass job = jobs[i].getJob();
+				ClassParameters job = jobs[i].getJob();
 				job.setHup(spjHup);
 				jobs[i].setCost();
 			}
@@ -142,7 +142,7 @@ public class Matrix {
 	}
 
 	public String getID(String row){
-		return  Arrays.stream(matrix.get(row)).findFirst().map(SolutionPerJob::getJob).map(JobClass::getId).get();
+		return  Arrays.stream(matrix.get(row)).findFirst().map(SolutionPerJob::getId).get();
 	}
 
 	public List<Integer> getAllNu(String row){
@@ -197,7 +197,7 @@ public class Matrix {
 	public String asString(){
 		matrixNVMString = new String();
 		matrix.forEach((k,v)->{
-			matrixNVMString += v[0].getJob().getId()+"\t| ";
+			matrixNVMString += v[0].getId()+"\t| ";
 			for(SolutionPerJob cell: v){
 				matrixNVMString += " H:"+cell.getNumberUsers()+",nVM:"+cell.getNumberVM();
 				if(cell.getFeasible()) matrixNVMString += ",F  \t|";

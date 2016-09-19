@@ -16,9 +16,10 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.generators;
 
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.JobClass;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.Profile;
+import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.JobProfileGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParameters;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobProfile;
 import it.polimi.diceH2020.SPACE4Cloud.shared.solution.SolutionPerJob;
 
 public class SolutionPerJobGenerator {
@@ -31,8 +32,9 @@ public class SolutionPerJobGenerator {
 		case 1:
 			
 			sol.setTypeVMselected(t1);
-			JobClass job1 = JobClassGenerator.build(1);
+			ClassParameters job1 = ClassParametersGenerator.build(1);
 			sol.setJob(job1);	
+			sol.setId("1");
 			sol.setChanged(false);
 			sol.setCost(8.5);
 			sol.setDeltaBar(2.1);
@@ -45,15 +47,15 @@ public class SolutionPerJobGenerator {
 			sol.setNumOnDemandVM(0);
 			sol.setNumReservedVM(9);
 			sol.setNumSpotVM(1);
-			sol.setPos(0);			
 			sol.setRhoBar(0.9);
 			sol.setSigmaBar(0.4);
-			Profile prof1 = ProfileGenerator.build(1);
+			JobProfile prof1 = JobProfileGenerator.build(1);
 			sol.setProfile(prof1);
 			break;
 		case 2:
-	        JobClass job2 = JobClassGenerator.build(2);
+			ClassParameters job2 = ClassParametersGenerator.build(2);
 	        sol.setJob(job2);
+	        sol.setId("2");
 			sol.setTypeVMselected(t1);
 	        sol.setChanged(false);
 	        sol.setCost(10.3);
@@ -66,11 +68,10 @@ public class SolutionPerJobGenerator {
 	        sol.setNumOnDemandVM(0);
 	        sol.setNumReservedVM(11);
 	        sol.setNumSpotVM(1);
-	        sol.setPos(1);
 	        sol.setRhoBar(0.9);
 	        sol.setSigmaBar(0.4);
 	        sol.setDuration(150.0);
-	        Profile prof2 = ProfileGenerator.build(1);
+	        JobProfile prof2 = JobProfileGenerator.build(1);
 	        sol.setProfile(prof2);
 
 		default:

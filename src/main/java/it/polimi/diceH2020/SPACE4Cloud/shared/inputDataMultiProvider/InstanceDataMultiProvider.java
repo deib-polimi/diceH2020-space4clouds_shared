@@ -19,12 +19,15 @@ package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenarios;
 import lombok.Data;
 
 @Data
@@ -37,19 +40,22 @@ public class InstanceDataMultiProvider {
 	@JsonUnwrapped private ClassParametersMap mapClassParameters;
 	
 	@JsonUnwrapped 
-	@JsonInclude(Include.NON_EMPTY)
+	@JsonInclude(Include.NON_NULL)
 	private PublicCloudParametersMap mapPublicCloudParameters; //Map<String, Map<String,Map<String,List<PublicCloudParameters>>>>
 	
 	@JsonInclude(Include.NON_EMPTY)
 	private PrivateCloudParameters privateCloudParameters;
 	
 	@JsonUnwrapped
-	@JsonInclude(Include.NON_EMPTY)
+	@JsonInclude(Include.NON_NULL)
 	private VMConfigurationsMap mapVMConfigurations;
 	
 	@JsonUnwrapped private JobMLProfilesMap mapJobMLProfiles;
 	
 	@JsonIgnore private String validationError;
+	
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private Optional<Scenarios> scenario; 
 
 	public InstanceDataMultiProvider(String id, JobProfilesMap mapJobProfiles, ClassParametersMap mapClassParameters, PublicCloudParametersMap mapPublicCloudParameters, PrivateCloudParameters privateCloudParameters,
 			VMConfigurationsMap mapVMConfigurations, JobMLProfilesMap mapJobMLProfiles) {
@@ -63,7 +69,18 @@ public class InstanceDataMultiProvider {
 		this.validationError = new String();
 	}
 	
-	public InstanceDataMultiProvider() {}
+	public InstanceDataMultiProvider() {
+		this.id = new String();
+		this.mapJobProfiles = new JobProfilesMap();
+		this.mapClassParameters = new ClassParametersMap();
+		this.mapPublicCloudParameters = new PublicCloudParametersMap();
+		this.mapJobMLProfiles = new JobMLProfilesMap();
+		this.validationError = new String();
+		this.scenario = Optional.of(Scenarios.PublicPeakWorkload);
+		this.privateCloudParameters = new PrivateCloudParameters();
+		this.mapVMConfigurations = new VMConfigurationsMap();
+	}
+	
 	
 	@JsonIgnore
 	public boolean validate(){
@@ -132,6 +149,28 @@ public class InstanceDataMultiProvider {
 		List<String> providers = new ArrayList<String>();
 		providers.addAll(mapJobProfiles.getProviders());
 		return providers;
+	}
+	
+	@JsonIgnore
+	public String getProvider(){
+		List<String> providers = getProvidersList();
+		if(providers.size() == 1) return providers.get(0);
+		return null;
+	}
+	
+	@JsonIgnore
+	public Map<String, PublicCloudParameters> getMapTypeVM(String jobID, String provider) {
+		return mapPublicCloudParameters.getLstTypeVM(jobID, provider);
+	}
+	
+	@JsonIgnore
+	public JobProfile getProfile(String classID, String providerName,String tVM) {
+		return mapJobProfiles.getEntry(classID, providerName, tVM);
+	}
+	
+	@JsonIgnore
+	public int getNumberOfClasses(){
+		return mapJobProfiles.getJobIDs().size();
 	}
 	
 	@JsonIgnore

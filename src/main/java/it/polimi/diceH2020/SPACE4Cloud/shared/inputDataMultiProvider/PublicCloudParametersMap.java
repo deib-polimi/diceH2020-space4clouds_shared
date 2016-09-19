@@ -22,11 +22,15 @@ import java.util.Map;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 
 @Data
 public class PublicCloudParametersMap {
+	
+	@JsonInclude(Include.NON_NULL)
 	private Map<String, Map<String,Map<String,PublicCloudParameters>>> mapPublicCloudParameters; //jobId->provider->typeVM
 	
 	public PublicCloudParametersMap(Map<String, Map<String,Map<String,PublicCloudParameters>>> mapPublicCloudParameters){

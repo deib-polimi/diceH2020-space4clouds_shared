@@ -16,13 +16,20 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import lombok.Data;
 
 @Data
 public class PrivateCloudParameters {
+	@JsonInclude(Include.NON_DEFAULT)
 	private double m;  //node RAM capacity
+	@JsonInclude(Include.NON_DEFAULT)
 	private double v;  //node CPUs capacity
+	@JsonInclude(Include.NON_DEFAULT)
 	private int n;	   //number of physical nodes
+	@JsonInclude(Include.NON_DEFAULT)
 	private double e;  //cost of energy to run one physical machine
 	
 	public PrivateCloudParameters(double m,double v,int n){ //Useful for Knapsack, the user can skip "e" parameter

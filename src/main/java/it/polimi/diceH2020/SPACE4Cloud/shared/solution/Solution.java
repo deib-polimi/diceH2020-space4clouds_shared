@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVMJobClassKey;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PrivateCloudParameters;
+import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenarios;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -44,6 +45,9 @@ public class Solution {
 	
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private Optional<PrivateCloudParameters> privateCloudParameters; 
+	
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private Optional<Scenarios> scenario; 
 	
 	private String id;
 	
@@ -77,14 +81,13 @@ public class Solution {
 	}
 
 	public void setSolutionPerJob(SolutionPerJob solPerJob) {
-		solPerJob.setPos(lstSolutions.size());
 		lstSolutions.add(solPerJob);
 		solPerJob.setParentID(this.id);
 	}
 
 	@JsonIgnore
 	public List<TypeVMJobClassKey> getPairsTypeVMJobClass() {
-		return lstSolutions.stream().map(sol -> new TypeVMJobClassKey(sol.getJob().getId(), sol.getTypeVMselected().getId())).collect(toList());
+		return lstSolutions.stream().map(sol -> new TypeVMJobClassKey(sol.getId(), sol.getTypeVMselected().getId())).collect(toList());
 	}
 
 	@JsonIgnore
@@ -130,7 +133,7 @@ public class Solution {
 				sj.add("phase=" + ph.getId().toString()).add("duration=" + ph.getDuration())
 		);
 		lstSolutions.forEach(s ->
-				sj.add("jobClass=" + s.getJob().getId()).add("typeVM=" + s.getTypeVMselected().getId())
+				sj.add("jobClass=" + s.getId()).add("typeVM=" + s.getTypeVMselected().getId())
 						.add("numVM=" + s.getNumberVM()).add("numReserved=" + s.getNumReservedVM())
 						.add("numOnDemand=" + s.getNumOnDemandVM())
 						.add("numSpot=" + s.getNumSpotVM()).add("jobFeas=" + s.getFeasible().toString())

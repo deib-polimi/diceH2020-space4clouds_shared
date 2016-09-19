@@ -24,31 +24,27 @@ public class JobProfileGenerator {
 		JobProfile p = new JobProfile();
 		switch (num) {
 		case 1:
-			p.setCm(4);
-			p.setCr(4);
-			p.setMavg(4.103);
-			p.setMmax(9.128);
-			p.setNm(65);
-			p.setNr(15);
-			p.setRavg(0.327);
-			p.setRmax(0.592);
-			p.setSh1max(0);
-			p.setShtypmax(7.942);
-			p.setShtypavg(4.831);
+			p.put("Mavg",4.103);
+			p.put("Mmax",9.128);
+			p.put("Nm",65);
+			p.put("Nr",15);
+			p.put("Ravg",0.327);
+			p.put("Rmax",0.592);
+			p.put("Sh1max",0);
+			p.put("Shtypmax",7.942);
+			p.put("Shtypavg",4.831);
 			break;
 
 		case 2:
-			p.setCm(8);
-			p.setCr(8);
-			p.setMavg(8.235);
-			p.setMmax(17.541);
-			p.setNm(65);
-			p.setNr(5);
-			p.setRavg(0.297);
-			p.setRmax(0.499);
-			p.setSh1max(0);
-			p.setShtypmax(20.141);
-			p.setShtypavg(14.721);
+			p.put("Mavg",8.235);
+			p.put("Mmax",17.541);
+			p.put("Nm",65);
+			p.put("Nr",5);
+			p.put("Ravg",0.297);
+			p.put("Rmax",0.499);
+			p.put("Sh1max",0);
+			p.put("Shtypmax",20.141);
+			p.put("Shtypavg",14.721);
 			break;
 		default:
 			break;

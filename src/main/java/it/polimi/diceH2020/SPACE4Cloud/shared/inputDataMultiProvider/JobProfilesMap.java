@@ -22,13 +22,14 @@ import java.util.Map;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import lombok.Data;
 
 @Data
 public class JobProfilesMap {
 	
-    private Map<String, Map<String, Map<String, JobProfile>>> mapJobProfile; //jobId->provider->typeVM
+	@JsonUnwrapped private Map<String, Map<String, Map<String, JobProfile>>> mapJobProfile; //jobId->provider->typeVM
 	
 	public JobProfilesMap(Map<String, Map<String,Map<String,JobProfile>>> mapJobProfiles){
 		this.mapJobProfile = mapJobProfiles;
