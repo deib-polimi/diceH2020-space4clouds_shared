@@ -20,12 +20,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
-import it.polimi.diceH2020.SPACE4Cloud.shared.generators.InstanceDataGenerator;
+import it.polimi.diceH2020.SPACE4Cloud.shared.generators.InstanceDataGenerator_old;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generators.SolutionGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.InstanceDataMultiProviderGenerator;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.InstanceData;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVMJobClassKey;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.old.InstanceData_old;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.InstanceDataMultiProvider;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVMJobClassKey;
 import it.polimi.diceH2020.SPACE4Cloud.shared.solution.Solution;
 import org.junit.Test;
 
@@ -37,7 +37,7 @@ public class Test2 {
 
 	@Test
 	public void test1() {
-		InstanceData data = InstanceDataGenerator.build();
+		InstanceData_old data = InstanceDataGenerator_old.build();
 		System.out.println(data.toString());
 
 		try {
@@ -49,7 +49,7 @@ public class Test2 {
 			String serialized = mapper.writeValueAsString(data);
 			System.out.println(serialized);
 
-			InstanceData data2 = mapper.readValue(serialized, InstanceData.class);
+			InstanceData_old data2 = mapper.readValue(serialized, InstanceData_old.class);
 			System.out.println(data2.toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

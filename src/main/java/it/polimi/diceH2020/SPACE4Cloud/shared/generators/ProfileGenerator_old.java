@@ -16,35 +16,39 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.generators;
 
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.Profile;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.old.Profile_old;
 
-public class ProfileGenerator {
+public class ProfileGenerator_old {
 
-	public static Profile build(int num) {
-		Profile p = new Profile();
+	public static Profile_old build(int num) {
+		Profile_old p = new Profile_old();
 		switch (num) {
 		case 1:
-			p.put("mavg",4.103);
-			p.put("mmax",9.128);
-			p.put("mm",65);
-			p.put("nr",15);
-			p.put("ravg",0.327);
-			p.put("rmax",0.592);
-			p.put("sh1max",0);
-			p.put("shtypmax",7.942);
-			p.put("shtypavg",4.831);
+			p.setCm(4);
+			p.setCr(4);
+			p.setMavg(4.103);
+			p.setMmax(9.128);
+			p.setNm(65);
+			p.setNr(15);
+			p.setRavg(0.327);
+			p.setRmax(0.592);
+			p.setSh1max(0);
+			p.setShtypmax(7.942);
+			p.setShtypavg(4.831);
 			break;
 
 		case 2:
-			p.put("mavg",8.235);
-			p.put("mmax",17.541);
-			p.put("nm",65);
-			p.put("nr",5);
-			p.put("ravg",0.297);
-			p.put("rmax",0.499);
-			p.put("sh1max",0);
-			p.put("shtypmax",20.141);
-			p.put("shtypavg",14.721);
+			p.setCm(8);
+			p.setCr(8);
+			p.setMavg(8.235);
+			p.setMmax(17.541);
+			p.setNm(65);
+			p.setNr(5);
+			p.setRavg(0.297);
+			p.setRmax(0.499);
+			p.setSh1max(0);
+			p.setShtypmax(20.141);
+			p.setShtypavg(14.721);
 			break;
 		default:
 			break;

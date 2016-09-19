@@ -14,27 +14,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package it.polimi.diceH2020.SPACE4Cloud.shared.generators;
+package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVM;
 
-public class TypeVMGenerator {
-public static TypeVM build(int num){
-	TypeVM t = new TypeVM();
-	switch (num) {
-	case 1:
-		t.setId("T1");
-		t.setEta(0.1);
-		t.setR(30);
-		break;
-	case 2:
-		t.setId("T2");
-		t.setEta(0.3);
-		t.setR(25);
-		break;
-	default:
-		break;
+import lombok.Data;
+
+@Data
+public class TypeVM {
+	
+	private String id;
+	private double eta;
+	private int R;
+
+	public boolean validate(){
+		return (id != null && id != "" && eta>=0 && R>=0);
 	}
-	return t;
-}
 }

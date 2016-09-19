@@ -21,9 +21,9 @@ import java.math.RoundingMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobProfile;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVM;
 import lombok.Data;
 
 @Data

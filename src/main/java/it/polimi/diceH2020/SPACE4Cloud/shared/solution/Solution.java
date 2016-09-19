@@ -19,8 +19,8 @@ package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVMJobClassKey;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PrivateCloudParameters;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVMJobClassKey;
 import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenarios;
 import lombok.Data;
 

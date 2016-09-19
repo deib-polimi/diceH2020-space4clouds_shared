@@ -14,12 +14,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package it.polimi.diceH2020.SPACE4Cloud.shared.inputData;
+package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVMJobClassDeserializer;
 
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.old.TypeVMJobClassDeserializer_old;
 import lombok.Data;
 
 @Data
@@ -53,8 +53,8 @@ public class TypeVMJobClassKey {
 		this.typeVM = typeVM;
 	}
 	
-	public static TypeVMJobClassDeserializer getDeserializer (){ 
-		return new TypeVMJobClassDeserializer();
+	public static TypeVMJobClassDeserializer_old getDeserializer (){ 
+		return new TypeVMJobClassDeserializer_old();
 	}
 	
 	

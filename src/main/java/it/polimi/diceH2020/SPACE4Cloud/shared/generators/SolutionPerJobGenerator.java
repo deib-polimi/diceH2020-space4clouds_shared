@@ -17,9 +17,9 @@
 package it.polimi.diceH2020.SPACE4Cloud.shared.generators;
 
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.JobProfileGenerator;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.TypeVM;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobProfile;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVM;
 import it.polimi.diceH2020.SPACE4Cloud.shared.solution.SolutionPerJob;
 
 public class SolutionPerJobGenerator {

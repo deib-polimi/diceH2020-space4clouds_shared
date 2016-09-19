@@ -43,7 +43,7 @@ public class InstanceDataMultiProvider {
 	@JsonInclude(Include.NON_NULL)
 	private PublicCloudParametersMap mapPublicCloudParameters; //Map<String, Map<String,Map<String,List<PublicCloudParameters>>>>
 	
-	@JsonInclude(Include.NON_EMPTY)
+	@JsonInclude(Include.NON_ABSENT)
 	private PrivateCloudParameters privateCloudParameters;
 	
 	@JsonUnwrapped

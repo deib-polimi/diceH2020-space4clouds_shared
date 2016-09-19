@@ -14,19 +14,35 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package it.polimi.diceH2020.SPACE4Cloud.shared.inputData;
+package it.polimi.diceH2020.SPACE4Cloud.shared.inputData.old;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Data;
 
 @Data
-public class TypeVM {
-	
+public class JobClass_old {
+
 	private String id;
-	private double eta;
-	private int R;
+	private double D;
+	private int Hup;
+	private int Hlow;
+	private double job_penalty;
+	private double think;
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+	private double m;  //Optional, for retrocompatibility
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+	private double v;	 //Optional, for retrocompatibility
 
 	public boolean validate(){
-		return (id != null && id != "" && eta>=0 && R>=0);
+		return (D > 0 && Hup >= Hlow && Hup >0 && job_penalty >=0 && think>=0 && m > 0 && v > 0);		
 	}
+	
+//	public double getM(){
+//		return m.get();
+//	}
+//	
+//	public double getV(){
+//		return v.get();
+//	}
 }
