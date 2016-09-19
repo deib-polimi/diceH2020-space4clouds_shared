@@ -22,12 +22,15 @@ import java.util.Map;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 
 @Data
 public class VMConfigurationsMap {
 	
+	@JsonInclude(Include.NON_NULL)
 	private Map<String,VMConfiguration> mapVMConfigurations; 
 	
 	public VMConfigurationsMap(Map<String,VMConfiguration> listVMConfigurations){

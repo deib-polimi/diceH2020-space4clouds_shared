@@ -40,14 +40,14 @@ public class InstanceDataMultiProvider {
 	@JsonUnwrapped private ClassParametersMap mapClassParameters;
 	
 	@JsonUnwrapped 
-	@JsonInclude(Include.NON_NULL)
+	@JsonInclude(Include.NON_DEFAULT)
 	private PublicCloudParametersMap mapPublicCloudParameters; //Map<String, Map<String,Map<String,List<PublicCloudParameters>>>>
 	
-	@JsonInclude(Include.NON_ABSENT)
+	@JsonInclude(Include.NON_NULL)
 	private PrivateCloudParameters privateCloudParameters;
 	
 	@JsonUnwrapped
-	@JsonInclude(Include.NON_NULL)
+	@JsonInclude(Include.NON_DEFAULT)
 	private VMConfigurationsMap mapVMConfigurations;
 	
 	@JsonUnwrapped private JobMLProfilesMap mapJobMLProfiles;
@@ -77,7 +77,7 @@ public class InstanceDataMultiProvider {
 		this.mapJobMLProfiles = new JobMLProfilesMap();
 		this.validationError = new String();
 		this.scenario = Optional.of(Scenarios.PublicPeakWorkload);
-		this.privateCloudParameters = new PrivateCloudParameters();
+		//this.privateCloudParameters = new PrivateCloudParameters();
 		this.mapVMConfigurations = new VMConfigurationsMap();
 	}
 	
