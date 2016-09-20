@@ -25,7 +25,7 @@
 	<version>0.2.10-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>SPACE4Cloud shared </name>
+	<name>SPACE4Cloud shared</name>
 	<inceptionYear>2015</inceptionYear>
 	<url>https://github.com/deib-polimi/diceH2020-space4clouds_shared</url>
 	<description>SPACE4Cloud for BigData shared files library</description>
@@ -74,13 +74,12 @@
 			<version>1.16.6</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
-		  <groupId>com.fasterxml.jackson.datatype</groupId>
-		  <artifactId>jackson-datatype-jdk8</artifactId>
-		  <version>2.7.4</version>
-		</dependency> 
-		
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>
+			<version>2.7.4</version>
+		</dependency>
 	</dependencies>
 
 	<distributionManagement>
@@ -203,37 +202,6 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.mycila</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<header>${project.basedir}/APACHE-2-header.txt</header>
-					<properties>
-						<organization>deib-polimi</organization>
-						<year>${project.inceptionYear}</year>
-						<owner>deib-polimi</owner>
-						<email>michele.ciavotta@polimi.it</email>
-						<artid>${project.artifactId}</artid>
-					</properties>
-					<excludes>
-						<exclude>**/README</exclude>
-						<exclude>*.log</exclude>
-						<exclude>src/test/resources/**</exclude>
-						<exclude>src/main/resources/**</exclude>
-						<exclude>LICENSE.txt</exclude>
-					</excludes>
-				</configuration>
-				<executions>
-					<execution>
-						<id>check-headers</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>format</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
