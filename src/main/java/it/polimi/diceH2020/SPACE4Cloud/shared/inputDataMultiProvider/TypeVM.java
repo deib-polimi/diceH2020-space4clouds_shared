@@ -29,9 +29,9 @@ public class TypeVM {
 	@JsonInclude(Include.NON_DEFAULT)
 	private double eta;
 	@JsonInclude(Include.NON_DEFAULT)
-	private int R;
+	private int r;
 
 	public boolean validate(){
-		return (id != null && id != "" && eta>=0 && R>=0);
+		return (id != null && id != "" && eta>=0 && r>=0);
 	}
 }

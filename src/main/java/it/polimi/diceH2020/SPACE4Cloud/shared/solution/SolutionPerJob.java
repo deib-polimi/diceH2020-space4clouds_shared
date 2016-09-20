@@ -40,7 +40,7 @@ public class SolutionPerJob {
 	private Integer numberContainers;
 	private Integer numberUsers;
 	private Integer numberVM;
-	private Double numCores;
+	private Double numCores; 
 	private Integer numOnDemandVM;
 	private Integer numReservedVM;
 	private Integer numSpotVM;
