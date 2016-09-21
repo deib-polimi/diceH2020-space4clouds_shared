@@ -18,6 +18,7 @@ package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Map.Entry;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,7 +31,7 @@ import lombok.Data;
 public class SolutionPerJob {
 
 	private String parentID;
-	private Boolean changed; //TODO
+	private Boolean changed; // TODO
 	private Double cost = Double.MAX_VALUE;
 	private Double deltaBar = 0.0;
 	private Double duration;
@@ -40,7 +41,7 @@ public class SolutionPerJob {
 	private Integer numberContainers;
 	private Integer numberUsers;
 	private Integer numberVM;
-	private Double numCores; 
+	private Double numCores;
 	private Integer numOnDemandVM;
 	private Integer numReservedVM;
 	private Integer numSpotVM;
@@ -64,9 +65,9 @@ public class SolutionPerJob {
 		}
 		// update num of containers
 		if (this.numCores != null) {
-			if(xi > 0.0){
-				this.numberContainers = (int) Math.floor((double)numberVM * xi);
-			}else{
+			if (xi > 0.0) {
+				this.numberContainers = (int) Math.floor((double) numberVM * xi);
+			} else {
 				this.numberContainers = (int) (numberVM * numCores);
 			}
 		}
@@ -110,6 +111,40 @@ public class SolutionPerJob {
 	@JsonIgnore
 	public void setXi(double xi) {
 		this.xi = xi;
+	}
+
+	public SolutionPerJob clone() {
+		SolutionPerJob newSpj = new SolutionPerJob();
+		newSpj.setId(this.getId());
+		newSpj.setChanged(this.getChanged());
+		newSpj.setCost(this.getCost());
+		newSpj.setDeltaBar(this.getDeltaBar());
+		newSpj.setDuration(this.getDuration());
+		newSpj.setError(this.getError());
+		newSpj.setFeasible(this.getFeasible());
+		newSpj.setJob(this.getJob());
+		newSpj.setNumberContainers(this.getNumberContainers());
+		newSpj.setNumberUsers(this.getNumberUsers());
+		newSpj.setNumberVM(this.getNumberVM());
+		newSpj.setNumCores(this.getNumCores());
+		newSpj.setNumOnDemandVM(this.getNumOnDemandVM());
+		newSpj.setNumReservedVM(this.getNumReservedVM());
+		newSpj.setNumSpotVM(this.getNumSpotVM());
+		newSpj.setParentID(this.getParentID());
+		newSpj.setProfile(this.getProfile());
+		newSpj.setRhoBar(this.getRhoBar());
+		newSpj.setSigmaBar(this.getSigmaBar());
+		newSpj.setTypeVMselected(this.getTypeVMselected());
+		newSpj.setXi(this.getXi());
+		return newSpj;
+	}
+
+	public String toString(){
+		String profileInfo= new String(); //Parameters RequiredBySimulators
+		for(Entry<String, Double> entry : profile.getProfileMap().entrySet()){
+			profileInfo += entry.getKey()+entry.getValue();
+		}
+		return parentID+"_"+id+numberContainers+numberVM+numberUsers+profileInfo+job.getPenalty()+typeVMselected.getId();
 	}
 
 }
