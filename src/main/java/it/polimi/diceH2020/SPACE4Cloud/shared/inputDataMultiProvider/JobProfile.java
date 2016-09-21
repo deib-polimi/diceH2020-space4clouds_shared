@@ -16,8 +16,8 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -27,13 +27,13 @@ import lombok.Data;
 @Data
 public class JobProfile {
 
-	@JsonUnwrapped private Map<String,Double> profileMap;
+	@JsonUnwrapped private TreeMap<String,Double> profileMap;
 	
 	public JobProfile(){
-		profileMap = new HashMap<String,Double>();
+		profileMap = new TreeMap<String,Double>();
 	}
 	
-	public JobProfile(Map<String,Double> profileMap){
+	public JobProfile(TreeMap<String,Double> profileMap){
 		this.profileMap = profileMap;
 	}
 	
