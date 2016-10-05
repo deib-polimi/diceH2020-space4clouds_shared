@@ -17,23 +17,35 @@
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputData.old;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import lombok.Data;
 
 @Data
 public class Profile_old {
 	
+	@JsonInclude(Include.NON_ABSENT)
 	private int cm;
+	@JsonInclude(Include.NON_ABSENT)
 	private int cr;
+	@JsonInclude(Include.NON_NULL)
+	private double sh1max;
+	
 	private double mavg;
 	private double mmax;
 	private double ravg;
 	private double rmax;
-	private double sh1max;
 	private double shtypavg;
 	private double shtypmax;
 	private int nm;
 	private int nr;
 	private int datasize;
+	@JsonInclude(Include.NON_NULL)
+	private double shbytesavg;
+	@JsonInclude(Include.NON_NULL)
+	private double shbytesmax;
+	
 	
 	public Profile_old(){
 	}
