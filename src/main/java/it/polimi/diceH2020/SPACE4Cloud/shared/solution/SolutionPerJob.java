@@ -29,22 +29,28 @@ import lombok.Data;
 
 @Data
 public class SolutionPerJob {
-
+	/*
+	 * Edit clone() if you add new parameters.
+	 * 
+	 * Maybe you should also edit toString() 
+	 * (used for cache in order to avoid sending solvers already calculated simulations. 
+	 * If the parameter you want to add is used by some simulator, you have too add it in the toString() method)
+	 */
 	private String parentID;
-	private Boolean changed; // TODO
+	private Boolean changed = false; // TODO
 	private Double cost = Double.MAX_VALUE;
 	private Double deltaBar = 0.0;
-	private Double duration;
-	private Boolean feasible;
+	private Double duration = 0.0;
+	private Boolean feasible = false;
 	private String id;
 	private ClassParameters job;
-	private Integer numberContainers;
-	private Integer numberUsers;
-	private Integer numberVM;
-	private Double numCores;
-	private Integer numOnDemandVM;
-	private Integer numReservedVM;
-	private Integer numSpotVM;
+	private Integer numberContainers = 0;
+	private Integer numberUsers = 0;
+	private Integer numberVM = 0;
+	private Double numCores = 0.0;
+	private Integer numOnDemandVM = 0;
+	private Integer numReservedVM = 0;
+	private Integer numSpotVM = 0;
 	private JobProfile profile;
 	private Double rhoBar = 0.0;
 	private Double sigmaBar = 0.0;
@@ -53,7 +59,7 @@ public class SolutionPerJob {
 	@JsonIgnore
 	private Double xi = 0.0;
 
-	public SolutionPerJob setNumberVM(int numberVM) {
+	public SolutionPerJob updateNumberVM(int numberVM) {
 		if (this.numberVM == null || this.numberVM.intValue() != numberVM) {
 			changed = true;
 		}
@@ -73,8 +79,8 @@ public class SolutionPerJob {
 		}
 		return this;
 	}
-
-	public void setNumberContainers(int numberContainers) {
+	
+	public void updateNumberContainers(int numberContainers) {
 		if (this.numberContainers == null || this.numberContainers.intValue() != numberContainers) {
 			changed = true;
 		}
@@ -82,6 +88,7 @@ public class SolutionPerJob {
 		// update num of vm
 		if (xi != null) {
 			this.numberVM = (int) Math.ceil((double) this.numberContainers / xi);
+			this.numberContainers = (int) Math.floor((double) numberVM * xi);
 		} else {
 			return;
 		}
@@ -144,7 +151,6 @@ public class SolutionPerJob {
 		for(Entry<String, Double> entry : profile.getProfileMap().entrySet()){
 			profileInfo += entry.getKey()+entry.getValue();
 		}
-		return parentID+"_"+id+numberContainers+numberVM+numberUsers+profileInfo+job.getPenalty()+typeVMselected.getId();
+		return parentID+"_"+id+numberContainers+numberVM+numberUsers+job.getD()+job.getM()+job.getV()+job.getThink()+profileInfo+job.getPenalty()+typeVMselected.getId();
 	}
-
 }
