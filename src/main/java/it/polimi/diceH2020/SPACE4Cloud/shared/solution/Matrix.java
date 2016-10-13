@@ -20,6 +20,7 @@ import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVM;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.VMConfigurationsMap;
 
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,6 @@ public class Matrix {
 	private int numCells;
 
 	private Map<Integer, String> mapForNotFailedRows;
-
 
 	public Matrix(){
 		matrix = new ConcurrentHashMap<>();
@@ -51,6 +51,22 @@ public class Matrix {
 			}
 		}
 		return spjList;
+	}
+	
+	public String getIdentifier(){
+		String id = matrix.entrySet().iterator().next().getValue()[0].getParentID();
+		String classIDs = new String();
+		String deadlines = new String();
+		String concurrency = new String();
+		
+		for(Entry<String,SolutionPerJob[]> spjs : matrix.entrySet()){
+			SolutionPerJob spj = spjs.getValue()[0];
+			classIDs += spj.getId();
+			deadlines += "D"+spj.getJob().getD()+" ";
+			concurrency += "H"+getHlow(spjs.getKey())+"-"+getHup(spjs.getKey())+" ";
+		}
+		
+		return id + classIDs + deadlines +concurrency;
 	}
 
 	public SolutionPerJob[] get(String key){
@@ -81,29 +97,34 @@ public class Matrix {
 	public Iterable<Double> getAllCost(String row){
 		restoreInitialHup();
 		System.out.println("row"+row+" cost");
-		return Arrays.stream(matrix.get(row)).map(spj->{System.out.println(spj.getCost());return spj.getCost();}).collect(Collectors.toList());//TODO delete
-		//return Arrays.stream(matrix.get(row)).map(SolutionPerJob::getCost).collect(Collectors.toList());
+		return Arrays.stream(matrix.get(row)).map(SolutionPerJob::getCost).collect(Collectors.toList());
 	}
 
 	public Iterable<Double> getAllPenalty(String row){
 		restoreInitialHup();
-		return Arrays.stream(matrix.get(row)).map(spj->{return spj.getJob().getHup() * spj.getJob().getPenalty() - spj.getNumberUsers();}).collect(Collectors.toList());
+		return Arrays.stream(matrix.get(row)).map(spj->{return (spj.getJob().getHup() - spj.getNumberUsers()) * spj.getJob().getPenalty() ;}).collect(Collectors.toList());
 	}
 
 	private void restoreInitialHup(){
 		for(Map.Entry<String, SolutionPerJob[]> row : matrix.entrySet()){
 			SolutionPerJob[] jobs = row.getValue();
 			int spjHup = 0;
+			int spjHlow = jobs[0].getJob().getHlow();
 			for(int i=0;i<jobs.length;i++){
 				if(jobs[i].getJob().getHup() >  spjHup){
 					spjHup = jobs[i].getJob().getHup();
+				}
+				if(jobs[i].getJob().getHlow() <  spjHlow){
+					spjHlow = jobs[i].getJob().getHlow();
 				}
 			}
 			for(int i=0;i<jobs.length;i++){
 				ClassParameters job = jobs[i].getJob();
 				job.setHup(spjHup);
+				job.setHlow(spjHlow);
 				jobs[i].setCost();
 			}
+			System.out.println(" ");
 		}
 	}
 
@@ -159,10 +180,9 @@ public class Matrix {
 
 	/**
 	 * negative cells
+	 * @throws Exception 
 	 */
-	public Matrix removeFailedSimulations(){
-
-
+	public Matrix removeFailedSimulations() throws IllegalStateException{
 		Matrix matrixWithHoles = new Matrix();
 
 		for (Map.Entry<String,SolutionPerJob[]> matrixRow : matrix.entrySet()){
@@ -178,8 +198,7 @@ public class Matrix {
 				}
 				matrixWithHoles.put(matrixRow.getKey(),  rowWithHoles);
 			}else{
-				//TODO
-				System.out.println("All Simulations of Matrix row "+matrix.get(matrixRow.getKey())+", have failed! ");
+				throw new IllegalStateException("All Simulations of Matrix row "+matrix.get(matrixRow.getValue()[0].getId())+", have failed! ");
 			}
 		}
 		return matrixWithHoles;
