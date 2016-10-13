@@ -29,7 +29,7 @@ public class Profile_old {
 	private int cm;
 	@JsonInclude(Include.NON_ABSENT)
 	private int cr;
-	@JsonInclude(Include.NON_NULL)
+	@JsonInclude(Include.NON_ABSENT)
 	private double sh1max;
 	
 	private double mavg;
@@ -45,7 +45,6 @@ public class Profile_old {
 	private double shbytesavg;
 	@JsonInclude(Include.NON_NULL)
 	private double shbytesmax;
-	
 	
 	public Profile_old(){
 	}

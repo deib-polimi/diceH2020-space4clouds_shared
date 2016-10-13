@@ -25,7 +25,7 @@ public class ClassParameters {
 	private double D;
 	private int Hup;
 	private int Hlow;
-	private double penalty;
+	private double penalty = 0.0;
 	private double think;
 	private double m;
 	private double v;

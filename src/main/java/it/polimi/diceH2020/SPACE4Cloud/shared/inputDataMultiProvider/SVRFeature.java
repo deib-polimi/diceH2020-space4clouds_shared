@@ -26,6 +26,6 @@ public class SVRFeature {
 	double w;
 	
 	public boolean validate(){
-		return (mu >= 0 && sigma >= 0);		
+		return (mu != 0.0 && sigma != 0.0);		
 	}
 }

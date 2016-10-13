@@ -55,7 +55,7 @@ public class JobMLProfile {
 		if(!mlFeatures.containsKey("h")){
 			return false;
 		}
-		if(mu_t < 0 && sigma_t < 0){
+		if(mu_t < 0.0 && sigma_t < 0.0){
 			return false;
 		}
 		
