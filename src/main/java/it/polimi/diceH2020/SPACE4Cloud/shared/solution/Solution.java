@@ -18,6 +18,8 @@ package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PrivateCloudParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVMJobClassKey;
@@ -27,16 +29,13 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.toList;
 
-/**
- * @author ciavotta
- *
- */
 @Data
 public class Solution {
 
@@ -49,20 +48,30 @@ public class Solution {
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private Optional<Scenarios> scenario; 
 	
+	private Boolean feasible;
 	private String id;
-	
 	private String provider;
+	
+	@JsonUnwrapped
+	@JsonInclude(Include.NON_NULL)
+	private Map<Integer,Boolean> activeNodes;
+	@JsonUnwrapped
+	@JsonInclude(Include.NON_NULL)
+	private Map<String,Integer> numVMPerNodePerClass;
 
 	public Solution() {
 		privateCloudParameters = Optional.empty(); 
+		feasible = true;
 	}
 
 	public Solution(String id) {
 		this.id = id;
 		privateCloudParameters = Optional.empty(); 
+		feasible = true;
 	}
 
 	private Double cost = -1.0;
+	private Double penalty = 0.0;
 
 	@JsonIgnore
 	private IEvaluator evaluator;
