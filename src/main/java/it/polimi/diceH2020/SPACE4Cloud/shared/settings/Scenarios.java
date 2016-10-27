@@ -38,8 +38,8 @@ public enum Scenarios {
     private Scenarios(CloudType cloudType,String description,String acronym, Models model) {
         this.description = description;
         this.cloudType = cloudType;
-        this.model = model;
         this.acronym = acronym;
+        this.model = model;
     }
     
     public String getDescription() {

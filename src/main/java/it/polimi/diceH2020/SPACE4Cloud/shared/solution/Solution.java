@@ -93,7 +93,7 @@ public class Solution {
 		lstSolutions.add(solPerJob);
 		solPerJob.setParentID(this.id);
 	}
-
+	
 	@JsonIgnore
 	public List<TypeVMJobClassKey> getPairsTypeVMJobClass() {
 		return lstSolutions.stream().map(sol -> new TypeVMJobClassKey(sol.getId(), sol.getTypeVMselected().getId())).collect(toList());

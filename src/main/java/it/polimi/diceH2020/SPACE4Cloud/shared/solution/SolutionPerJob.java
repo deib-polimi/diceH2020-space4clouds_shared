@@ -145,7 +145,7 @@ public class SolutionPerJob {
 		newSpj.setXi(this.getXi());
 		return newSpj;
 	}
-
+	
 	public String toString(){
 		String profileInfo= new String(); //Parameters RequiredBySimulators
 		for(Entry<String, Double> entry : profile.getProfileMap().entrySet()){

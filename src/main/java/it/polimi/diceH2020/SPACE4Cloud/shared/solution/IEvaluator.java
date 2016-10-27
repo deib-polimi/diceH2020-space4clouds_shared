@@ -20,4 +20,5 @@ package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 public interface IEvaluator {
 	double evaluate(SolutionPerJob solutionPerJob);
 	double evaluate(Solution solution);
+	void register(SolutionPerJob solutionPerJob, long executionTime);
 }

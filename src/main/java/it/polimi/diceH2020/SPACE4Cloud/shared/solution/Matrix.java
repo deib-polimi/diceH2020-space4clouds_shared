@@ -180,7 +180,6 @@ public class Matrix {
 
 	/**
 	 * negative cells
-	 * @throws Exception 
 	 */
 	public Matrix removeFailedSimulations() throws IllegalStateException{
 		Matrix matrixWithHoles = new Matrix();
