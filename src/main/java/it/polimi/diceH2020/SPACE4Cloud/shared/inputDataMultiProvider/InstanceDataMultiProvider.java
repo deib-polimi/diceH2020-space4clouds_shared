@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -116,7 +117,7 @@ public class InstanceDataMultiProvider {
 	}
 	
 	@JsonIgnore
-	private boolean validateProviders(){
+	private boolean validateProviders(){	//Only for Public Cloud 
 		if(mapPublicCloudParameters.getMapPublicCloudParameters() != null){
 			if(!mapJobProfiles.getProviders().equals(mapPublicCloudParameters.getProviders())){
 				validationError = "Not coinciding providers";
@@ -136,9 +137,23 @@ public class InstanceDataMultiProvider {
 		}
 		
 		if(mapVMConfigurations.getMapVMConfigurations() != null){
-			if(!mapJobProfiles.getProvidersTypesMap().equals(mapVMConfigurations.getProvidersTypesMap())){
+			if(!contains(mapJobProfiles.getProvidersTypesMap(),mapVMConfigurations.getProvidersTypesMap())){
 				validationError = "Not coinciding providers mapJobProfiles or mapClassParameters";
 				return false;
+			}
+		}
+		return true;
+	}
+	
+	private boolean contains(Map<String, Set<String>> profilesPTMAP, Map<String, Set<String>> vmConfigurationsPTMAP){
+		for(Map.Entry<String,Set<String>> entry : profilesPTMAP.entrySet()){
+			if(! vmConfigurationsPTMAP.containsKey(entry.getKey())){
+				return false;
+			}
+			for(String vmtype : entry.getValue()){
+				if(!vmConfigurationsPTMAP.get(entry.getKey()).contains(vmtype)){
+					return false;
+				}
 			}
 		}
 		return true;
