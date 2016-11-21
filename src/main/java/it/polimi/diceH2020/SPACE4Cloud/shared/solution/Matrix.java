@@ -1,5 +1,6 @@
 /*
 Copyright 2016 Jacopo Rigoli
+Copyright 2016 Eugenio Gianniti
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -52,20 +53,20 @@ public class Matrix {
 		}
 		return spjList;
 	}
-	
+
 	public String getIdentifier(){
 		String id = matrix.entrySet().iterator().next().getValue()[0].getParentID();
 		String classIDs = new String();
 		String deadlines = new String();
 		String concurrency = new String();
-		
+
 		for(Entry<String,SolutionPerJob[]> spjs : matrix.entrySet()){
 			SolutionPerJob spj = spjs.getValue()[0];
 			classIDs += spj.getId();
 			deadlines += "D"+spj.getJob().getD()+" ";
 			concurrency += "H"+getHlow(spjs.getKey())+"-"+getHup(spjs.getKey())+" ";
 		}
-		
+
 		return id + classIDs + deadlines +concurrency;
 	}
 
@@ -181,23 +182,24 @@ public class Matrix {
 	/**
 	 * negative cells
 	 */
-	public Matrix removeFailedSimulations() throws IllegalStateException{
+	public Matrix removeFailedSimulations() throws MatrixHugeHoleException {
 		Matrix matrixWithHoles = new Matrix();
-
-		for (Map.Entry<String,SolutionPerJob[]> matrixRow : matrix.entrySet()){
-			int i = (int) Arrays.stream(matrix.get(matrixRow.getKey())).map(SolutionPerJob::getNumberVM).filter(v->v>0).count();
-			if(i != 0){
-				SolutionPerJob[] rowWithHoles = new SolutionPerJob[i];
-				i=0;
-				for(SolutionPerJob spj : matrixRow.getValue()){
-					if(spj.getNumberVM()>0){
+		for (Map.Entry<String,SolutionPerJob[]> matrixRow : matrix.entrySet()) {
+			final int count = (int) Arrays.stream(matrix.get(matrixRow.getKey())).map(SolutionPerJob::getNumberVM)
+					.filter(v -> v > 0).count();
+			if (count != 0) {
+				SolutionPerJob[] rowWithHoles = new SolutionPerJob[count];
+				int i = 0;
+				for (SolutionPerJob spj : matrixRow.getValue()) {
+					if (spj.getNumberVM() > 0) {
 						rowWithHoles[i] = spj;
-						i++;
+						++i;
 					}
 				}
-				matrixWithHoles.put(matrixRow.getKey(),  rowWithHoles);
-			}else{
-				throw new IllegalStateException("All Simulations of Matrix row "+matrix.get(matrixRow.getValue()[0].getId())+", have failed! ");
+				matrixWithHoles.put(matrixRow.getKey(), rowWithHoles);
+			} else {
+				throw new MatrixHugeHoleException("All Simulations of Matrix row " +
+						matrix.get(matrixRow.getValue()[0].getId()).toString() + ", have failed!");
 			}
 		}
 		return matrixWithHoles;
