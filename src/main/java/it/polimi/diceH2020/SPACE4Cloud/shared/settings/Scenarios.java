@@ -16,46 +16,33 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.settings;
 
-public enum Scenarios {
-	PublicPeakWorkload(CloudType.Public,"Peak Workload","Pu Peak"),
-	PublicAvgWorkLoad(CloudType.Public,"Average Workload","Pu AVG"),
-	PrivateAdmissionControl(CloudType.Private,"Admission Control","Pr AC KN",Models.knapsack), 
-	PrivateAdmissionControlWithPhysicalAssignment(CloudType.Private,"Admission Control","Pr AC BP",Models.binPacking), 
-	PrivateNoAdmissionControl(CloudType.Private,"No Admission Control","Pr No AC");
-	
-	private final String description;       
-	private final CloudType cloudType;   
-	private final Models model;
-	private final String acronym;
+import lombok.Getter;
 
-    private Scenarios(CloudType cloudType,String description, String acronym) {
+@Getter
+public enum Scenarios {
+    PublicPeakWorkload(CloudType.Public, "Peak Workload", "Pu Peak"),
+    PublicAvgWorkLoad(CloudType.Public, "Average Workload", "Pu AVG"),
+    PrivateAdmissionControl(CloudType.Private, "Admission Control", "Pr AC KN", Models.KNAPSACK),
+    PrivateAdmissionControlWithPhysicalAssignment(CloudType.Private, "Admission Control", "Pr AC BP", Models.BIN_PACKING),
+    PrivateNoAdmissionControl(CloudType.Private, "No Admission Control", "Pr No AC");
+
+    private final String description;
+    private final CloudType cloudType;
+    private final Models model;
+    private final String acronym;
+
+    Scenarios(CloudType cloudType, String description, String acronym) {
         this.description = description;
         this.cloudType = cloudType;
-        this.model = Models.knapsack;
+        this.model = Models.KNAPSACK;
         this.acronym = acronym;
     }
-    
-    private Scenarios(CloudType cloudType,String description,String acronym, Models model) {
+
+    Scenarios(CloudType cloudType, String description, String acronym, Models model) {
         this.description = description;
         this.cloudType = cloudType;
         this.acronym = acronym;
         this.model = model;
     }
-    
-    public String getDescription() {
-       return this.description;
-    }
-    
-    public CloudType getCloudType() {
-        return this.cloudType;
-    }
-    
-    public Models getModel(){
-    	return this.model;
-    }
-    
-    public String getAcronym(){
-    	return this.acronym;
-    }
-    
+
 }
