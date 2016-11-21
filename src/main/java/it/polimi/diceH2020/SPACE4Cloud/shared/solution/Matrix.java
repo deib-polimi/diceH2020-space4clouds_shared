@@ -27,227 +27,194 @@ import java.util.stream.Collectors;
 
 public class Matrix {
 
-	private ConcurrentHashMap<String,SolutionPerJob[]> matrix;
+    private Map<String, SolutionPerJob[]> matrix;
 
-	private String matrixNVMString;
+    private Map<Integer, String> mapForNotFailedRows;
 
-	private int numCells;
+    public Matrix() {
+        matrix = new ConcurrentHashMap<>();
+        mapForNotFailedRows = new HashMap<>();
+    }
 
-	private Map<Integer, String> mapForNotFailedRows;
+    public void put(String key, SolutionPerJob[] value ) {
+        matrix.put(key, value);
+    }
 
-	public Matrix(){
-		matrix = new ConcurrentHashMap<>();
-		mapForNotFailedRows = new HashMap<>();
-	}
+    public List<SolutionPerJob> getAllSolutions() {
+        return matrix.values().stream().flatMap(Arrays::stream).collect(Collectors.toList());
+    }
 
-	public void put(String key,SolutionPerJob[] value ){
-		matrix.put(key, value);
-	}
+    public String getIdentifier() {
+        String id = matrix.entrySet().iterator().next().getValue()[0].getParentID();
+        String classIDs = "";
+        String deadlines = "";
+        String concurrency = "";
 
-	public List<SolutionPerJob> getAllSolutions(){
-		List<SolutionPerJob> spjList = new ArrayList<>();
-		for (Map.Entry<String,SolutionPerJob[]> matrixRow : matrix.entrySet()) {
-			for(SolutionPerJob spj : matrixRow.getValue()){
-				spjList.add(spj);
-			}
-		}
-		return spjList;
-	}
+        for(Entry<String, SolutionPerJob[]> spjs : matrix.entrySet()) {
+            SolutionPerJob spj = spjs.getValue()[0];
+            classIDs += spj.getId();
+            deadlines += "D" + spj.getJob().getD() + " ";
+            concurrency += "H" + getHlow(spjs.getKey()) + "-" + getHup(spjs.getKey()) + " ";
+        }
 
-	public String getIdentifier(){
-		String id = matrix.entrySet().iterator().next().getValue()[0].getParentID();
-		String classIDs = new String();
-		String deadlines = new String();
-		String concurrency = new String();
+        return id + classIDs + deadlines + concurrency;
+    }
 
-		for(Entry<String,SolutionPerJob[]> spjs : matrix.entrySet()){
-			SolutionPerJob spj = spjs.getValue()[0];
-			classIDs += spj.getId();
-			deadlines += "D"+spj.getJob().getD()+" ";
-			concurrency += "H"+getHlow(spjs.getKey())+"-"+getHup(spjs.getKey())+" ";
-		}
+    public SolutionPerJob[] get(String key) {
+        return matrix.get(key);
+    }
 
-		return id + classIDs + deadlines +concurrency;
-	}
+    public Set<Map.Entry<String, SolutionPerJob[]>> entrySet() {
+        return matrix.entrySet();
+    }
 
-	public SolutionPerJob[] get(String key){
-		return matrix.get(key);
-	}
+    public Map<String, SolutionPerJob[]> get() {
+        return matrix;
+    }
 
-	public Set<Map.Entry<String,SolutionPerJob[]>> entrySet() {
-		return matrix.entrySet();
-	}
+    public Iterable<Integer> getAllH(String row) {
+        return Arrays.stream(matrix.get(row)).map(SolutionPerJob::getNumberUsers).collect(Collectors.toList());
+    }
 
-	public ConcurrentHashMap<String,SolutionPerJob[]> get(){
-		return matrix;
-	}
+    public int getHlow(String row) {
+        return matrix.get(row)[0].getJob().getHlow();
+    }
 
-	public Iterable<Integer> getAllH(String row){
-		return Arrays.stream(matrix.get(row)).map(SolutionPerJob::getNumberUsers).collect(Collectors.toList());
-	}
+    public int getHup(String row) {
+        int pos = matrix.get(row).length;
+        return matrix.get(row)[pos-1].getJob().getHup();
+    }
 
-	public int getHlow(String row){
-		return matrix.get(row)[0].getJob().getHlow();
-	}
+    public Iterable<Double> getAllCost(String row) {
+        restoreInitialHup();
+        return Arrays.stream(matrix.get(row)).map(SolutionPerJob::getCost).collect(Collectors.toList());
+    }
 
-	public int getHup(String row){
-		int pos = matrix.get(row).length;
-		return matrix.get(row)[pos-1].getJob().getHup();
-	}
+    public Iterable<Double> getAllPenalty(String row) {
+        restoreInitialHup();
+        return Arrays.stream(matrix.get(row)).map(spj ->
+                (spj.getJob().getHup() - spj.getNumberUsers()) * spj.getJob().getPenalty())
+                .collect(Collectors.toList());
+    }
 
-	public Iterable<Double> getAllCost(String row){
-		restoreInitialHup();
-		System.out.println("row"+row+" cost");
-		return Arrays.stream(matrix.get(row)).map(SolutionPerJob::getCost).collect(Collectors.toList());
-	}
+    // TODO Why is this called restoreInitialHup if it also modifies HLow and cost?
+    // TODO Why don't you save these values the first time you get the data? What guarantees that these values are the initial ones?
+    // TODO Anyhow, why should you search the whole Matrix over and over again if they are the initial values?
+    private void restoreInitialHup() {
+        for (SolutionPerJob[] jobs : matrix.values()) {
+            OptionalInt maybeHUp = Arrays.stream(jobs).mapToInt(spj -> spj.getJob().getHup()).max();
+            OptionalInt maybeHLow = Arrays.stream(jobs).mapToInt(spj -> spj.getJob().getHlow()).min();
+            int spjHUp = maybeHUp.orElse(0);
+            int spjHLow = maybeHLow.orElse(spjHUp);
+            for (SolutionPerJob spj : jobs) {
+                ClassParameters job = spj.getJob();
+                job.setHup(spjHUp);
+                job.setHlow(spjHLow);
+                spj.setCost();
+            }
+        }
+    }
 
-	public Iterable<Double> getAllPenalty(String row){
-		restoreInitialHup();
-		return Arrays.stream(matrix.get(row)).map(spj->{return (spj.getJob().getHup() - spj.getNumberUsers()) * spj.getJob().getPenalty() ;}).collect(Collectors.toList());
-	}
+    private List<String> getAllSelectedVMid(String row) {
+        return Arrays.stream(matrix.get(row)).map(SolutionPerJob::getTypeVMselected)
+                .map(TypeVM::getId).collect(Collectors.toList());
+    }
 
-	private void restoreInitialHup(){
-		for(Map.Entry<String, SolutionPerJob[]> row : matrix.entrySet()){
-			SolutionPerJob[] jobs = row.getValue();
-			int spjHup = 0;
-			int spjHlow = jobs[0].getJob().getHlow();
-			for(int i=0;i<jobs.length;i++){
-				if(jobs[i].getJob().getHup() >  spjHup){
-					spjHup = jobs[i].getJob().getHup();
-				}
-				if(jobs[i].getJob().getHlow() <  spjHlow){
-					spjHlow = jobs[i].getJob().getHlow();
-				}
-			}
-			for(int i=0;i<jobs.length;i++){
-				ClassParameters job = jobs[i].getJob();
-				job.setHup(spjHup);
-				job.setHlow(spjHlow);
-				jobs[i].setCost();
-			}
-			System.out.println(" ");
-		}
-	}
+    public List<Double> getAllMtilde(String row, VMConfigurationsMap vmConfigurations) {
+        return getAllSelectedVMid(row).stream().map(id ->
+                vmConfigurations.getMapVMConfigurations().get(id).getMemory()).collect(Collectors.toList());
+    }
 
-	public boolean containsKey(String row){
-		return matrix.containsKey(row);
-	}
+    public List<Double> getAllVtilde(String row, VMConfigurationsMap vmConfigurations) {
+        return getAllSelectedVMid(row).stream().map(id ->
+                vmConfigurations.getMapVMConfigurations().get(id).getCore()).collect(Collectors.toList());
+    }
 
-	public List<String> getAllSelectedVMid(String row){
-		return Arrays.stream(matrix.get(row)).map(SolutionPerJob::getTypeVMselected).map(TypeVM::getId).collect(Collectors.toList());
-	}
+    /**
+     *
+     * @param row class ID
+     * @param concurrencyLevel H of the given column
+     * @return SolutionPerJob
+     */
+    public SolutionPerJob getCell(String row, int concurrencyLevel) {
+        return Arrays.stream(matrix.get(row)).filter(s ->
+                s.getNumberUsers() == concurrencyLevel).findFirst().get();
+    }
 
-	public List<Double> getAllMtilde(String row,VMConfigurationsMap vmConfigurations){
-		List<Double> mTildeSet = new ArrayList<>();
-		for(String id : getAllSelectedVMid(row)){
-			mTildeSet.add(vmConfigurations.getMapVMConfigurations().get(id).getMemory());
-		}
-		return mTildeSet;
-	}
+    public String getID(String row) {
+        return Arrays.stream(matrix.get(row)).findFirst().map(SolutionPerJob::getId).get();
+    }
 
-	public List<Double> getAllVtilde(String row,VMConfigurationsMap vmConfigurations){
-		List<Double> vTildeSet = new ArrayList<>();
-		for(String id : getAllSelectedVMid(row)){
-			vTildeSet.add(vmConfigurations.getMapVMConfigurations().get(id).getCore());
-		}
-		return vTildeSet;
-	}
+    public List<Integer> getAllNu(String row) {
+        return Arrays.stream(matrix.get(row)).map(spj ->
+                spj.getNumReservedVM() + spj.getNumOnDemandVM() + spj.getNumSpotVM()).collect(Collectors.toList());
+    }
 
-	/**
-	 *
-	 * @param row class ID
-	 * @param concurrencyLevel H of the given column
-	 * @return SolutionPerJob
-	 */
-	public SolutionPerJob getCell(String row, int concurrencyLevel){
-		return Arrays.stream(matrix.get(row)).filter(s->s.getNumberUsers()==concurrencyLevel).findFirst().get();
-	}
+    public int getNumRows() {
+        return matrix.size();
+    }
 
-	public String getID(String row){
-		return  Arrays.stream(matrix.get(row)).findFirst().map(SolutionPerJob::getId).get();
-	}
+    /**
+     * negative cells
+     */
+    public Matrix removeFailedSimulations() throws MatrixHugeHoleException {
+        Matrix matrixWithHoles = new Matrix();
+        for (Map.Entry<String, SolutionPerJob[]> matrixRow : matrix.entrySet()) {
+            final int count = (int) Arrays.stream(matrixRow.getValue()).map(SolutionPerJob::getNumberVM)
+                    .filter(v -> v > 0).count();
+            if (count != 0) {
+                SolutionPerJob[] rowWithHoles = Arrays.stream(matrixRow.getValue())
+                        .filter(spj -> spj.getNumberVM() > 0).collect(Collectors.toList())
+                        .toArray(new SolutionPerJob[count]);
+                matrixWithHoles.put(matrixRow.getKey(), rowWithHoles);
+            } else {
+                throw new MatrixHugeHoleException("All Simulations of Matrix row " +
+                        matrix.get(matrixRow.getValue()[0].getId()).toString() + ", have failed!");
+            }
+        }
+        return matrixWithHoles;
+    }
 
-	public List<Integer> getAllNu(String row){
-		List<Integer> nuSet = new ArrayList<>();
-		for(SolutionPerJob spj :  matrix.get(row)){
-			nuSet.add(spj.getNumReservedVM()+spj.getNumOnDemandVM()+spj.getNumSpotVM());
-		}
-		return nuSet;
-	}
+    public int getNumCells() {
+        return matrix.values().stream().mapToInt(v -> v.length).sum();
+    }
 
-	public int getNumRows(){
-		return matrix.size();
-	}
+    public String asString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Optimality Matrix(for solution");
+        builder.append(matrix.entrySet().iterator().next().getValue()[0].getParentID());
+        builder.append("):\n");
+        matrix.forEach((k, v) -> {
+            builder.append(v[0].getId());
+            builder.append("\t| ");
+            for (SolutionPerJob cell: v) {
+                builder.append(" H:");
+                builder.append(cell.getNumberUsers());
+                builder.append(",nVM:");
+                builder.append(cell.getNumberVM());
+                builder.append(cell.getFeasible() ? ",F  \t|" : ",I  \t|");
+            }
+            builder.append("\n   \t| ");
+            for (SolutionPerJob cell: v) {
+                builder.append(" dur: ");
+                builder.append(cell.getDuration().intValue());
+                builder.append("  \t|");
+            }
+            builder.append('\n');
+        });
+        return builder.toString();
+    }
 
-	/**
-	 * negative cells
-	 */
-	public Matrix removeFailedSimulations() throws MatrixHugeHoleException {
-		Matrix matrixWithHoles = new Matrix();
-		for (Map.Entry<String,SolutionPerJob[]> matrixRow : matrix.entrySet()) {
-			final int count = (int) Arrays.stream(matrix.get(matrixRow.getKey())).map(SolutionPerJob::getNumberVM)
-					.filter(v -> v > 0).count();
-			if (count != 0) {
-				SolutionPerJob[] rowWithHoles = new SolutionPerJob[count];
-				int i = 0;
-				for (SolutionPerJob spj : matrixRow.getValue()) {
-					if (spj.getNumberVM() > 0) {
-						rowWithHoles[i] = spj;
-						++i;
-					}
-				}
-				matrixWithHoles.put(matrixRow.getKey(), rowWithHoles);
-			} else {
-				throw new MatrixHugeHoleException("All Simulations of Matrix row " +
-						matrix.get(matrixRow.getValue()[0].getId()).toString() + ", have failed!");
-			}
-		}
-		return matrixWithHoles;
-	}
+    public String getNotFailedRow(Integer key) {
+        return mapForNotFailedRows.get(key);
+    }
 
+    public int numNotFailedRows() {
+        return mapForNotFailedRows.size();
+    }
 
-	public int getNumCells(){
-		numCells = 0;
-		matrix.forEach((k,v)->{
-			numCells += v.length;
-		});
-		return numCells;
-	}
-
-	public String asString(){
-		matrixNVMString = new String();
-		matrix.forEach((k,v)->{
-			matrixNVMString += v[0].getId()+"\t| ";
-			for(SolutionPerJob cell: v){
-				matrixNVMString += " H:"+cell.getNumberUsers()+",nVM:"+cell.getNumberVM();
-				if(cell.getFeasible()) matrixNVMString += ",F  \t|";
-				else matrixNVMString += ",I  \t|";
-			}
-			matrixNVMString += "\n   \t| ";
-			for(SolutionPerJob cell: v){
-				matrixNVMString += " dur: "+cell.getDuration().intValue()+"  \t|";
-			}
-			matrixNVMString += "\n";
-		});
-		//adding title
-		matrixNVMString = "Optimality Matrix(for solution"+matrix.entrySet().iterator().next().getValue()[0].getParentID()+"):\n" + matrixNVMString;
-		return matrixNVMString;
-	}
-
-	public String getNotFailedRow(Integer key) {
-		return mapForNotFailedRows.get(key);
-	}
-
-	public boolean containsNotFailedRow(String value){
-		return mapForNotFailedRows.containsValue(value);
-	}
-
-	public int numNotFailedRows(){
-		return mapForNotFailedRows.size();
-	}
-
-	public void addNotFailedRow(Integer key, String value) {
-		mapForNotFailedRows.put(key, value);
-	}
+    public void addNotFailedRow(Integer key, String value) {
+        mapForNotFailedRows.put(key, value);
+    }
 
 }
