@@ -110,7 +110,7 @@ public class Matrix {
                 ClassParameters job = spj.getJob();
                 job.setHup(spjHUp);
                 job.setHlow(spjHLow);
-                spj.setCost();
+                spj.updateCost();
             }
         }
     }

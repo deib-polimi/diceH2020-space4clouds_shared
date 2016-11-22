@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -16,16 +16,15 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.solution;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Map.Entry;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobProfile;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVM;
 import lombok.Data;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Map.Entry;
 
 @Data
 public class SolutionPerJob {
@@ -41,6 +40,7 @@ public class SolutionPerJob {
 	private Double cost = Double.MAX_VALUE;
 	private Double deltaBar = 0.0;
 	private Double duration = 0.0;
+	private Double throughput = 0.0;
 	private Boolean feasible = false;
 	private String id;
 	private ClassParameters job;
@@ -59,47 +59,47 @@ public class SolutionPerJob {
 	@JsonIgnore
 	private Double xi = 0.0;
 
-	public SolutionPerJob updateNumberVM(int numberVM) {
-		if (this.numberVM == null || this.numberVM.intValue() != numberVM) {
+	public SolutionPerJob updateNumberVM(int newNumberVM) {
+		if (numberVM == null || numberVM != newNumberVM) {
 			changed = true;
 		}
-		this.numberVM = numberVM;
+		numberVM = newNumberVM;
 		if (typeVMselected != null && typeVMselected.getEta() >= 0) {
-			this.numSpotVM = (int) Math.floor(typeVMselected.getEta() * this.numberVM);
-			this.numReservedVM = (int) Math.min(typeVMselected.getR(), (this.numberVM - numSpotVM));
-			this.numOnDemandVM = Math.max(0, this.numberVM - numSpotVM - numReservedVM);
+			numSpotVM = (int) Math.floor(typeVMselected.getEta() * numberVM);
+			numReservedVM = Math.min(typeVMselected.getR(), (numberVM - numSpotVM));
+			numOnDemandVM = Math.max(0, numberVM - numSpotVM - numReservedVM);
 		}
 		// update num of containers
-		if (this.numCores != null) {
+		if (numCores != null) {
 			if (xi > 0.0) {
-				this.numberContainers = (int) Math.floor((double) numberVM * xi);
+				numberContainers = (int) Math.floor((double) newNumberVM * xi);
 			} else {
-				this.numberContainers = (int) (numberVM * numCores);
+				numberContainers = (int) (newNumberVM * numCores);
 			}
 		}
 		return this;
 	}
-	
-	public void updateNumberContainers(int numberContainers) {
-		if (this.numberContainers == null || this.numberContainers.intValue() != numberContainers) {
+
+	public void updateNumberContainers(int newNumberContainers) {
+		if (numberContainers == null || numberContainers != newNumberContainers) {
 			changed = true;
 		}
-		this.numberContainers = numberContainers;
+		numberContainers = newNumberContainers;
 		// update num of vm
 		if (xi != null) {
-			this.numberVM = (int) Math.ceil((double) this.numberContainers / xi);
-			this.numberContainers = (int) Math.floor((double) numberVM * xi);
+			numberVM = (int) Math.ceil((double) numberContainers / xi);
+			numberContainers = (int) Math.floor((double) numberVM * xi);
 		} else {
 			return;
 		}
 		if (typeVMselected != null && typeVMselected.getEta() >= 0) {
-			this.numSpotVM = (int) Math.floor(typeVMselected.getEta() * this.numberVM);
-			this.numReservedVM = (int) Math.min(typeVMselected.getR(), (this.numberVM - numSpotVM));
-			this.numOnDemandVM = Math.max(0, this.numberVM - numSpotVM - numReservedVM);
+			numSpotVM = (int) Math.floor(typeVMselected.getEta() * numberVM);
+			numReservedVM = Math.min(typeVMselected.getR(), (numberVM - numSpotVM));
+			numOnDemandVM = Math.max(0, numberVM - numSpotVM - numReservedVM);
 		}
 	}
 
-	public void setCost() {
+	void updateCost() {
 		double cost = deltaBar * numOnDemandVM + rhoBar * numReservedVM + sigmaBar * numSpotVM
 				+ job.getPenalty() * (job.getHup() - numberUsers);
 		BigDecimal c = BigDecimal.valueOf(cost).setScale(4, RoundingMode.HALF_EVEN);
@@ -122,35 +122,41 @@ public class SolutionPerJob {
 
 	public SolutionPerJob clone() {
 		SolutionPerJob newSpj = new SolutionPerJob();
-		newSpj.setId(this.getId());
-		newSpj.setChanged(this.getChanged());
-		newSpj.setCost(this.getCost());
-		newSpj.setDeltaBar(this.getDeltaBar());
-		newSpj.setDuration(this.getDuration());
-		newSpj.setError(this.getError());
-		newSpj.setFeasible(this.getFeasible());
-		newSpj.setJob(this.getJob());
-		newSpj.setNumberContainers(this.getNumberContainers());
-		newSpj.setNumberUsers(this.getNumberUsers());
-		newSpj.setNumberVM(this.getNumberVM());
-		newSpj.setNumCores(this.getNumCores());
-		newSpj.setNumOnDemandVM(this.getNumOnDemandVM());
-		newSpj.setNumReservedVM(this.getNumReservedVM());
-		newSpj.setNumSpotVM(this.getNumSpotVM());
-		newSpj.setParentID(this.getParentID());
-		newSpj.setProfile(this.getProfile());
-		newSpj.setRhoBar(this.getRhoBar());
-		newSpj.setSigmaBar(this.getSigmaBar());
-		newSpj.setTypeVMselected(this.getTypeVMselected());
-		newSpj.setXi(this.getXi());
+		newSpj.setId(id);
+		newSpj.setChanged(changed);
+		newSpj.setCost(cost);
+		newSpj.setDeltaBar(deltaBar);
+		newSpj.setDuration(duration);
+		newSpj.setThroughput(throughput);
+		newSpj.setError(error);
+		newSpj.setFeasible(feasible);
+		newSpj.setJob(job);
+		newSpj.setNumberContainers(numberContainers);
+		newSpj.setNumberUsers(numberUsers);
+		newSpj.setNumberVM(numberVM);
+		newSpj.setNumCores(numCores);
+		newSpj.setNumOnDemandVM(numOnDemandVM);
+		newSpj.setNumReservedVM(numReservedVM);
+		newSpj.setNumSpotVM(numSpotVM);
+		newSpj.setParentID(parentID);
+		newSpj.setProfile(profile);
+		newSpj.setRhoBar(rhoBar);
+		newSpj.setSigmaBar(sigmaBar);
+		newSpj.setTypeVMselected(typeVMselected);
+		newSpj.setXi(xi);
 		return newSpj;
 	}
-	
-	public String toString(){
-		String profileInfo= new String(); //Parameters RequiredBySimulators
-		for(Entry<String, Double> entry : profile.getProfileMap().entrySet()){
-			profileInfo += entry.getKey()+entry.getValue();
+
+	public String toString() {
+		//Parameters RequiredBySimulators
+		StringBuilder builder = new StringBuilder();
+		builder.append(parentID).append("_").append(id).append(numberContainers).append(numberVM)
+				.append(numberUsers).append(job.getD()).append(job.getM()).append(job.getV()).append(job.getThink());
+		for (Entry<String, Double> entry : profile.getProfileMap().entrySet()) {
+			builder.append(entry.getKey());
+			builder.append(entry.getValue());
 		}
-		return parentID+"_"+id+numberContainers+numberVM+numberUsers+job.getD()+job.getM()+job.getV()+job.getThink()+profileInfo+job.getPenalty()+typeVMselected.getId();
+		builder.append(job.getPenalty()).append(typeVMselected.getId());
+		return builder.toString();
 	}
 }
