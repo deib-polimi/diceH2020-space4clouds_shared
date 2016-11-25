@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -24,4 +24,5 @@ public class Settings {
 	private Integer simDuration = null;
 	private SolverType solver = null;
 	private CloudType cloud = null;
+	private SPNModel technology = null;
 }

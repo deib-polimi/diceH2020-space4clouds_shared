@@ -16,6 +16,6 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.settings;
 
-public enum Models {
+public enum AMPLModel {
 	KNAPSACK, BIN_PACKING
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -22,27 +22,39 @@ import lombok.Getter;
 public enum Scenarios {
     PublicPeakWorkload(CloudType.Public, "Peak Workload", "Pu Peak"),
     PublicAvgWorkLoad(CloudType.Public, "Average Workload", "Pu AVG"),
-    PrivateAdmissionControl(CloudType.Private, "Admission Control", "Pr AC KN", Models.KNAPSACK),
-    PrivateAdmissionControlWithPhysicalAssignment(CloudType.Private, "Admission Control", "Pr AC BP", Models.BIN_PACKING),
-    PrivateNoAdmissionControl(CloudType.Private, "No Admission Control", "Pr No AC");
+    PrivateAdmissionControl(CloudType.Private, "Admission Control", "Pr AC KN", AMPLModel.KNAPSACK),
+    PrivateAdmissionControlWithPhysicalAssignment(CloudType.Private, "Admission Control", "Pr AC BP", AMPLModel.BIN_PACKING),
+    PrivateNoAdmissionControl(CloudType.Private, "No Admission Control", "Pr No AC"),
+    StormPublicAvgWorkLoad(CloudType.Public, "Storm Average Workload", "Storm Pu AVG", SPNModel.STORM);
 
     private final String description;
     private final CloudType cloudType;
-    private final Models model;
+    private final AMPLModel model;
     private final String acronym;
+    private final SPNModel swn;
 
     Scenarios(CloudType cloudType, String description, String acronym) {
         this.description = description;
         this.cloudType = cloudType;
-        this.model = Models.KNAPSACK;
+        this.model = AMPLModel.KNAPSACK;
         this.acronym = acronym;
+        swn = SPNModel.MAPREDUCE;
     }
 
-    Scenarios(CloudType cloudType, String description, String acronym, Models model) {
+    Scenarios(CloudType cloudType, String description, String acronym, AMPLModel model) {
         this.description = description;
         this.cloudType = cloudType;
         this.acronym = acronym;
         this.model = model;
+        swn = SPNModel.MAPREDUCE;
+    }
+
+    Scenarios(CloudType cloudType, String description, String acronym, SPNModel spnModel) {
+        this.description = description;
+        this.cloudType = cloudType;
+        this.acronym = acronym;
+        this.model = AMPLModel.KNAPSACK;
+        swn = spnModel;
     }
 
 }

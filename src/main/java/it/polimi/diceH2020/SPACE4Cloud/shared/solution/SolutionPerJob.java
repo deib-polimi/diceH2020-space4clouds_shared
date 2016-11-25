@@ -41,6 +41,7 @@ public class SolutionPerJob {
 	private Double deltaBar = 0.0;
 	private Double duration = 0.0;
 	private Double throughput = 0.0;
+	private Double utilization = 0.0;
 	private Boolean feasible = false;
 	private String id;
 	private ClassParameters job;
@@ -128,6 +129,7 @@ public class SolutionPerJob {
 		newSpj.setDeltaBar(deltaBar);
 		newSpj.setDuration(duration);
 		newSpj.setThroughput(throughput);
+		newSpj.setUtilization(utilization);
 		newSpj.setError(error);
 		newSpj.setFeasible(feasible);
 		newSpj.setJob(job);
