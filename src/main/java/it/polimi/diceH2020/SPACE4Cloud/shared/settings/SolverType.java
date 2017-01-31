@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -17,5 +17,7 @@
 package it.polimi.diceH2020.SPACE4Cloud.shared.settings;
 
 public enum SolverType {
-	SPNSolver, QNSolver;
+	SPNSolver,
+	QNSolver,
+	DagSimSolver
 }
