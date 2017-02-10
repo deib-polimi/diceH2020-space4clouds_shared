@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -21,16 +21,17 @@ import lombok.Data;
 @Data
 public class ClassParameters {
 
-	//private String id;
-	private double D;
-	private int Hup;
-	private int Hlow;
-	private double penalty = 0.0;
-	private double think;
-	private double m;
-	private double v;
+    private double D;
+    private double U = 0.7;
+    private int Hup;
+    private int Hlow;
+    private double penalty = 0.0;
+    private double think;
+    private double m;
+    private double v;
 
-	public boolean validate(){
-		return (D > 0 && Hup >= Hlow && Hup >0 && penalty >=0 && think>=0 && m > 0 && v > 0);		
-	}
+    public boolean validate() {
+        return D > 0. && Hup >= Hlow && Hlow >= 0 && penalty >= 0. && think >= 0.
+                && m > 0. && v > 0. && U >= 0. && U <= 1.;
+    }
 }
