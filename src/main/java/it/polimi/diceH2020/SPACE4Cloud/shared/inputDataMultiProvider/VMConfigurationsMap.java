@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -16,58 +16,48 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import lombok.Data;
+
+import java.util.*;
 
 @Data
 public class VMConfigurationsMap {
-	
+
 	@JsonInclude(Include.NON_NULL)
-	private Map<String,VMConfiguration> mapVMConfigurations; 
-	
-	public VMConfigurationsMap(Map<String,VMConfiguration> listVMConfigurations){
+	private Map<String, VMConfiguration> mapVMConfigurations;
+
+	public VMConfigurationsMap (Map<String, VMConfiguration> listVMConfigurations) {
 		this.mapVMConfigurations = listVMConfigurations;
 	}
-	
-	public VMConfigurationsMap() {}
+
+	VMConfigurationsMap () {}
 
 	@JsonIgnore
-	public boolean validate() {
-		for(Map.Entry<String, VMConfiguration> typeVMs : mapVMConfigurations.entrySet()){
-			if(!typeVMs.getValue().validate()) return false;
+	public boolean validate () {
+		boolean valid = true;
+
+		Iterator<VMConfiguration> iterator = mapVMConfigurations.values ().iterator ();
+		while (valid && iterator.hasNext ()) {
+			VMConfiguration vmConfiguration = iterator.next ();
+			valid = vmConfiguration.validate ();
 		}
-		return true;
+
+		return valid;
 	}
-	
-	//TODO still useful?
-	@JsonIgnore
-	public Set<String> getTypeVMs(){
-		return mapVMConfigurations.keySet();
-	}
-	
 
 	@JsonIgnore
-	public Map<String, Set<String>> getProvidersTypesMap(){
-		Map<String, Set<String>> providerAndTypes = new HashMap<String, Set<String>>();
+	Map<String, Set<String>> getProvidersTypesMap () {
+		Map<String, Set<String>> providerAndTypes = new HashMap<>();
+
 		Set<String> set = new HashSet<>();
 		for (Map.Entry<String, VMConfiguration> vm : mapVMConfigurations.entrySet()) {
 			set.add(vm.getKey());
 		}
+
 		providerAndTypes.put("inHouse", set);
 		return providerAndTypes;
 	}
-	
-//	@JsonAnyGetter
-//	public Map<String, VMConfiguration> getMapVMConfigurations(){
-//		return mapVMConfigurations;
-//	}
-	
 }

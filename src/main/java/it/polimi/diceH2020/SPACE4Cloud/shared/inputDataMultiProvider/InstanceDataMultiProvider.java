@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -16,20 +16,14 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenarios;
 import lombok.Data;
+
+import java.util.*;
 
 @Data
 public class InstanceDataMultiProvider {
@@ -37,29 +31,31 @@ public class InstanceDataMultiProvider {
 	private String id;
 
 	@JsonUnwrapped private JobProfilesMap mapJobProfiles;
-	
+
 	@JsonUnwrapped private ClassParametersMap mapClassParameters;
-	
-	@JsonUnwrapped 
+
+	@JsonUnwrapped
 	@JsonInclude(Include.NON_DEFAULT)
-	private PublicCloudParametersMap mapPublicCloudParameters; //Map<String, Map<String,Map<String,List<PublicCloudParameters>>>>
-	
+	private PublicCloudParametersMap mapPublicCloudParameters;
+
 	@JsonInclude(Include.NON_NULL)
 	private PrivateCloudParameters privateCloudParameters;
-	
+
 	@JsonUnwrapped
 	@JsonInclude(Include.NON_DEFAULT)
 	private VMConfigurationsMap mapVMConfigurations;
-	
-	@JsonUnwrapped private JobMLProfilesMap mapJobMLProfiles;
-	
-	@JsonIgnore private String validationError;
-	
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	private Optional<Scenarios> scenario; 
 
-	public InstanceDataMultiProvider(String id, JobProfilesMap mapJobProfiles, ClassParametersMap mapClassParameters, PublicCloudParametersMap mapPublicCloudParameters, PrivateCloudParameters privateCloudParameters,
-			VMConfigurationsMap mapVMConfigurations, JobMLProfilesMap mapJobMLProfiles) {
+	@JsonUnwrapped private JobMLProfilesMap mapJobMLProfiles;
+
+	@JsonIgnore private String validationError;
+
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private Optional<Scenarios> scenario;
+
+	public InstanceDataMultiProvider (String id, JobProfilesMap mapJobProfiles, ClassParametersMap mapClassParameters,
+									  PublicCloudParametersMap mapPublicCloudParameters,
+									  PrivateCloudParameters privateCloudParameters,
+									  VMConfigurationsMap mapVMConfigurations, JobMLProfilesMap mapJobMLProfiles) {
 		this.id = id;
 		this.mapJobProfiles = mapJobProfiles;
 		this.mapClassParameters = mapClassParameters;
@@ -67,131 +63,125 @@ public class InstanceDataMultiProvider {
 		this.privateCloudParameters = privateCloudParameters;
 		this.mapVMConfigurations = mapVMConfigurations;
 		this.mapJobMLProfiles = mapJobMLProfiles;
-		this.validationError = new String();
+		this.validationError = "";
 	}
-	
-	public InstanceDataMultiProvider() {
-		this.id = new String();
+
+	public InstanceDataMultiProvider () {
+		this.id = "";
 		this.mapJobProfiles = new JobProfilesMap();
 		this.mapClassParameters = new ClassParametersMap();
 		this.mapPublicCloudParameters = new PublicCloudParametersMap();
 		this.mapJobMLProfiles = new JobMLProfilesMap();
-		this.validationError = new String();
+		this.validationError = "";
 		this.scenario = Optional.of(Scenarios.PublicPeakWorkload);
-		//this.privateCloudParameters = new PrivateCloudParameters();
 		this.mapVMConfigurations = new VMConfigurationsMap();
 	}
-	
-	
+
+
 	@JsonIgnore
-	public boolean validate(){
+	public boolean validate () {
 		return (validateJobIDs() && validateProviders() && validateProviderTypeVM() && validateIdProviderTypeVM());
 	}
-	
+
 	@JsonIgnore
-	private boolean validateJobIDs(){
-		
-		if(mapJobProfiles.getMapJobProfile() == null || mapClassParameters.getMapClassParameters() == null ) {
+	private boolean validateJobIDs () {
+
+		if (mapJobProfiles.getMapJobProfile() == null || mapClassParameters.getMapClassParameters() == null ) {
 			validationError = "Missing mapJobProfiles or mapClassParameters";
 			return false;
 		}
-		
-		if(!mapClassParameters.getJobIDs().equals(mapJobProfiles.getJobIDs())){
+
+		if (!mapClassParameters.getJobIDs().equals(mapJobProfiles.getJobIDs())) {
 			validationError = "Not coinciding IDs";
 			return false;//mandatory parameters
 		}
-		if(mapPublicCloudParameters.getMapPublicCloudParameters() != null){
-			if(!mapJobProfiles.getJobIDs().equals(mapPublicCloudParameters.getJobIDs())) {
+		if (mapPublicCloudParameters.getMapPublicCloudParameters() != null) {
+			if (!mapJobProfiles.getJobIDs().equals(mapPublicCloudParameters.getJobIDs())) {
 				validationError = "Not coinciding IDs for MapPublicCloudParameters";
 				return false;
 			}
 		}
-		
-		if(mapJobMLProfiles.getMapJobMLProfile() != null){
-			if(!mapJobProfiles.getJobIDs().equals(mapJobMLProfiles.getJobIDs())){
+
+		if (mapJobMLProfiles.getMapJobMLProfile() != null) {
+			if (!mapJobProfiles.getJobIDs().equals(mapJobMLProfiles.getJobIDs())) {
 				validationError = "Not coinciding IDs For MLProfile";
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	@JsonIgnore
-	private boolean validateProviders(){	//Only for Public Cloud 
-		if(mapPublicCloudParameters.getMapPublicCloudParameters() != null){
-			if(!mapJobProfiles.getProviders().equals(mapPublicCloudParameters.getProviders())){
+	private boolean validateProviders () {	//Only for Public Cloud
+		if (mapPublicCloudParameters.getMapPublicCloudParameters() != null) {
+			if (!mapJobProfiles.getProviders().equals(mapPublicCloudParameters.getProviders())) {
 				validationError = "Not coinciding providers";
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	@JsonIgnore
-	private boolean validateProviderTypeVM(){
-		if(mapPublicCloudParameters.getMapPublicCloudParameters() != null){
-			if(!mapJobProfiles.getProvidersTypesMap().equals(mapPublicCloudParameters.getProvidersTypesMap())){
+	private boolean validateProviderTypeVM () {
+		if (mapPublicCloudParameters.getMapPublicCloudParameters() != null) {
+			if (!mapJobProfiles.getProvidersTypesMap().equals(mapPublicCloudParameters.getProvidersTypesMap())) {
 				validationError = "Not coinciding providers";
 				return false;
 			}
 		}
-		
-		if(mapVMConfigurations.getMapVMConfigurations() != null){
-			if(!contains(mapJobProfiles.getProvidersTypesMap(),mapVMConfigurations.getProvidersTypesMap())){
+
+		if (mapVMConfigurations.getMapVMConfigurations() != null) {
+			if (!contains(mapJobProfiles.getProvidersTypesMap(),mapVMConfigurations.getProvidersTypesMap())) {
 				validationError = "Not coinciding providers mapJobProfiles or mapClassParameters";
 				return false;
 			}
 		}
 		return true;
 	}
-	
-	private boolean contains(Map<String, Set<String>> profilesPTMAP, Map<String, Set<String>> vmConfigurationsPTMAP){
-		for(Map.Entry<String,Set<String>> entry : profilesPTMAP.entrySet()){
-			if(! vmConfigurationsPTMAP.containsKey(entry.getKey())){
+
+	private boolean contains (Map<String, Set<String>> profilesPTMAP, Map<String, Set<String>> vmConfigurationsPTMAP) {
+		for (Map.Entry<String,Set<String>> entry : profilesPTMAP.entrySet()) {
+			if (! vmConfigurationsPTMAP.containsKey(entry.getKey())) {
 				return false;
 			}
-			for(String vmtype : entry.getValue()){
-				if(!vmConfigurationsPTMAP.get(entry.getKey()).contains(vmtype)){
+			for (String vmType : entry.getValue ()) {
+				if (!vmConfigurationsPTMAP.get(entry.getKey()).contains(vmType)) {
 					return false;
 				}
 			}
 		}
 		return true;
 	}
-	
+
 	@JsonIgnore
-	public List<String> getProvidersList(){
-		List<String> providers = new ArrayList<String>();
+	public List<String> getProvidersList () {
+		List<String> providers = new ArrayList<>();
 		providers.addAll(mapJobProfiles.getProviders());
 		return providers;
 	}
-	
+
 	@JsonIgnore
-	public String getProvider(){
+	public String getProvider () {
 		List<String> providers = getProvidersList();
-		if(providers.size() == 1) return providers.get(0);
+		if (providers.size() == 1) return providers.get(0);
 		return null;
 	}
-	
+
 	@JsonIgnore
-	public Map<String, PublicCloudParameters> getMapTypeVM(String jobID, String provider) {
-		return mapPublicCloudParameters.getLstTypeVM(jobID, provider);
-	}
-	
-	@JsonIgnore
-	public JobProfile getProfile(String classID, String providerName,String tVM) {
+	public JobProfile getProfile (String classID, String providerName, String tVM) {
 		return mapJobProfiles.getEntry(classID, providerName, tVM);
 	}
-	
+
 	@JsonIgnore
-	public int getNumberOfClasses(){
+	public int getNumberOfClasses () {
 		return mapJobProfiles.getJobIDs().size();
 	}
-	
+
 	@JsonIgnore
-	private boolean validateIdProviderTypeVM(){
-		if(mapPublicCloudParameters.getMapPublicCloudParameters() != null){
-			if(!mapJobProfiles.getKeysTriples().equals(mapPublicCloudParameters.getKeysTriples())) return false;
+	private boolean validateIdProviderTypeVM () {
+		if (mapPublicCloudParameters.getMapPublicCloudParameters() != null) {
+			if (!mapJobProfiles.getKeysTriples().equals(mapPublicCloudParameters.getKeysTriples())) return false;
 		}
 		return true;
 	}

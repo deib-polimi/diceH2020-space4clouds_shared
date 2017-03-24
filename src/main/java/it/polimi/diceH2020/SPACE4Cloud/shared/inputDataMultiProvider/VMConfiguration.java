@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -16,18 +16,18 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
-import java.util.Optional;
-
 import lombok.Data;
+
+import java.util.Optional;
 
 @Data
 public class VMConfiguration {
-	private double core;
+    private double core;
     private double memory;
     private String provider = "inHouse";
     private Optional<Double> cost = Optional.empty(); //Per node per hour
-    
-    public boolean validate(){
-		return (core>=0 && memory>=0 && provider.equals("inHouse"));
-	}
+
+    public boolean validate () {
+        return (core >= 0 && memory >= 0 && provider.equals("inHouse"));
+    }
 }

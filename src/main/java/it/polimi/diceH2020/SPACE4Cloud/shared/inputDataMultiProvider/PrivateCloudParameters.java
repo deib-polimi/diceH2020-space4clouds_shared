@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -18,7 +18,6 @@ package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import lombok.Data;
 
 @Data
@@ -31,17 +30,10 @@ public class PrivateCloudParameters {
 	private int n;	   //number of physical nodes
 	@JsonInclude(Include.NON_DEFAULT)
 	private double e;  //cost of energy to run one physical machine
-	
-	public PrivateCloudParameters(double m,double v,int n){ //Useful for Knapsack, the user can skip "e" parameter
-		this.m = m;
-		this.v = v;
-		this.n = n;
-		this.e = 0;
-	}
-	
-	public PrivateCloudParameters(){}
-	
-	public boolean validate(){
-		return (m>=0 && v>=0 && n>=0 && e>=0);
+
+	public PrivateCloudParameters () {}
+
+	public boolean validate () {
+		return (m >= 0 && v >= 0 && n >= 0 && e >= 0);
 	}
 }

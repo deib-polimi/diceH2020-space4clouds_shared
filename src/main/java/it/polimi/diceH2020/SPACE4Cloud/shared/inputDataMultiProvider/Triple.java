@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -36,10 +36,6 @@ public class Triple<F, S, T> {
         Triple<?, ?, ?> p = (Triple<?, ?, ?>) o;
         return first.equals(p.first) && second.equals(p.second) && third.equals(p.third);
     }
-    
-//    private static boolean equals(Object x, Object y) {
-//        return (x == null && y == null) || (x != null && x.equals(y));
-//    }
 
     @Override
     public int hashCode() {
@@ -47,7 +43,7 @@ public class Triple<F, S, T> {
     }
 
     public static <F, S, T> Triple <F, S, T> create(F f, S s, T t) {
-        return new Triple<F, S, T>(f, s, t);
+        return new Triple<>(f, s, t);
     }
 }
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -24,8 +24,8 @@ public class SVRFeature {
 	double mu;
 	double sigma;
 	double w;
-	
-	public boolean validate(){
-		return (mu != 0.0 && sigma != 0.0);		
+
+	public boolean validate () {
+		return (mu > 0.0 && sigma > 0.0);
 	}
 }

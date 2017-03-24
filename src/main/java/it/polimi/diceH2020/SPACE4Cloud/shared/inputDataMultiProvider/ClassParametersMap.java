@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -16,52 +16,42 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Data;
-
 @Data
 public class ClassParametersMap {
-	private Map<String,ClassParameters> mapClassParameters;
-	
-	public ClassParametersMap(Map<String,ClassParameters> mapClassParameters){
+	private Map<String, ClassParameters> mapClassParameters;
+
+	public ClassParametersMap (Map<String, ClassParameters> mapClassParameters){
 		this.mapClassParameters = mapClassParameters;
 	}
-	
-	public ClassParameters getClassParameters(String jobID) {
-		return mapClassParameters.get(jobID);
-	}
-	
-	public ClassParametersMap() {
-		mapClassParameters = new HashMap<String,ClassParameters>();
+
+	ClassParametersMap () {
+		mapClassParameters = new HashMap<>();
 	}
 
 	@JsonIgnore
-	public boolean validate() {
-		for (Map.Entry<String, ClassParameters> jobIDs : mapClassParameters.entrySet()) {
-			if(!jobIDs.getValue().validate()) return false;
+	public boolean validate () {
+		boolean valid = true;
+
+		Iterator<ClassParameters> iterator = mapClassParameters.values ().iterator ();
+		while (valid && iterator.hasNext ()) {
+			ClassParameters parameters = iterator.next ();
+			valid = parameters.validate ();
 		}
-		return true;
+
+		return valid;
 	}
-	
+
 	@JsonIgnore
-	public Set<String> getJobIDs(){
+	Set<String> getJobIDs() {
 		return mapClassParameters.keySet();
 	}
-	
-//	@JsonAnyGetter
-//	public Map<String, ClassParameters> getMapClassParameters(){
-//		return mapClassParameters;
-//	}
-	
-//	@JsonAnyGetter
-//	public Map<String,ClassParameters> getMapClassParameters(){
-//		return mapClassParameters;
-//	}
-	
 }
 

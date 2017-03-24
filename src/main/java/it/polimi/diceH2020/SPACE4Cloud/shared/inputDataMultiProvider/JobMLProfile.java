@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -16,49 +16,43 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Iterator;
+import java.util.Map;
 
 @Data
+@NoArgsConstructor
 public class JobMLProfile {
 	private double b;
 	private double mu_t;
 	private double sigma_t;
-	@JsonUnwrapped private Map<String,SVRFeature> mlFeatures;
-	
-	public JobMLProfile(Map<String,SVRFeature> mapClassFeatures, double b, double mu_t, double sigma_t){
+	@JsonUnwrapped private Map<String, SVRFeature> mlFeatures;
+
+	public JobMLProfile (Map<String, SVRFeature> mapClassFeatures, double b, double mu_t, double sigma_t) {
 		this.mlFeatures = mapClassFeatures;
 		this.b = b;
 		this.mu_t = mu_t;
 		this.sigma_t = sigma_t;
 	}
-	
-	public SVRFeature getClassFeature(String featureName) {
+
+	public SVRFeature getClassFeature (String featureName) {
 		return mlFeatures.get(featureName);
 	}
-	
-	public JobMLProfile() {}
 
 	@JsonIgnore
-	public boolean validate() {
-		for (Map.Entry<String, SVRFeature> feature : mlFeatures.entrySet()) {
-			if(!feature.getValue().validate()) return false;
+	public boolean validate () {
+		boolean valid = true;
+
+		Iterator<SVRFeature> iterator = mlFeatures.values ().iterator ();
+		while (valid && iterator.hasNext ()) {
+			SVRFeature feature = iterator.next ();
+			valid = feature.validate ();
 		}
-		//Required parameters for SVR: x,h,t
-		if(!mlFeatures.containsKey("x")){
-			return false;
-		}
-		if(!mlFeatures.containsKey("h")){
-			return false;
-		}
-		if(mu_t < 0.0 && sigma_t < 0.0){
-			return false;
-		}
-		
-		return true;
+
+		return valid && mlFeatures.containsKey ("x") && mlFeatures.containsKey ("h") && mu_t > 0 && sigma_t > 0;
 	}
 }

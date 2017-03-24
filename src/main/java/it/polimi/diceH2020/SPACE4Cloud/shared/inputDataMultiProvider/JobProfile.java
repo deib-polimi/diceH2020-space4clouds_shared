@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -37,15 +38,19 @@ public class JobProfile {
 	}
 
 	@JsonIgnore
-	public boolean validate() {
-		if (profileMap == null) return false;
-		if (profileMap.isEmpty()) return false;
-		if (! profileMap.containsKey("h") || ! profileMap.containsKey("x")) return false;
+	public boolean validate () {
+		boolean valid = profileMap != null && ! profileMap.isEmpty ()
+				&& profileMap.containsKey ("h") && profileMap.containsKey ("x");
 
-		for (Map.Entry<String, Double> feature : profileMap.entrySet()) {
-			if (feature.getValue() >= 0) return false;
+		if (valid) {
+			Iterator<Double> iterator = profileMap.values ().iterator ();
+			while (valid && iterator.hasNext ()) {
+				double value = iterator.next ();
+				valid = value >= 0.;
+			}
 		}
-		return true;
+
+		return valid;
 	}
 
 	@JsonIgnore

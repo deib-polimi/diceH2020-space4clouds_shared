@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -18,28 +18,22 @@ package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import lombok.Data;
 
 @Data
 public class PublicCloudParameters {
-	
+
 	@JsonInclude(Include.NON_NULL)
 	private double eta;
 	@JsonInclude(Include.NON_DEFAULT)
 	private int R;
-	
-	public PublicCloudParameters(int R){
-		this.R = R;
-		this.eta = 0;
-	}
-	
-	public PublicCloudParameters(){
+
+	public PublicCloudParameters () {
 		this.R = 0;
 		this.eta = 0;
 	}
 
-	public boolean validate(){
-		return (eta>=0 && R>=0);
+	public boolean validate () {
+		return (eta >= 0 && R >= 0);
 	}
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -16,38 +16,43 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Data;
-
 @Data
 public class JobMLProfilesMap {
-	
-	private Map<String, JobMLProfile> mapJobMLProfile;//jobId, MLProfile
-	
-	public JobMLProfilesMap(Map<String,JobMLProfile> mapJobProfiles){
+
+	// jobId -> MLProfile
+	private Map<String, JobMLProfile> mapJobMLProfile;
+
+	public JobMLProfilesMap (Map<String,JobMLProfile> mapJobProfiles) {
 		this.mapJobMLProfile = mapJobProfiles;
 	}
-	
-	public JobMLProfilesMap() {
+
+	JobMLProfilesMap () {
 		mapJobMLProfile = new HashMap<>();
 	}
 
+	@JsonIgnore
+	public boolean validate () {
+		boolean valid = true;
+
+		Iterator<JobMLProfile> iterator = mapJobMLProfile.values ().iterator ();
+		while (valid && iterator.hasNext ()) {
+			JobMLProfile mlProfile = iterator.next ();
+			valid = mlProfile.validate ();
+		}
+
+		return valid;
+	}
 
 	@JsonIgnore
-	public boolean validate() {
-		for (Map.Entry<String, JobMLProfile> mlProfile : mapJobMLProfile.entrySet()) {
-			if(!mlProfile.getValue().validate()) return false;
-		}
-		return true;
-	}
-	
-	@JsonIgnore
-	public Set<String> getJobIDs(){
+	Set<String> getJobIDs () {
 		return mapJobMLProfile.keySet();
 	}
 }
