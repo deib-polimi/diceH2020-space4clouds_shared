@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2015 deib-polimi
  * Contact: deib-polimi <michele.ciavotta@polimi.it>
  *
@@ -16,51 +16,49 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
 import lombok.Data;
+
+import java.util.Map;
+import java.util.TreeMap;
 
 @Data
 public class JobProfile {
 
-	@JsonUnwrapped private TreeMap<String,Double> profileMap;
-	
-	public JobProfile(){
-		profileMap = new TreeMap<String,Double>();
+	@JsonUnwrapped private Map<String, Double> profileMap;
+
+	public JobProfile () {
+		profileMap = new TreeMap<> ();
 	}
-	
-	public JobProfile(TreeMap<String,Double> profileMap){
+
+	public JobProfile (Map<String, Double> profileMap) {
 		this.profileMap = profileMap;
-	}
-	
-	public double getProfileValue(String key) {
-		return profileMap.get(key);
 	}
 
 	@JsonIgnore
 	public boolean validate() {
-		if(profileMap == null) return false;
-		if(profileMap.isEmpty()) return false;
-		if(!profileMap.containsKey("h") || !profileMap.containsKey("x")) return false;
-		
+		if (profileMap == null) return false;
+		if (profileMap.isEmpty()) return false;
+		if (! profileMap.containsKey("h") || ! profileMap.containsKey("x")) return false;
+
 		for (Map.Entry<String, Double> feature : profileMap.entrySet()) {
-			if(feature.getValue() >= 0) return false;
+			if (feature.getValue() >= 0) return false;
 		}
 		return true;
 	}
-	
+
 	@JsonIgnore
-	public void put(String key, double value){
+	public void put (String key, double value) {
 		profileMap.put(key, value);
 	}
-	
+
 	@JsonIgnore
-	public double get(String key){
+	public double get (String key) throws IllegalArgumentException {
+		if (! profileMap.containsKey (key)) {
+			throw new IllegalArgumentException (
+					String.format ("'%s' is not contained in this JobProfile", key));
+		}
 		return profileMap.get(key);
-		
 	}
 }
