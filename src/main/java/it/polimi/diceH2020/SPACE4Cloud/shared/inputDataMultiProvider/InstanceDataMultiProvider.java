@@ -47,6 +47,10 @@ public class InstanceDataMultiProvider {
 
 	@JsonUnwrapped private JobMLProfilesMap mapJobMLProfiles;
 
+	@JsonInclude(Include.NON_DEFAULT)
+	// jobId -> DAG
+	private Map<String, DirectedAcyclicGraph> mapDags;
+
 	@JsonIgnore private String validationError;
 
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -95,6 +99,7 @@ public class InstanceDataMultiProvider {
 			validationError = "Not coinciding IDs";
 			return false;//mandatory parameters
 		}
+
 		if (mapPublicCloudParameters.getMapPublicCloudParameters() != null) {
 			if (!mapJobProfiles.getJobIDs().equals(mapPublicCloudParameters.getJobIDs())) {
 				validationError = "Not coinciding IDs for MapPublicCloudParameters";
@@ -108,6 +113,12 @@ public class InstanceDataMultiProvider {
 				return false;
 			}
 		}
+
+		if (mapDags != null && ! mapDags.keySet ().equals (mapJobProfiles.getJobIDs ())) {
+			validationError = "Not coinciding IDs for DAGs";
+			return false;
+		}
+
 		return true;
 	}
 
