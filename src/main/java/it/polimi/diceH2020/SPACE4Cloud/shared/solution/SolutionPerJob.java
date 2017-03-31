@@ -58,18 +58,20 @@ public class SolutionPerJob {
 	private TypeVM typeVMselected;
 	private Boolean error = false;
 	@JsonIgnore
-	private Double xi = 0.0;
+	private Double xi = 1.0;
 
-	public SolutionPerJob updateNumberVM(int newNumberVM) {
+	public void updateNumberVM(int newNumberVM) {
 		if (numberVM == null || numberVM != newNumberVM) {
 			changed = true;
 		}
 		numberVM = newNumberVM;
+
 		if (typeVMselected != null && typeVMselected.getEta() >= 0) {
 			numSpotVM = (int) Math.floor(typeVMselected.getEta() * numberVM);
 			numReservedVM = Math.min(typeVMselected.getR(), (numberVM - numSpotVM));
 			numOnDemandVM = Math.max(0, numberVM - numSpotVM - numReservedVM);
 		}
+
 		// update num of containers
 		if (numCores != null) {
 			if (xi > 0.0) {
@@ -78,21 +80,33 @@ public class SolutionPerJob {
 				numberContainers = (int) (newNumberVM * numCores);
 			}
 		}
-		return this;
 	}
 
 	public void updateNumberContainers(int newNumberContainers) {
-		if (numberContainers == null || numberContainers != newNumberContainers) {
+		if (numberContainers == null) {
 			changed = true;
 		}
-		numberContainers = newNumberContainers;
+
 		// update num of vm
 		if (xi != null) {
-			numberVM = (int) Math.ceil((double) numberContainers / xi);
-			numberContainers = (int) Math.floor((double) numberVM * xi);
+			numberVM = (int) Math.ceil(newNumberContainers / xi);
+			Integer oldNumberContainers = numberContainers;
+			numberContainers = (int) Math.floor(numberVM * xi);
+			if (! numberContainers.equals (oldNumberContainers)) {
+				changed = true;
+			}
+		} else if (numCores != null) {
+			numberVM = (int) Math.ceil (newNumberContainers / numCores);
+			Integer oldNumberContainers = numberContainers;
+			numberContainers = (int) Math.floor(numberVM * numCores);
+			if (! numberContainers.equals (oldNumberContainers)) {
+				changed = true;
+			}
 		} else {
-			return;
+			numberContainers = newNumberContainers;
+			changed = true;
 		}
+
 		if (typeVMselected != null && typeVMselected.getEta() >= 0) {
 			numSpotVM = (int) Math.floor(typeVMselected.getEta() * numberVM);
 			numReservedVM = Math.min(typeVMselected.getR(), (numberVM - numSpotVM));
