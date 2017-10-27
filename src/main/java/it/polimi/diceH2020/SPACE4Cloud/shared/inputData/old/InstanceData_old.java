@@ -35,7 +35,9 @@ import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PrivateClou
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVM;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVMJobClassKey;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.VMConfigurationsMap;
-import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenarios;
+import it.polimi.diceH2020.SPACE4Cloud.shared.settings.CloudType;
+import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenario;
+import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Technology;
 import lombok.Data;
 
 @Data
@@ -46,7 +48,7 @@ public class InstanceData_old {
 
 	private String provider;
 	
-	private Optional<Scenarios> scenario;
+	private Optional<Scenario> scenario;
 
 	private List<JobClass_old> lstClass;
 
@@ -66,23 +68,24 @@ public class InstanceData_old {
 	private JobMLProfilesMap mapJobMLProfiles;
 	
 	//only for tests
-	public InstanceData_old(String id, int gamma, String provider, List<JobClass_old> classes, Map<String, List<TypeVM>> types,
+	public InstanceData_old(Technology technology, String id, int gamma, String provider, List<JobClass_old> classes, Map<String, List<TypeVM>> types,
 			Map<TypeVMJobClassKey, Profile_old> profiles) {
 		this.id = id;
 		this.setGamma(gamma);
 		this.setProvider(provider);
-		this.scenario = Optional.of(Scenarios.PublicPeakWorkload);
+		this.scenario = Optional.of(new Scenario(technology, CloudType.PUBLIC, true));
 		lstClass = classes;
 		mapTypeVMs = Optional.of(types);
 		mapProfiles = profiles;
 	}
 
 	public InstanceData_old() {
-		this.scenario = Optional.of(Scenarios.PublicPeakWorkload);
+		this.scenario = Optional.of(new Scenario(Technology.SPARK, CloudType.PUBLIC, true));
 		this.privateCloudParameters = Optional.empty();
 		this.mapVMConfigurations = Optional.empty();
 		this.mapTypeVMs = Optional.empty();
 	}
+
 
 	@JsonIgnore
 	public int getNumberJobs() {

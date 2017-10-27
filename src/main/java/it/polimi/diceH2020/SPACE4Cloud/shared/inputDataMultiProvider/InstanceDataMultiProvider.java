@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenarios;
+import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenario;
 import lombok.Data;
 
 import java.util.*;
@@ -54,7 +54,7 @@ public class InstanceDataMultiProvider {
 	@JsonIgnore private String validationError;
 
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	private Optional<Scenarios> scenario;
+	private Optional<Scenario> scenario;
 
 	public InstanceDataMultiProvider (String id, JobProfilesMap mapJobProfiles, ClassParametersMap mapClassParameters,
 									  PublicCloudParametersMap mapPublicCloudParameters,
@@ -70,14 +70,17 @@ public class InstanceDataMultiProvider {
 		this.validationError = "";
 	}
 
-	public InstanceDataMultiProvider () {
+	/**
+	 * Empty constructor used only in testing
+	 */
+	private InstanceDataMultiProvider () {
 		this.id = "";
 		this.mapJobProfiles = new JobProfilesMap();
 		this.mapClassParameters = new ClassParametersMap();
 		this.mapPublicCloudParameters = new PublicCloudParametersMap();
 		this.mapJobMLProfiles = new JobMLProfilesMap();
 		this.validationError = "";
-		this.scenario = Optional.of(Scenarios.PublicPeakWorkload);
+		this.scenario = Optional.of(new Scenario());
 		this.mapVMConfigurations = new VMConfigurationsMap();
 	}
 

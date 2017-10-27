@@ -16,6 +16,10 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.settings;
 
+/**
+ * Enum class used to specify if the target clous is public or private
+ */
 public enum CloudType {
-	Public,Private;
+   PRIVATE,
+   PUBLIC,
 }

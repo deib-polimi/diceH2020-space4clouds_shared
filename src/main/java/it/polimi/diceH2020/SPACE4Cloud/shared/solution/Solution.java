@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PrivateCloudParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVMJobClassKey;
-import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenarios;
+import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenario;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -46,7 +46,7 @@ public class Solution {
 	private Optional<PrivateCloudParameters> privateCloudParameters; 
 	
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	private Optional<Scenarios> scenario; 
+	private Optional<Scenario> scenario; 
 	
 	private Boolean feasible;
 	private String id;

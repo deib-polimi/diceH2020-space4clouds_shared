@@ -26,6 +26,7 @@ import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.Instan
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.old.InstanceData_old;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.InstanceDataMultiProvider;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVMJobClassKey;
+import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Technology;
 import it.polimi.diceH2020.SPACE4Cloud.shared.solution.Solution;
 import org.junit.Test;
 
@@ -37,7 +38,7 @@ public class Test2 {
 
 	@Test
 	public void test1() {
-		InstanceData_old data = InstanceDataGenerator_old.build();
+		InstanceData_old data = InstanceDataGenerator_old.build(Technology.SPARK);
 		System.out.println(data.toString());
 
 		try {

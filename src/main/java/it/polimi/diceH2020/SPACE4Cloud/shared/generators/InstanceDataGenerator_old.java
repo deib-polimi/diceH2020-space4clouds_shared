@@ -26,10 +26,11 @@ import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.old.JobClass_old;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputData.old.Profile_old;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVM;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.TypeVMJobClassKey;
+import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Technology;
 
 public class InstanceDataGenerator_old {
 
-	public static InstanceData_old build() {
+	public static InstanceData_old build(Technology technology) {
 		List<JobClass_old> lstClasses = lstJobClasses();
 		List<TypeVM> lstTypeVMs = lstTypeVMs();
 		Map<String,List<TypeVM>> mapTypes = new HashMap<String, List<TypeVM>>();
@@ -59,7 +60,7 @@ public class InstanceDataGenerator_old {
 		key4.setJob(lstClasses.get(1).getId());
 		key4.setTypeVM(lstTypeVMs.get(1).getId());
 		map.put(key4, p4);
-		return new InstanceData_old("id_1",240,"Amazon", lstClasses, mapTypes, map);
+		return new InstanceData_old(technology, "id_1",240,"Amazon", lstClasses, mapTypes, map);
 	}
 
 	private static List<JobClass_old> lstJobClasses() {

@@ -1,5 +1,5 @@
 /*
-Copyright 2016 Eugenio Gianniti
+Copyright 2017 Marco Lattuada
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,7 +15,9 @@ limitations under the License.
 */
 package it.polimi.diceH2020.SPACE4Cloud.shared.settings;
 
-public enum SPNModel {
-    MAPREDUCE,
+public enum Technology {
+    HADOOP,
+    SPARK,
     STORM
 }
+
