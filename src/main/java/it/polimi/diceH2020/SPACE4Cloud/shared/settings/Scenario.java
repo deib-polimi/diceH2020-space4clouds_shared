@@ -37,6 +37,9 @@ public class Scenario {
    ///In case of private cloud is private assignment is considered
    private final Boolean physicalAssignment;
 
+   ///In case of private cloud if there is admission control for submitted jobs
+   private final Boolean admissionControl;
+
    /**
     * Empty constructor used for testing
     */
@@ -46,6 +49,7 @@ public class Scenario {
       this.model = AMPLModel.KNAPSACK ;
       this.LTC = true;
       this.physicalAssignment = null;
+      this.admissionControl = null;
    }
 
    /**
@@ -55,25 +59,29 @@ public class Scenario {
     * @param LTC specifies if LTC are available (significant only for public case)
     * @param physicalAssignment specifies if physical assignment has to be considered (significant only for private case)
     */
-   public Scenario(Technology technology, CloudType cloudType, Boolean LTC, Boolean physicalAssignment) throws Exception {
+   public Scenario(Technology technology, CloudType cloudType, Boolean LTC, Boolean physicalAssignment, Boolean admissionControl) throws RuntimeException {
       this.technology = technology; 
       this.cloudType = cloudType;
       this.model = AMPLModel.KNAPSACK ;
       this.LTC = LTC;
       this.physicalAssignment = physicalAssignment;
+      this.admissionControl = admissionControl;
       if(cloudType == CloudType.PUBLIC && technology != Technology.STORM) {
          if(LTC == null) {
-            throw new Exception("Presence of LTC not set for public case");
+            throw new RuntimeException("Presence of LTC not set for public case");
          }
       } else if(LTC != null) {
-         throw new Exception("Presence of LTC set for private or storm case");
+         throw new RuntimeException("Presence of LTC set for private or storm case");
       }
       if(cloudType == CloudType.PRIVATE && technology != Technology.STORM) {
          if(physicalAssignment == null) {
-            throw new Exception("Physical assinment not set for private case");
+            throw new RuntimeException("Physical assinment not set for private case");
          }
       } else if(physicalAssignment != null) {
-         throw new Exception("Physical assignment set for public  or storm case");
+         throw new RuntimeException("Physical assignment set for public  or storm case");
+      }
+      if(cloudType == CloudType.PRIVATE && physicalAssignment == true && admissionControl == false) {
+         throw new RuntimeException("Physical assignment and no admission control set for private case");
       }
    }
 
