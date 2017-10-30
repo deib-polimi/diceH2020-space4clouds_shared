@@ -69,18 +69,18 @@ public class InstanceData_old {
 	
 	//only for tests
 	public InstanceData_old(Technology technology, String id, int gamma, String provider, List<JobClass_old> classes, Map<String, List<TypeVM>> types,
-			Map<TypeVMJobClassKey, Profile_old> profiles) {
+			Map<TypeVMJobClassKey, Profile_old> profiles) throws Exception {
 		this.id = id;
 		this.setGamma(gamma);
 		this.setProvider(provider);
-		this.scenario = Optional.of(new Scenario(technology, CloudType.PUBLIC, true));
+		this.scenario = Optional.of(new Scenario(technology, CloudType.PUBLIC, true, null));
 		lstClass = classes;
 		mapTypeVMs = Optional.of(types);
 		mapProfiles = profiles;
 	}
 
-	public InstanceData_old() {
-		this.scenario = Optional.of(new Scenario(Technology.SPARK, CloudType.PUBLIC, true));
+	public InstanceData_old() throws Exception {
+		this.scenario = Optional.of(new Scenario(Technology.SPARK, CloudType.PUBLIC, true, null));
 		this.privateCloudParameters = Optional.empty();
 		this.mapVMConfigurations = Optional.empty();
 		this.mapTypeVMs = Optional.empty();

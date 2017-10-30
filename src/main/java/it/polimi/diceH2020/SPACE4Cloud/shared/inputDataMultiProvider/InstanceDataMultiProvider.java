@@ -54,7 +54,7 @@ public class InstanceDataMultiProvider {
 	@JsonIgnore private String validationError;
 
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	private Optional<Scenario> scenario;
+	private Scenario scenario;
 
 	public InstanceDataMultiProvider (String id, JobProfilesMap mapJobProfiles, ClassParametersMap mapClassParameters,
 									  PublicCloudParametersMap mapPublicCloudParameters,
@@ -73,14 +73,14 @@ public class InstanceDataMultiProvider {
 	/**
 	 * Empty constructor used only in testing
 	 */
-	private InstanceDataMultiProvider () {
+	public InstanceDataMultiProvider () {
 		this.id = "";
 		this.mapJobProfiles = new JobProfilesMap();
 		this.mapClassParameters = new ClassParametersMap();
 		this.mapPublicCloudParameters = new PublicCloudParametersMap();
 		this.mapJobMLProfiles = new JobMLProfilesMap();
 		this.validationError = "";
-		this.scenario = Optional.of(new Scenario());
+		this.scenario = new Scenario();
 		this.mapVMConfigurations = new VMConfigurationsMap();
 	}
 

@@ -32,29 +32,49 @@ public class Scenario {
    private final Technology technology;
 
    ///In case of public cloud if LTC VM are available
-   private final boolean LTC;
+   private final Boolean LTC;
+
+   ///In case of private cloud is private assignment is considered
+   private final Boolean physicalAssignment;
 
    /**
     * Empty constructor used for testing
     */
    public Scenario() {
-        this.technology = Technology.SPARK; 
-        this.cloudType = CloudType.PUBLIC;
-        this.model = AMPLModel.KNAPSACK ;
-        this.LTC = true;
+      this.technology = Technology.SPARK; 
+      this.cloudType = CloudType.PUBLIC;
+      this.model = AMPLModel.KNAPSACK ;
+      this.LTC = true;
+      this.physicalAssignment = null;
    }
 
    /**
     * Constructor
     * @param technology is the target technlogy
     * @param cloudType is the type of the cloud (public or private)
-    * @param LTC specifies if LTC are available (public case)
+    * @param LTC specifies if LTC are available (significant only for public case)
+    * @param physicalAssignment specifies if physical assignment has to be considered (significant only for private case)
     */
-   public Scenario(Technology technology, CloudType cloudType, boolean LTC) {
-        this.technology = technology; 
-        this.cloudType = cloudType;
-        this.model = AMPLModel.KNAPSACK ;
-        this.LTC = LTC;
-    }
+   public Scenario(Technology technology, CloudType cloudType, Boolean LTC, Boolean physicalAssignment) throws Exception {
+      this.technology = technology; 
+      this.cloudType = cloudType;
+      this.model = AMPLModel.KNAPSACK ;
+      this.LTC = LTC;
+      this.physicalAssignment = physicalAssignment;
+      if(cloudType == CloudType.PUBLIC && technology != Technology.STORM) {
+         if(LTC == null) {
+            throw new Exception("Presence of LTC not set for public case");
+         }
+      } else if(LTC != null) {
+         throw new Exception("Presence of LTC set for private or storm case");
+      }
+      if(cloudType == CloudType.PRIVATE && technology != Technology.STORM) {
+         if(physicalAssignment == null) {
+            throw new Exception("Physical assinment not set for private case");
+         }
+      } else if(physicalAssignment != null) {
+         throw new Exception("Physical assignment set for public  or storm case");
+      }
+   }
 
 }
