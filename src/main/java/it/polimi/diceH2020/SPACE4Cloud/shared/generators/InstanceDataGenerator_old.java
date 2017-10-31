@@ -30,7 +30,7 @@ import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Technology;
 
 public class InstanceDataGenerator_old {
 
-	public static InstanceData_old build(Technology technology) throws Exception {
+	public static InstanceData_old build(Technology technology) {
 		List<JobClass_old> lstClasses = lstJobClasses();
 		List<TypeVM> lstTypeVMs = lstTypeVMs();
 		Map<String,List<TypeVM>> mapTypes = new HashMap<String, List<TypeVM>>();

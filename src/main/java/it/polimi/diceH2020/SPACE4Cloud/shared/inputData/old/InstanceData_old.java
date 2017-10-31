@@ -68,8 +68,7 @@ public class InstanceData_old {
 	private JobMLProfilesMap mapJobMLProfiles;
 	
 	//only for tests
-	public InstanceData_old(Technology technology, String id, int gamma, String provider, List<JobClass_old> classes, Map<String, List<TypeVM>> types,
-			Map<TypeVMJobClassKey, Profile_old> profiles) throws Exception {
+	public InstanceData_old(Technology technology, String id, int gamma, String provider, List<JobClass_old> classes, Map<String, List<TypeVM>> types, Map<TypeVMJobClassKey, Profile_old> profiles) {
 		this.id = id;
 		this.setGamma(gamma);
 		this.setProvider(provider);
@@ -79,7 +78,7 @@ public class InstanceData_old {
 		mapProfiles = profiles;
 	}
 
-	public InstanceData_old() throws Exception {
+	public InstanceData_old() {
 		this.scenario = Optional.of(new Scenario(Technology.SPARK, CloudType.PUBLIC, true, null, null));
 		this.privateCloudParameters = Optional.empty();
 		this.mapVMConfigurations = Optional.empty();
