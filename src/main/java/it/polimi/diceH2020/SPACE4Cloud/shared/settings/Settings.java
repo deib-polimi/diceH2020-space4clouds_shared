@@ -23,6 +23,4 @@ public class Settings {
 	private Double accuracy = null;
 	private Integer simDuration = null;
 	private SolverType solver = null;
-	private CloudType cloud = null;
-	private Technology technology = null;
 }

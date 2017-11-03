@@ -53,7 +53,7 @@ public class InstanceDataMultiProvider {
 
 	@JsonIgnore private String validationError;
 
-	@JsonIgnore private Scenario scenario;
+	private Scenario scenario;
 
 	public InstanceDataMultiProvider (String id, JobProfilesMap mapJobProfiles, ClassParametersMap mapClassParameters,
 									  PublicCloudParametersMap mapPublicCloudParameters,
