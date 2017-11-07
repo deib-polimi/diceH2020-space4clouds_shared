@@ -72,14 +72,14 @@ public class InstanceData_old {
 		this.id = id;
 		this.setGamma(gamma);
 		this.setProvider(provider);
-		this.scenario = Optional.of(new Scenario(technology, CloudType.PUBLIC, true, null, null));
+		this.scenario = Optional.of(new Scenario(technology, CloudType.PUBLIC, true, null));
 		lstClass = classes;
 		mapTypeVMs = Optional.of(types);
 		mapProfiles = profiles;
 	}
 
 	public InstanceData_old() {
-		this.scenario = Optional.of(new Scenario(Technology.SPARK, CloudType.PUBLIC, true, null, null));
+		this.scenario = Optional.of(new Scenario(Technology.SPARK, CloudType.PUBLIC, true, null));
 		this.privateCloudParameters = Optional.empty();
 		this.mapVMConfigurations = Optional.empty();
 		this.mapTypeVMs = Optional.empty();
