@@ -36,10 +36,6 @@ public class Scenario {
    @Enumerated(EnumType.STRING)
    private final CloudType cloudType;
 
-   ///The type of model used by MILP solver
-   @Column(name = "model")
-   private final AMPLModel model;
-
    ///The target technology
    @Column(name = "technology")
    private final Technology technology;
@@ -58,7 +54,6 @@ public class Scenario {
    public Scenario() {
       this.technology = Technology.SPARK; 
       this.cloudType = CloudType.PUBLIC;
-      this.model = AMPLModel.KNAPSACK ;
       this.longTermCommitment = true;
       this.admissionControl = null;
    }
@@ -72,7 +67,6 @@ public class Scenario {
    public Scenario(Technology technology, CloudType cloudType, Boolean longTermCommitment, Boolean admissionControl) throws RuntimeException {
       this.technology = technology; 
       this.cloudType = cloudType;
-      this.model = AMPLModel.KNAPSACK ;
       this.longTermCommitment = longTermCommitment;
       this.admissionControl = admissionControl;
       if(cloudType == CloudType.PUBLIC) {
@@ -100,10 +94,6 @@ public class Scenario {
       final CloudType cloudType = CloudType.valueOf(tokens[1]);
       final Boolean longTermCommitment = !tokens[2].isEmpty() ? Boolean.valueOf(tokens[2]) : null;
       final Boolean admissionControl = !tokens[3].isEmpty() ? Boolean.valueOf(tokens[3]) : null;
-      if(!tokens[4].isEmpty()) {
-         System.out.println("==========================================================================" + tokens[4]);
-         System.out.println(admissionControl.toString());
-      }
       return new Scenario(technology, cloudType, longTermCommitment, admissionControl);
    }
 
