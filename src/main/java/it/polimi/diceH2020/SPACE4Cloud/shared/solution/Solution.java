@@ -48,7 +48,6 @@ public class Solution {
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private Optional<Scenario> scenario; 
 	
-	private Boolean feasible;
 	private String id;
 	private String provider;
 	
@@ -61,13 +60,11 @@ public class Solution {
 
 	public Solution() {
 		privateCloudParameters = Optional.empty(); 
-		feasible = true;
 	}
 
 	public Solution(String id) {
 		this.id = id;
 		privateCloudParameters = Optional.empty(); 
-		feasible = true;
 	}
 
 	private Double cost = -1.0;
@@ -79,7 +76,7 @@ public class Solution {
 	private Boolean evaluated = false;
 
 	@JsonIgnore
-	private Boolean isFeasible() {
+	public Boolean isFeasible() {
 		if (evaluated) {
 			return lstSolutions.stream().allMatch(SolutionPerJob::getFeasible);
 		} else return Boolean.FALSE;
