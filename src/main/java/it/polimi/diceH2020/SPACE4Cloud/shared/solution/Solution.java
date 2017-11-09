@@ -50,7 +50,9 @@ public class Solution {
 	
 	private String id;
 	private String provider;
-	
+
+	private Boolean feasible;
+
 	@JsonUnwrapped
 	@JsonInclude(Include.NON_NULL)
 	private Map<Integer,Boolean> activeNodes;
@@ -75,10 +77,13 @@ public class Solution {
 
 	private Boolean evaluated = false;
 
-	@JsonIgnore
-	public Boolean isFeasible() {
+	public Boolean getFeasible() {
 		if (evaluated) {
-			return lstSolutions.stream().allMatch(SolutionPerJob::getFeasible);
+			if(feasible != null) {
+				return feasible;
+			} else {
+				return lstSolutions.stream().allMatch(SolutionPerJob::getFeasible);
+			}
 		} else return Boolean.FALSE;
 	}
 
@@ -86,7 +91,7 @@ public class Solution {
 		return lstSolutions.get(pos);
 	}
 
-	public void setSolutionPerJob(SolutionPerJob solPerJob) {
+	public void addSolutionPerJob(SolutionPerJob solPerJob) {
 		lstSolutions.add(solPerJob);
 		solPerJob.setParentID(this.id);
 	}
@@ -133,7 +138,7 @@ public class Solution {
 
 	public String toStringReduced() {
 		StringJoiner sj = new StringJoiner("\t", "", "");
-		sj.add("solID=" + id).add("solFeas=" + this.isFeasible().toString()).add("cost=" + BigDecimal.valueOf(this.getCost()).toString());
+		sj.add("solID=" + id).add("solFeas=" + this.getFeasible().toString()).add("cost=" + BigDecimal.valueOf(this.getCost()).toString());
 		sj.add("totalDuration=" + this.getOptimizationTime().toString());
 		lstPhases.forEach(ph ->
 				sj.add("phase=" + ph.getId().toString()).add("duration=" + ph.getDuration())
