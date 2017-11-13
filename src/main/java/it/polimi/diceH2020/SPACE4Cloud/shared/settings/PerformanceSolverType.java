@@ -16,7 +16,7 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.settings;
 
-public enum SolverType {
+public enum PerformanceSolverType {
 	SPNSolver,
 	QNSolver,
 	DagSimSolver
