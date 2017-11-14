@@ -22,5 +22,5 @@ import lombok.Data;
 public class Settings {
 	private Double accuracy = null;
 	private Integer simDuration = null;
-	private SolverType solver = null;
+	private PerformanceSolverType solver = null;
 }
