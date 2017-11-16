@@ -1,6 +1,5 @@
 /*
- * Copyright 2015 deib-polimi
- * Contact: deib-polimi <michele.ciavotta@polimi.it>
+ * Copyright 2017 Marco Lattuada
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,12 +15,6 @@
  */
 package it.polimi.diceH2020.SPACE4Cloud.shared.settings;
 
-import lombok.Data;
-
-@Data
-public class Settings {
-	private Double accuracy = null;
-	private Integer simDuration = null;
-	private PerformanceSolverType performanceSolverType = null;
-	private MINLPSolverType mINLPSolverType = null;
+public enum MINLPSolverType {
+   AMPLSOLVER
 }
