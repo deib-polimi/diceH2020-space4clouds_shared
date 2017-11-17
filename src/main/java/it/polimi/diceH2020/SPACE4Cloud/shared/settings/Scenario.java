@@ -40,9 +40,9 @@ public class Scenario {
    @Column(name = "technology")
    private final Technology technology;
 
-   ///In case of public cloud if LTC VM are available
-   @Column(name = "long_term_commitment")
-   private final Boolean longTermCommitment;
+   ///In case of public cloud if complex pricing model is used 
+   @Column(name = "use_complex_pricing_model")
+   private final Boolean useComplexPricingModel;
 
    ///In case of private cloud if there is admission control for submitted jobs
    @Column(name = "admission_control")
@@ -54,7 +54,7 @@ public class Scenario {
    public Scenario() {
       this.technology = Technology.SPARK; 
       this.cloudType = CloudType.PUBLIC;
-      this.longTermCommitment = true;
+      this.useComplexPricingModel = true;
       this.admissionControl = null;
    }
 
@@ -62,19 +62,19 @@ public class Scenario {
     * Constructor
     * @param technology is the target technlogy
     * @param cloudType is the type of the cloud (public or private)
-    * @param longTermCommitment specifies if LTC are available (significant only for public case)
+    * @param useComplexPricingModel is true if complex pricing model has to be used 
     */
-   public Scenario(Technology technology, CloudType cloudType, Boolean longTermCommitment, Boolean admissionControl) throws RuntimeException {
+   public Scenario(Technology technology, CloudType cloudType, Boolean useComplexPricingModel, Boolean admissionControl) throws RuntimeException {
       this.technology = technology; 
       this.cloudType = cloudType;
-      this.longTermCommitment = longTermCommitment;
+      this.useComplexPricingModel = useComplexPricingModel; 
       this.admissionControl = admissionControl;
       if(cloudType == CloudType.PUBLIC) {
-         if(longTermCommitment == null) {
-            throw new RuntimeException("Presence of longTermCommitment not set for public case");
+         if(useComplexPricingModel == null) {
+            throw new RuntimeException("Usage of complex pricing model not set for public case");
          }
-      } else if(longTermCommitment != null) {
-         throw new RuntimeException("Presence of LTC set for private case");
+      } else if(useComplexPricingModel != null) {
+         throw new RuntimeException("Usage of complex princing model not set for private case");
       }
       if(cloudType == CloudType.PRIVATE && technology == Technology.STORM) {
          throw new RuntimeException("Private cloud cannot be selected for STORM");
@@ -92,9 +92,9 @@ public class Scenario {
       }
       final Technology technology = Technology.valueOf(tokens[0]);
       final CloudType cloudType = CloudType.valueOf(tokens[1]);
-      final Boolean longTermCommitment = !tokens[2].isEmpty() ? Boolean.valueOf(tokens[2]) : null;
+      final Boolean useComplexPricingModel = !tokens[2].isEmpty() ? Boolean.valueOf(tokens[2]) : null;
       final Boolean admissionControl = !tokens[3].isEmpty() ? Boolean.valueOf(tokens[3]) : null;
-      return new Scenario(technology, cloudType, longTermCommitment, admissionControl);
+      return new Scenario(technology, cloudType, useComplexPricingModel, admissionControl);
    }
 
    /**
@@ -102,7 +102,7 @@ public class Scenario {
     */
    @JsonIgnore
       public String getStringRepresentation() {
-         return technology.name() + "_" + cloudType.name() + "_" + (longTermCommitment != null ? longTermCommitment.toString() : "") + "_" +  (admissionControl != null ? admissionControl.toString() : "");
+         return technology.name() + "_" + cloudType.name() + "_" + (useComplexPricingModel != null ? useComplexPricingModel.toString() : "") + "_" +  (admissionControl != null ? admissionControl.toString() : "");
    }
 
    /**
@@ -113,7 +113,7 @@ public class Scenario {
       String ret_value = "";
       ret_value += technology.name();
       ret_value += " - " + cloudType.name();
-      ret_value += (longTermCommitment != null) ? (longTermCommitment ? " with LTC" : " without LTC") : "";
+      ret_value += (useComplexPricingModel != null) ? (useComplexPricingModel ? " with Complex Pricing Model" : " without Complex Pricing Model") : "";
       ret_value += (admissionControl != null) ? (admissionControl ? " with Admission Control" : " without Admission Control") : "";
       return ret_value;
    }
@@ -126,7 +126,7 @@ public class Scenario {
       String ret_value = "";
       ret_value += technology.name();
       ret_value += " - " + (cloudType == CloudType.PUBLIC ? "Pub." : "Pr.");
-      ret_value += (longTermCommitment != null) ? (longTermCommitment ? " LTC" : "") : "";
+      ret_value += (useComplexPricingModel != null) ? (useComplexPricingModel ? " with Complex Pricing Model" : "") : "";
       ret_value += (admissionControl != null) ? (admissionControl ? " AC" : "") : "";
       return ret_value;
    }
