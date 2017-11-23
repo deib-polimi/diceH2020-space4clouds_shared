@@ -16,5 +16,6 @@
 package it.polimi.diceH2020.SPACE4Cloud.shared.settings;
 
 public enum MINLPSolverType {
-   AMPLSOLVER
+   AMPLSOLVER,
+   GLPKSOLVER
 }
