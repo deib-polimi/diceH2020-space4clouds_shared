@@ -22,7 +22,7 @@
 
 	<groupId>it.polimi.diceH2020</groupId>
 	<artifactId>SPACE4Cloud-shared</artifactId>
-	<version>0.3.3-dev</version>
+	<version>0.3.5-dev</version>
 	<packaging>jar</packaging>
 
 	<name>SPACE4Cloud shared</name>
